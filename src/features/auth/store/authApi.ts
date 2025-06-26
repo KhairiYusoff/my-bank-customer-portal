@@ -1,8 +1,10 @@
 import { baseApi } from "@/app/store/baseApi";
-import type {
+import {
   ApplyRequest,
   ApplyResponse,
   ApiErrorResponse,
+  CompleteProfileRequest,
+  CompleteProfileResponse,
 } from "@/features/auth/types/auth";
 
 /**
@@ -31,9 +33,34 @@ export const authApi = baseApi.injectEndpoints({
         statusCode: response.status,
       }),
     }),
+
+    /**
+     * Complete user profile after account approval
+     * @param data - Complete profile data including personal, address, employment, and next of kin information
+     */
+    completeProfile: builder.mutation<
+      CompleteProfileResponse,
+      { data: CompleteProfileRequest; token: string }
+    >({
+      query: ({ data, token }) => ({
+        url: "/v2/users/complete-profile",
+        method: "PUT",
+        body: data,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }),
+      // Transform error response to match our error format
+      transformErrorResponse: (response: any): ApiErrorResponse => ({
+        success: false,
+        message: response?.data?.message || "Failed to complete profile",
+        errors: response?.data?.errors,
+        statusCode: response.status,
+      }),
+    }),
   }),
   overrideExisting: false,
 });
 
 // Export hooks for usage in components
-export const { useApplyMutation } = authApi;
+export const { useApplyMutation, useCompleteProfileMutation } = authApi;

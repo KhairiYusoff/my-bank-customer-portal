@@ -6,8 +6,8 @@ import {
   applicationSchema,
   type ApplicationFormData,
 } from "@/features/auth/validations/schemas";
-import ApplicationForm from "@/features/auth/components/ApplicationForm";
-import SuccessMessage from "@/features/auth/components/SuccessMessage";
+import ApplicationForm from "@/features/auth/components/apply/ApplicationForm";
+import SuccessMessage from "@/features/auth/components/apply/SuccessMessage";
 
 const ApplyPage: React.FC = () => {
   const [apply, { isLoading, isSuccess }] = useApplyMutation();

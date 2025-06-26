@@ -13,7 +13,10 @@ import EmailIcon from "@mui/icons-material/Email";
 import PhoneIcon from "@mui/icons-material/Phone";
 import { Link } from "react-router-dom";
 import FormField from "@/components/forms/FormField";
-import { ApplicationFormData, applicationSchema } from "../validations/schemas";
+import {
+  ApplicationFormData,
+  applicationSchema,
+} from "@/features/auth/validations/schemas";
 
 interface ApplicationFormProps {
   onSubmit: (data: ApplicationFormData) => Promise<void>;
