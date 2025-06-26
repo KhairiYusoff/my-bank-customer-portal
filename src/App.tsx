@@ -14,6 +14,7 @@ import Landing from "./features/landing/pages/Landing";
 import ApplyPage from "./features/auth/pages/ApplyPage";
 import CompleteProfilePage from "./features/auth/pages/CompleteProfilePage";
 import CompleteProfileSuccess from "./features/auth/pages/CompleteProfileSuccess";
+import LoginPage from "./features/auth/pages/LoginPage";
 
 const App: React.FC = () => {
   return (
@@ -27,6 +28,7 @@ const App: React.FC = () => {
             <Route path="/apply" element={<ApplyPage />} />
             <Route path="/complete-profile" element={<CompleteProfilePage />} />
             <Route path="/complete-profile/success" element={<CompleteProfileSuccess />} />
+            <Route path="/login" element={<LoginPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Router>

@@ -1,10 +1,13 @@
 import { baseApi } from "@/app/store/baseApi";
 import {
+  ApiErrorResponse,
   ApplyRequest,
   ApplyResponse,
-  ApiErrorResponse,
   CompleteProfileRequest,
   CompleteProfileResponse,
+  LoginRequest,
+  LoginResponse,
+  User,
 } from "@/features/auth/types/auth";
 
 /**
@@ -30,6 +33,31 @@ export const authApi = baseApi.injectEndpoints({
         success: false,
         message: response?.data?.message || "Failed to submit application",
         errors: response?.data?.errors,
+        statusCode: response.status,
+      }),
+    }),
+
+    /**
+     * Login user with email and password
+     * @param credentials - User's login credentials (email and password)
+     */
+    login: builder.mutation<LoginResponse, LoginRequest>({
+      query: (credentials) => ({
+        url: "/auth/login",
+        method: "POST",
+        body: credentials,
+        // Ensure credentials (cookies) are included in the request
+        credentials: "include",
+      }),
+      // Invalidate auth data on successful login
+      invalidatesTags: ["Auth"],
+      // Transform error response to match our error format
+      transformErrorResponse: (response: any): ApiErrorResponse => ({
+        success: response?.data?.success ?? false,
+        message:
+          response?.data?.message ||
+          "Login failed. Please check your credentials and try again.",
+        errors: response?.data?.errors || null,
         statusCode: response.status,
       }),
     }),
@@ -63,4 +91,9 @@ export const authApi = baseApi.injectEndpoints({
 });
 
 // Export hooks for usage in components
-export const { useApplyMutation, useCompleteProfileMutation } = authApi;
+// Export hooks for usage in components
+export const {
+  useApplyMutation,
+  useLoginMutation,
+  useCompleteProfileMutation,
+} = authApi;

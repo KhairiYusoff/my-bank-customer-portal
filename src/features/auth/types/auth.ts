@@ -98,6 +98,33 @@ export interface ApplyResponseData {
   updatedAt: string;
 }
 
+export interface AuthState {
+  user: User | null;
+  token: string | null;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  error: string | null;
+}
+
+export interface LoginRequest {
+  email: string;
+  password: string;
+}
+
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  isVerified: boolean;
+}
+
+export interface LoginResponseData {
+  user: User;
+}
+
+export type LoginResponse = BaseResponse<LoginResponseData>;
+
 export type ApplyResponse = BaseResponse<ApplyResponseData>;
 
 export interface ValidationError {
