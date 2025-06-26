@@ -9,8 +9,8 @@ import { Provider } from "react-redux";
 import { store } from "./app/store/store";
 import { ThemeProvider, CssBaseline } from "@mui/material";
 import theme from "./theme";
-import Landing from "./pages/Landing";
-import ApplyPage from "./pages/ApplyPage";
+import Landing from "./features/landing/pages/Landing";
+import ApplyPage from "./features/auth/pages/ApplyPage";
 
 const App: React.FC = () => {
   return (

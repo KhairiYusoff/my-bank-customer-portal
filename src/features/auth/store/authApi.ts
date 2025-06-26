@@ -3,7 +3,7 @@ import type {
   ApplyRequest,
   ApplyResponse,
   ApiErrorResponse,
-} from "../types/auth";
+} from "@/features/auth/types/auth";
 
 /**
  * Auth API slice containing all authentication-related endpoints

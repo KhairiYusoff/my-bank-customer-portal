@@ -13,7 +13,7 @@ import {
   ListItemText,
 } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import { PRODUCTS, Product } from "../constants/products";
+import { PRODUCTS, Product } from "@constants/products";
 
 const ProductsSection: React.FC = () => {
   return (
@@ -24,26 +24,26 @@ const ProductsSection: React.FC = () => {
       <Grid container spacing={4} justifyContent="center" sx={{ mt: 2 }}>
         {PRODUCTS.map((product: Product, idx) => {
           const gradients = [
-            'linear-gradient(135deg, #FF7E5F 0%, #FD3A69 100%)',
-            'linear-gradient(135deg, #43CBFF 0%, #9708CC 100%)',
-            'linear-gradient(135deg, #5EFCE8 0%, #736EFE 100%)',
+            "linear-gradient(135deg, #FF7E5F 0%, #FD3A69 100%)",
+            "linear-gradient(135deg, #43CBFF 0%, #9708CC 100%)",
+            "linear-gradient(135deg, #5EFCE8 0%, #736EFE 100%)",
           ];
           const bg = gradients[idx % gradients.length];
           return (
             <Grid item xs={12} md={4} key={idx}>
               <Card
                 elevation={6}
-                sx={{ 
-                  height: '100%', 
-                  display: 'flex', 
-                  flexDirection: 'column', 
-                  background: bg, 
-                  color: 'common.white',
+                sx={{
+                  height: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  background: bg,
+                  color: "common.white",
                   borderRadius: 3,
-                  '&:hover': {
-                    transform: 'translateY(-8px)',
-                    transition: 'all 0.3s ease',
-                  }
+                  "&:hover": {
+                    transform: "translateY(-8px)",
+                    transition: "all 0.3s ease",
+                  },
                 }}
               >
                 <CardContent sx={{ flexGrow: 1 }}>
@@ -61,12 +61,14 @@ const ProductsSection: React.FC = () => {
                   <List dense>
                     {product.benefits.map((benefit, i) => (
                       <ListItem key={i} disableGutters>
-                        <ListItemIcon sx={{ minWidth: 28, color: 'common.white' }}>
+                        <ListItemIcon
+                          sx={{ minWidth: 28, color: "common.white" }}
+                        >
                           <CheckCircleIcon color="inherit" fontSize="small" />
                         </ListItemIcon>
-                        <ListItemText 
-                          primary={benefit} 
-                          primaryTypographyProps={{ color: 'common.white' }}
+                        <ListItemText
+                          primary={benefit}
+                          primaryTypographyProps={{ color: "common.white" }}
                         />
                       </ListItem>
                     ))}
@@ -77,17 +79,17 @@ const ProductsSection: React.FC = () => {
                     href={`/apply?type=${product.type.toLowerCase()}`}
                     variant="contained"
                     color="primary"
-                    sx={{ 
-                      px: 5, 
-                      py: 1.5, 
+                    sx={{
+                      px: 5,
+                      py: 1.5,
                       borderRadius: 3,
-                      backgroundColor: 'common.white',
-                      color: 'primary.main',
-                      '&:hover': {
-                        backgroundColor: 'rgba(255, 255, 255, 0.9)',
-                        transform: 'translateY(-2px)',
+                      backgroundColor: "common.white",
+                      color: "primary.main",
+                      "&:hover": {
+                        backgroundColor: "rgba(255, 255, 255, 0.9)",
+                        transform: "translateY(-2px)",
                       },
-                      transition: 'all 0.3s ease',
+                      transition: "all 0.3s ease",
                       boxShadow: 3,
                     }}
                   >

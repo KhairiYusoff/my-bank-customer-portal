@@ -1,5 +1,5 @@
-import React, { useRef, useState, useEffect, PropsWithChildren } from 'react';
-import { Fade } from '@mui/material';
+import React, { useRef, useState, useEffect, PropsWithChildren } from "react";
+import { Fade } from "@mui/material";
 
 /**
  * FadeInSection wraps its children and fades them in when they enter the viewport.
@@ -31,7 +31,7 @@ const FadeInSection: React.FC<PropsWithChildren> = ({ children }) => {
 
   return (
     <div ref={ref}>
-      <Fade in={visible} timeout={800} style={{ transformOrigin: '0 0 0' }}>
+      <Fade in={visible} timeout={800} style={{ transformOrigin: "0 0 0" }}>
         <div>{children}</div>
       </Fade>
     </div>
