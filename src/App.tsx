@@ -6,9 +6,10 @@ import {
   Navigate,
 } from "react-router-dom";
 import { Provider } from "react-redux";
-import { store } from "./app/store/store";
+import { store } from "@/app/store/store";
 import { ThemeProvider, CssBaseline } from "@mui/material";
-import theme from "./theme";
+import { SnackbarProvider } from "@/providers/SnackbarProvider";
+import theme from "@/theme";
 import Landing from "./features/landing/pages/Landing";
 import ApplyPage from "./features/auth/pages/ApplyPage";
 import CompleteProfilePage from "./features/auth/pages/CompleteProfilePage";
@@ -19,6 +20,7 @@ const App: React.FC = () => {
     <Provider store={store}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
+        <SnackbarProvider>
         <Router>
           <Routes>
             <Route path="/" element={<Landing />} />
@@ -28,6 +30,7 @@ const App: React.FC = () => {
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Router>
+        </SnackbarProvider>
       </ThemeProvider>
     </Provider>
   );

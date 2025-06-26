@@ -24,6 +24,7 @@ import {
   NextOfKinSection,
 } from "@/features/auth/components/complete-profile";
 import { useSnackbar } from "notistack";
+import { toast } from "@utils/snackbarUtils";
 
 const steps = ["Personal Information", "Address", "Employment", "Next of Kin"];
 
@@ -149,14 +150,12 @@ const CompleteProfilePage: React.FC = () => {
         dateOfBirth: dateOfBirth ? new Date(dateOfBirth).toISOString() : "",
       };
 
-      await completeProfile({
+      const response = await completeProfile({
         data: formattedData,
         token,
       }).unwrap();
 
-      enqueueSnackbar("Profile completed successfully!", {
-        variant: "success",
-      });
+      toast.success(response?.message || "Profile completed successfully!");
       navigate("/complete-profile/success");
     } catch (error: any) {
       console.error("Error completing profile:", error);
@@ -165,7 +164,7 @@ const CompleteProfilePage: React.FC = () => {
         error?.message || "Failed to complete profile. Please try again.";
       setServerError(errorMessage);
 
-      enqueueSnackbar(errorMessage, { variant: "error" });
+      toast.error(errorMessage);
     } finally {
       setIsSubmitting(false);
     }

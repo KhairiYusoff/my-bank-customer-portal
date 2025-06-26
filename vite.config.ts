@@ -44,6 +44,11 @@ export default defineConfig({
       ),
       "@pages": resolve(dirname(fileURLToPath(import.meta.url)), "src/pages"),
       "@types": resolve(dirname(fileURLToPath(import.meta.url)), "src/types"),
+      "@utils": resolve(dirname(fileURLToPath(import.meta.url)), "src/utils"),
+      "@providers": resolve(
+        dirname(fileURLToPath(import.meta.url)),
+        "src/providers"
+      ),
     },
   },
 });
