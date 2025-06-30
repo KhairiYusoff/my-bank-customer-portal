@@ -17,6 +17,9 @@ import CompleteProfileSuccess from "./features/auth/pages/CompleteProfileSuccess
 import LoginPage from "./features/auth/pages/LoginPage";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import DashboardPage from "./features/dashboard/pages/DashboardPage";
+import TransferPage from './features/dashboard/pages/TransferPage';
+import DepositPage from './features/dashboard/pages/DepositPage';
+import WithdrawPage from './features/dashboard/pages/WithdrawPage';
 
 const App: React.FC = () => {
   return (
@@ -36,6 +39,30 @@ const App: React.FC = () => {
               element={
                 <ProtectedRoute>
                   <DashboardPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/transfer"
+              element={
+                <ProtectedRoute>
+                  <TransferPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/deposit"
+              element={
+                <ProtectedRoute>
+                  <DepositPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/withdraw"
+              element={
+                <ProtectedRoute>
+                  <WithdrawPage />
                 </ProtectedRoute>
               }
             />

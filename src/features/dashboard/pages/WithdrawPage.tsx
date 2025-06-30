@@ -1,17 +1,17 @@
 import React from 'react';
-import { Box, Container, Typography } from '@mui/material';
 import DashboardLayout from '@/layouts/DashboardLayout';
+import { Box, Container, Typography } from '@mui/material';
 
-const DashboardPage: React.FC = () => {
+const WithdrawPage: React.FC = () => {
   return (
     <DashboardLayout>
       <Container maxWidth="lg">
         <Box sx={{ my: 4 }}>
           <Typography variant="h4" component="h1" gutterBottom>
-            Welcome to your Dashboard!
+            Withdraw Funds
           </Typography>
           <Typography variant="body1">
-            This is a placeholder for your main dashboard content.
+            This is the withdraw funds page.
           </Typography>
         </Box>
       </Container>
@@ -19,4 +19,4 @@ const DashboardPage: React.FC = () => {
   );
 };
 
-export default DashboardPage;
+export default WithdrawPage;
