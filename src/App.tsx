@@ -15,6 +15,8 @@ import ApplyPage from "./features/auth/pages/ApplyPage";
 import CompleteProfilePage from "./features/auth/pages/CompleteProfilePage";
 import CompleteProfileSuccess from "./features/auth/pages/CompleteProfileSuccess";
 import LoginPage from "./features/auth/pages/LoginPage";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
+import DashboardPage from "./features/dashboard/pages/DashboardPage";
 
 const App: React.FC = () => {
   return (
@@ -29,6 +31,14 @@ const App: React.FC = () => {
             <Route path="/complete-profile" element={<CompleteProfilePage />} />
             <Route path="/complete-profile/success" element={<CompleteProfileSuccess />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute>
+                  <DashboardPage />
+                </ProtectedRoute>
+              }
+            />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Router>

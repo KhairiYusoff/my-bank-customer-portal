@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { User } from "../types/auth";
+import { User, LoginResponse, ApiErrorResponse } from "../types/auth";
+import { authApi } from "./authApi";
 import { AuthState } from "../types/auth";
 
 const initialState: AuthState = {
@@ -35,34 +36,31 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     // Handle login pending state
-    builder.addMatcher(
-      (action) =>
-        action.type.endsWith("/pending") && action.type.includes("login"),
-      (state) => {
-        state.isLoading = true;
-        state.error = null;
-      }
-    );
+    builder.addMatcher(authApi.endpoints.login.matchPending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+    });
 
     // Handle login fulfilled state
     builder.addMatcher(
-      (action) =>
-        action.type.endsWith("/fulfilled") && action.type.includes("login"),
-      (state, action: PayloadAction<{ data: { user: User } }>) => {
+      authApi.endpoints.login.matchFulfilled,
+      (state, action) => {
         state.isLoading = false;
         state.isAuthenticated = true;
-        state.user = action.payload.data.user;
+        if (action.payload.data) {
+          state.user = action.payload.data.user;
+        }
       }
     );
 
     // Handle login rejected state
     builder.addMatcher(
-      (action) =>
-        action.type.endsWith("/rejected") && action.type.includes("login"),
-      (state, action: { payload: any }) => {
+      authApi.endpoints.login.matchRejected,
+      (state, action) => {
         state.isLoading = false;
         state.isAuthenticated = false;
-        state.error = action.payload?.data?.message || "Login failed";
+        const transformedError = action.error as ApiErrorResponse;
+        state.error = transformedError.message || "Login failed";
       }
     );
   },
