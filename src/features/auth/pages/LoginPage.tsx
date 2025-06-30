@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, Link as RouterLink } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -35,6 +35,13 @@ const LoginPage = () => {
     formState: { errors },
   } = useForm<LoginFormData>({
     resolver: yupResolver(loginSchema),
+    defaultValues:
+      process.env.NODE_ENV === "development"
+        ? {
+            email: "sarah.jay@example.com",
+            password: "SecurePassword123!",
+          }
+        : {},
   });
 
   // Handle form submission
