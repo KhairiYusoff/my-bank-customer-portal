@@ -46,20 +46,50 @@ export const authApi = baseApi.injectEndpoints({
         url: "/auth/login",
         method: "POST",
         body: credentials,
-        // Ensure credentials (cookies) are included in the request
         credentials: "include",
+        timeout: 10000,
       }),
       // Invalidate auth data on successful login
       invalidatesTags: ["Auth"],
       // Transform error response to match our error format
-      transformErrorResponse: (response: any): ApiErrorResponse => ({
-        success: response?.data?.success ?? false,
-        message:
-          response?.data?.message ||
-          "Login failed. Please check your credentials and try again.",
-        errors: response?.data?.errors || null,
-        statusCode: response.status,
-      }),
+      transformErrorResponse: (response: any): ApiErrorResponse => {
+        if (process.env.NODE_ENV === "development") {
+          console.log("[DEV] Login error response:", response);
+        }
+
+        // Handle timeout errors
+        if (response.status === "TIMEOUT_ERROR") {
+          return {
+            success: false,
+            message: "Request timed out. Please try again.",
+            errors: undefined,
+            statusCode: 408,
+          };
+        }
+
+        // Handle network errors
+        if (response.status === "FETCH_ERROR") {
+          return {
+            success: false,
+            message:
+              "Network error. Please check your connection and try again.",
+            errors: undefined,
+            statusCode: 0,
+          };
+        }
+
+        // Handle HTTP errors
+        return {
+          success: response?.data?.success ?? false,
+          message:
+            response.status === 500
+              ? "Server error. Please try again later."
+              : response?.data?.message ||
+                "Login failed. Please check your credentials and try again.",
+          errors: response?.data?.errors,
+          statusCode: response.status,
+        };
+      },
     }),
 
     /**
