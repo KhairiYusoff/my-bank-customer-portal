@@ -11,8 +11,9 @@ import { RootState } from "@/app/store/store";
 import { logout } from "@/features/auth/store/authSlice";
 import DashboardSidebar from "./DashboardSidebar";
 import DashboardHeader from "./DashboardHeader";
-import ProfileDropdown from "./ProfileDropdown";
-import ProfileModal from "./ProfileModal";
+import ProfileDropdown from "@/features/dashboard/components/ProfileDropdown";
+import ProfileModal from "@/features/dashboard/components/ProfileModal";
+import { useGetProfileQuery } from "@/features/dashboard/store/profileApi";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -23,7 +24,12 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = useSelector((state: RootState) => state.auth.user);
+  // Fetch user profile from dashboard feature
+  const {
+    data: profile,
+    isLoading: profileLoading,
+    error: profileError,
+  } = useGetProfileQuery();
 
   const drawerWidth = 240;
 
@@ -108,7 +114,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
         <DashboardHeader
           drawerWidth={drawerWidth}
           onMenuClick={handleMenu}
-          user={user}
+          user={profile}
         />
         <ProfileDropdown
           anchorEl={anchorEl}
@@ -116,12 +122,12 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
           onClose={handleClose}
           onProfile={handleProfile}
           onLogout={handleLogout}
-          user={user}
+          user={profile}
         />
         <ProfileModal
           open={profileModalOpen}
           onClose={() => setProfileModalOpen(false)}
-          user={user}
+          user={profile}
         />
         <div style={{ height: 64 }} /> {/* Spacer for AppBar */}
         {children}

@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { baseApi } from "./baseApi";
+import { profileApi } from "@/features/dashboard/store/profileApi";
 import authReducer from "@/features/auth/store/authSlice";
 
 // Configure the Redux store
@@ -8,6 +9,7 @@ export const store = configureStore({
   reducer: {
     // Add the generated reducer as a specific top-level slice
     [baseApi.reducerPath]: baseApi.reducer,
+    [profileApi.reducerPath]: profileApi.reducer,
     // Add the auth reducer
     auth: authReducer,
   },
@@ -20,7 +22,9 @@ export const store = configureStore({
         // Ignore these field paths in the state
         ignoredPaths: ["api.queries", "api.mutations"],
       },
-    }).concat(baseApi.middleware),
+    })
+      .concat(baseApi.middleware)
+      .concat(profileApi.middleware),
   // Enable Redux DevTools in development
   devTools: process.env.NODE_ENV !== "production",
 });

@@ -3,10 +3,12 @@ import { AppBar, Toolbar, Typography, IconButton, Avatar } from "@mui/material";
 import { styled, useTheme } from "@mui/material/styles";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 
+import type { UserProfile } from "@/features/dashboard/types/profile";
+
 interface DashboardHeaderProps {
   drawerWidth: number;
   onMenuClick: (event: React.MouseEvent<HTMLElement>) => void;
-  user: any;
+  user: UserProfile | undefined;
 }
 
 const DashboardHeader: React.FC<DashboardHeaderProps> = ({
