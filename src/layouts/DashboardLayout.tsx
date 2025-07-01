@@ -209,12 +209,14 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
                 }}
                 open={Boolean(anchorEl) as boolean}
                 onClose={handleClose}
-                PaperProps={{
-                  sx: {
-                    minWidth: 220,
-                    p: 1.5,
-                    borderRadius: 2,
-                    boxShadow: 3,
+                slotProps={{
+                  paper: {
+                    sx: {
+                      minWidth: 220,
+                      p: 1.5,
+                      borderRadius: 2,
+                      boxShadow: 3,
+                    },
                   },
                 }}
               >
