@@ -21,6 +21,7 @@ import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import { styled, useTheme } from "@mui/material/styles";
 import AccountCircle from "@mui/icons-material/AccountCircle";
+import LogoutIcon from "@mui/icons-material/Logout";
 import { Link, useNavigate, useLocation, LinkProps } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -183,9 +184,16 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
                 aria-controls="menu-appbar"
                 aria-haspopup="true"
                 onClick={handleMenu}
-                color="inherit"
               >
-                <AccountCircle />
+                <Avatar
+                  sx={{
+                    width: 40,
+                    height: 40,
+                    bgcolor: theme.palette.primary.dark,
+                  }}
+                >
+                  {user?.name ? user.name[0].toUpperCase() : <AccountCircle />}
+                </Avatar>
               </IconButton>
               <Menu
                 id="menu-appbar"
@@ -201,9 +209,66 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
                 }}
                 open={Boolean(anchorEl) as boolean}
                 onClose={handleClose}
+                PaperProps={{
+                  sx: {
+                    minWidth: 220,
+                    p: 1.5,
+                    borderRadius: 2,
+                    boxShadow: 3,
+                  },
+                }}
               >
-                <MenuItem onClick={handleProfile}>My Profile</MenuItem>
-                <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 1.5,
+                    px: 1,
+                    py: 1,
+                  }}
+                >
+                  <Avatar
+                    sx={{
+                      width: 40,
+                      height: 40,
+                      bgcolor: theme.palette.primary.main,
+                    }}
+                  >
+                    {user?.name ? (
+                      user.name[0].toUpperCase()
+                    ) : (
+                      <AccountCircle />
+                    )}
+                  </Avatar>
+                  <Box>
+                    <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+                      {user?.name || "User"}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{ fontSize: 13 }}
+                    >
+                      {user?.email || "user@email.com"}
+                    </Typography>
+                  </Box>
+                </Box>
+                <Box sx={{ my: 1 }}>
+                  <hr
+                    style={{
+                      border: 0,
+                      borderTop: `1px solid ${theme.palette.divider}`,
+                    }}
+                  />
+                </Box>
+                <MenuItem onClick={handleProfile} sx={{ gap: 1.5 }}>
+                  <AccountCircle fontSize="small" color="primary" />
+                  My Profile
+                </MenuItem>
+                <MenuItem onClick={handleLogout} sx={{ gap: 1.5 }}>
+                  <LogoutIcon fontSize="small" color="error" />
+                  Logout
+                </MenuItem>
               </Menu>
             </div>
           </Toolbar>
