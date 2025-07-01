@@ -1,32 +1,17 @@
 import React, { useState, forwardRef } from "react";
-import {
-  AppBar,
-  Toolbar,
-  IconButton,
-  Typography,
-  Drawer,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemIcon,
-  Box,
-  Avatar,
-  Menu,
-  MenuItem,
-  ListItemButton,
-} from "@mui/material";
+import { styled, useTheme } from "@mui/material/styles";
+import { ListItemButton, Box } from "@mui/material";
+import { Link, useNavigate, useLocation, LinkProps } from "react-router-dom";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import SyncAltIcon from "@mui/icons-material/SyncAlt";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-import { styled, useTheme } from "@mui/material/styles";
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import LogoutIcon from "@mui/icons-material/Logout";
-import { Link, useNavigate, useLocation, LinkProps } from "react-router-dom";
-
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/store/store";
 import { logout } from "@/features/auth/store/authSlice";
+import DashboardSidebar from "./DashboardSidebar";
+import DashboardHeader from "./DashboardHeader";
+import ProfileDropdown from "./ProfileDropdown";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -37,8 +22,6 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.auth.user);
-  const theme = useTheme();
-  const location = useLocation();
 
   const drawerWidth = 240;
 
@@ -109,177 +92,34 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   }));
 
   return (
-    <Box sx={{ display: "flex" }}>
-      {/* Sidebar */}
-      <Drawer
-        variant="permanent"
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          [`& .MuiDrawer-paper`]: {
-            width: drawerWidth,
-            boxSizing: "border-box",
-            backgroundColor: theme.palette.grey[900],
-            color: theme.palette.common.white,
-          },
-        }}
-      >
-        <Toolbar sx={{ justifyContent: "center", padding: 2 }}>
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            <AccountBalanceWalletIcon
-              sx={{ fontSize: 32, color: theme.palette.primary.main }}
-            />
-            <Typography
-              variant="h6"
-              noWrap
-              component="div"
-              sx={{ color: theme.palette.common.white }}
-            >
-              MyBank
-            </Typography>
-          </Box>
-        </Toolbar>
-        <Box sx={{ overflow: "auto" }}>
-          <List>
-            {navItems.map((item) => (
-              <StyledListItem
-                key={item.text}
-                component={ListItemLink}
-                to={item.path}
-                selected={location.pathname === item.path}
-              >
-                <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText primary={item.text} />
-              </StyledListItem>
-            ))}
-          </List>
-        </Box>
-      </Drawer>
-
-      {/* Main content area including AppBar and children */}
+    <div style={{ display: "flex" }}>
+      <DashboardSidebar
+        drawerWidth={drawerWidth}
+        navItems={navItems}
+        ListItemLink={ListItemLink}
+        StyledListItem={StyledListItem}
+      />
       <Box
         component="main"
         sx={{ flexGrow: 1, p: 3, width: `calc(100% - ${drawerWidth}px)` }}
       >
-        <AppBar
-          position="fixed"
-          sx={{
-            width: `calc(100% - ${drawerWidth}px)`,
-            ml: `${drawerWidth}px`,
-          }}
-        >
-          <Toolbar>
-            <Typography
-              variant="h6"
-              noWrap
-              component="div"
-              sx={{ flexGrow: 1 }}
-            >
-              My Bank Customer Portal
-            </Typography>
-            <div>
-              <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleMenu}
-              >
-                <Avatar
-                  sx={{
-                    width: 40,
-                    height: 40,
-                    bgcolor: theme.palette.primary.dark,
-                  }}
-                >
-                  {user?.name ? user.name[0].toUpperCase() : <AccountCircle />}
-                </Avatar>
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={Boolean(anchorEl) as boolean}
-                onClose={handleClose}
-                slotProps={{
-                  paper: {
-                    sx: {
-                      minWidth: 220,
-                      p: 1.5,
-                      borderRadius: 2,
-                      boxShadow: 3,
-                    },
-                  },
-                }}
-              >
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 1.5,
-                    px: 1,
-                    py: 1,
-                  }}
-                >
-                  <Avatar
-                    sx={{
-                      width: 40,
-                      height: 40,
-                      bgcolor: theme.palette.primary.main,
-                    }}
-                  >
-                    {user?.name ? (
-                      user.name[0].toUpperCase()
-                    ) : (
-                      <AccountCircle />
-                    )}
-                  </Avatar>
-                  <Box>
-                    <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
-                      {user?.name || "User"}
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      color="text.secondary"
-                      sx={{ fontSize: 13 }}
-                    >
-                      {user?.email || "user@email.com"}
-                    </Typography>
-                  </Box>
-                </Box>
-                <Box sx={{ my: 1 }}>
-                  <hr
-                    style={{
-                      border: 0,
-                      borderTop: `1px solid ${theme.palette.divider}`,
-                    }}
-                  />
-                </Box>
-                <MenuItem onClick={handleProfile} sx={{ gap: 1.5 }}>
-                  <AccountCircle fontSize="small" color="primary" />
-                  My Profile
-                </MenuItem>
-                <MenuItem onClick={handleLogout} sx={{ gap: 1.5 }}>
-                  <LogoutIcon fontSize="small" color="error" />
-                  Logout
-                </MenuItem>
-              </Menu>
-            </div>
-          </Toolbar>
-        </AppBar>
-        <Toolbar />{" "}
-        {/* This empty toolbar is to push content below the AppBar */}
+        <DashboardHeader
+          drawerWidth={drawerWidth}
+          onMenuClick={handleMenu}
+          user={user}
+        />
+        <ProfileDropdown
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+          onProfile={handleProfile}
+          onLogout={handleLogout}
+          user={user}
+        />
+        <div style={{ height: 64 }} /> {/* Spacer for AppBar */}
         {children}
       </Box>
-    </Box>
+    </div>
   );
 };
 
