@@ -1,11 +1,11 @@
 import React from "react";
 import Box from "@mui/material/Box";
-import HeroSection from "@/components/landing/HeroSection";
-import FeaturesSection from "@/components/landing/FeaturesSection";
-import TestimonialsSection from "@/components/landing/TestimonialsSection";
-import ProductsSection from "@/components/landing/ProductsSection";
-import FooterSection from "@/components/landing/FooterSection";
-import FadeInSection from "@/components/landing/FadeInSection";
+import HeroSection from "@/features/landing/components/HeroSection";
+import FeaturesSection from "@/features/landing/components/FeaturesSection";
+import TestimonialsSection from "@/features/landing/components/TestimonialsSection";
+import ProductsSection from "@/features/landing/components/ProductsSection";
+import FooterSection from "@/features/landing/components/FooterSection";
+import FadeInSection from "@/features/landing/components/FadeInSection";
 
 const Landing: React.FC = () => {
   return (
