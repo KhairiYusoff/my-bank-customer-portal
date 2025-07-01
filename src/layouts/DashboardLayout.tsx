@@ -12,12 +12,14 @@ import { logout } from "@/features/auth/store/authSlice";
 import DashboardSidebar from "./DashboardSidebar";
 import DashboardHeader from "./DashboardHeader";
 import ProfileDropdown from "./ProfileDropdown";
+import ProfileModal from "./ProfileModal";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
 }
 
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
+  const [profileModalOpen, setProfileModalOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -48,7 +50,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
 
   const handleProfile = () => {
     handleClose();
-    navigate("/profile");
+    setProfileModalOpen(true);
   };
 
   interface ListItemLinkProps extends LinkProps {
@@ -114,6 +116,11 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
           onClose={handleClose}
           onProfile={handleProfile}
           onLogout={handleLogout}
+          user={user}
+        />
+        <ProfileModal
+          open={profileModalOpen}
+          onClose={() => setProfileModalOpen(false)}
           user={user}
         />
         <div style={{ height: 64 }} /> {/* Spacer for AppBar */}
