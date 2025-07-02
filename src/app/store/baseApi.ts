@@ -4,7 +4,8 @@ import type { BaseResponse, ApiError } from '@/types/api';
 
 // Create base query with credentials for cookie-based auth
 const baseQuery = fetchBaseQuery({
-  baseUrl: import.meta.env.VITE_API_URL || '/api',
+  // Use process.env for Jest compatibility
+  baseUrl: process.env.VITE_API_URL || '/api',
   credentials: 'include',
   prepareHeaders: (headers) => {
     // Content type is set automatically by fetchBaseQuery
