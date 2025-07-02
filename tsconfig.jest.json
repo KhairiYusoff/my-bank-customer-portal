@@ -3,7 +3,8 @@
   "compilerOptions": {
     "module": "node16",
     "moduleResolution": "node",
-    "types": ["jest", "node"],
+    "types": [
+      "@testing-library/jest-dom","jest", "node"],
     "jsx": "react-jsx"
   },
   "include": ["src", "jest.setup.ts"]
