@@ -1,4 +1,4 @@
-import '@testing-library/jest-dom';
+require('@testing-library/jest-dom');
 
 // Mock Vite import.meta.env for Jest (Node 16 + Vite)
 if (!(globalThis as any).import) {
