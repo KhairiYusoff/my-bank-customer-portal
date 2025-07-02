@@ -39,7 +39,7 @@ const LoginPage = () => {
       process.env.NODE_ENV === "development"
         ? {
             email: "sarah.jay@example.com",
-            password: "SecurePassword123!",
+            password: "Sarah*123",
           }
         : {},
   });
