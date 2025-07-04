@@ -2,9 +2,15 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import type { BaseQueryFn, FetchArgs, FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import type { BaseResponse, ApiError } from '@/types/api';
 
+// IMPORTANT: For environment compatibility between Jest and Vite
+// We're using a hardcoded API URL for now
+// In a production environment, you would want to set up proper environment handling
+// through your build configuration (vite.config.ts and jest.config.js)
+const API_URL = '/api';
+
 // Create base query with credentials for cookie-based auth
 const baseQuery = fetchBaseQuery({
-  baseUrl: import.meta.env.VITE_API_URL || '/api',
+  baseUrl: API_URL,
   credentials: 'include',
   prepareHeaders: (headers) => {
     // Content type is set automatically by fetchBaseQuery
