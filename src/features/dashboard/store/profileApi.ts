@@ -9,7 +9,17 @@ export const profileApi = createApi({
       query: () => '/users/me',
       transformResponse: (response: UserProfileResponse) => response.data,
     }),
+    updateProfile: builder.mutation<
+      import('@features/dashboard/types/profile').UpdateProfileResponse,
+      import('@features/dashboard/types/profile').UpdateProfileRequest
+    >({
+      query: (body) => ({
+        url: '/users/me',
+        method: 'PUT',
+        body,
+      }),
+    }),
   }),
 });
 
-export const { useGetProfileQuery } = profileApi;
+export const { useGetProfileQuery, useUpdateProfileMutation } = profileApi;
