@@ -13,7 +13,7 @@ import type {
 // Import enums as values
 import * as ProfileEnums from '@features/dashboard/types/profile';
 
-export const profileFormSchema: yup.ObjectSchema<UpdateProfileRequest> = yup.object({
+export const profileFormSchema = yup.object({
   name: yup.string().min(2).max(100).optional(),
   phoneNumber: yup.string().min(7).max(20).optional(),
   identityNumber: yup.string().max(30).optional(),
@@ -45,4 +45,4 @@ export const profileFormSchema: yup.ObjectSchema<UpdateProfileRequest> = yup.obj
     phone: yup.string().required(),
     relationship: yup.mixed<NextOfKinRelationshipType>().oneOf(["parent", "spouse", "child", "sibling", "relative", "friend", "other"]).required(),
   }).optional(),
-});
+}) as yup.ObjectSchema<UpdateProfileRequest>;

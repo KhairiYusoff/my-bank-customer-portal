@@ -123,7 +123,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ open, onClose, user }) => {
       setShowConfirm(false);
       setFormChanged(false);
     } catch (e) {
-      enqueueSnackbar(getErrorMessage(e), { variant: "error" });
+      enqueueSnackbar(getErrorMessage(e as any), { variant: "error" });
     }
   };
   const handleCloseConfirm = () => setShowConfirm(false);

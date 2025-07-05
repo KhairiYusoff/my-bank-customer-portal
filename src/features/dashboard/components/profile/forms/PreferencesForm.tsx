@@ -92,12 +92,14 @@ const PreferencesForm: React.FC<PreferencesFormProps> = ({
             <InputLabel id="notifications-label">Notifications</InputLabel>
             <Select
               {...field}
+              value={field.value === true ? "true" : field.value === false ? "false" : ""}
+              onChange={(e) => field.onChange(e.target.value === "true")}
               labelId="notifications-label"
               label="Notifications"
               disabled={!editMode}
             >
               {notificationsOptions.map((opt) => (
-                <MenuItem key={String(opt.value)} value={opt.value}>
+                <MenuItem key={String(opt.value)} value={String(opt.value)}>
                   {opt.label}
                 </MenuItem>
               ))}
