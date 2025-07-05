@@ -13,6 +13,7 @@ import DashboardSidebar from "./DashboardSidebar";
 import DashboardHeader from "./DashboardHeader";
 import ProfileDropdown from "@/features/dashboard/components/ProfileDropdown";
 import ProfileModal from "@/features/dashboard/components/ProfileModal";
+import ChangePasswordDialog from "@/features/dashboard/components/ChangePasswordDialog";
 import { useGetProfileQuery } from "@/features/dashboard/store/profileApi";
 
 interface DashboardLayoutProps {
@@ -20,6 +21,7 @@ interface DashboardLayoutProps {
 }
 
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
+  const [showChangePassword, setShowChangePassword] = React.useState(false);
   const [profileModalOpen, setProfileModalOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const navigate = useNavigate();
@@ -122,7 +124,12 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
           onClose={handleClose}
           onProfile={handleProfile}
           onLogout={handleLogout}
+          onChangePassword={() => setShowChangePassword(true)}
           user={profile}
+        />
+        <ChangePasswordDialog
+          open={showChangePassword}
+          onClose={() => setShowChangePassword(false)}
         />
         <ProfileModal
           open={profileModalOpen}
