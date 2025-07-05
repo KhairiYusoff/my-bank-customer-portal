@@ -116,14 +116,35 @@ export const authApi = baseApi.injectEndpoints({
         statusCode: response.status,
       }),
     }),
+    /**
+     * Reset password for users who forgot their password
+     * @param data - { email, newPassword }
+     */
+    resetPassword: builder.mutation<
+      { message: string },
+      { email: string; newPassword: string }
+    >({
+      query: (data) => ({
+        url: "/users/me/reset-password",
+        method: "POST",
+        body: data,
+      }),
+      // Transform error response to match our error format
+      transformErrorResponse: (response: any) => ({
+        success: false,
+        message: response?.data?.message || "Failed to reset password",
+        errors: response?.data?.errors,
+        statusCode: response.status,
+      }),
+    }),
   }),
   overrideExisting: false,
 });
 
 // Export hooks for usage in components
-// Export hooks for usage in components
 export const {
   useApplyMutation,
   useLoginMutation,
   useCompleteProfileMutation,
+  useResetPasswordMutation,
 } = authApi;
