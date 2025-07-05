@@ -47,6 +47,46 @@ export interface UserProfile {
   nextOfKin: NextOfKin;
 }
 
+// Enums for dropdown fields
+export type MaritalStatus = "single" | "married" | "divorced" | "widowed";
+export type EducationLevel = "none" | "primary" | "secondary" | "diploma" | "degree" | "postgraduate";
+export type ResidencyStatus = "citizen" | "permanent resident" | "foreigner";
+export type EmploymentType = "salaried" | "self-employed" | "unemployed" | "retired" | "student";
+export type SalaryRange = "<1000" | "1000-2999" | "3000-4999" | "5000-6999" | "7000-9999" | "10000+";
+export type AccountType = "savings" | "current" | "fixed deposit";
+export type PurposeOfAccount = "savings" | "salary credit" | "investment" | "business" | "education" | "travel" | "others";
+export type NextOfKinRelationship = "parent" | "spouse" | "child" | "sibling" | "relative" | "friend" | "other";
+
+// Editable fields only
+export interface UpdateProfileRequest {
+  name?: string;
+  phoneNumber?: string;
+  address?: Address;
+  preferences?: Preferences;
+  nextOfKin?: NextOfKin;
+  identityNumber?: string;
+  dateOfBirth?: string;
+  age?: number;
+  nationality?: string;
+  maritalStatus?: MaritalStatus;
+  educationLevel?: EducationLevel;
+  residencyStatus?: ResidencyStatus;
+  job?: string;
+  employerName?: string;
+  employmentType?: EmploymentType;
+  salary?: SalaryRange;
+  accountType?: AccountType;
+  purposeOfAccount?: PurposeOfAccount;
+}
+
+export interface UpdateProfileResponse {
+  success: boolean;
+  message: string;
+  data: UserProfile;
+  errors?: string[] | null;
+  meta?: any;
+}
+
 export interface UserProfileResponse {
   success: boolean;
   message: string;
