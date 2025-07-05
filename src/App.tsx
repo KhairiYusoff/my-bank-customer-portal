@@ -15,6 +15,7 @@ import ApplyPage from "./features/auth/pages/ApplyPage";
 import CompleteProfilePage from "./features/auth/pages/CompleteProfilePage";
 import CompleteProfileSuccess from "./features/auth/pages/CompleteProfileSuccess";
 import LoginPage from "./features/auth/pages/LoginPage";
+import ForgotPasswordPage from "./features/auth/pages/ForgotPasswordPage";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import DashboardPage from "./features/dashboard/pages/DashboardPage";
 import TransferPage from './features/dashboard/pages/TransferPage';
@@ -34,6 +35,7 @@ const App: React.FC = () => {
             <Route path="/complete-profile" element={<CompleteProfilePage />} />
             <Route path="/complete-profile/success" element={<CompleteProfileSuccess />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
             <Route
               path="/dashboard"
               element={
