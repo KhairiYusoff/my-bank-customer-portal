@@ -11,6 +11,7 @@ interface ProfileDropdownProps {
   onClose: () => void;
   onProfile: () => void;
   onLogout: () => void;
+  onChangePassword: () => void;
   user: UserProfile | undefined;
 }
 
@@ -20,6 +21,7 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
   onClose,
   onProfile,
   onLogout,
+  onChangePassword,
   user,
 }) => {
   const theme = useTheme();
@@ -71,6 +73,10 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
       <MenuItem onClick={onProfile} sx={{ mt: 1 }}>
         {/* My Profile */}
         <AccountCircle fontSize="small" sx={{ mr: 1 }} /> My Profile
+      </MenuItem>
+      <MenuItem onClick={onChangePassword}>
+        {/* Change Password */}
+        <AccountCircle fontSize="small" sx={{ mr: 1 }} /> Change Password
       </MenuItem>
       <MenuItem onClick={onLogout} sx={{ color: "error.main" }}>
         {/* Logout */}

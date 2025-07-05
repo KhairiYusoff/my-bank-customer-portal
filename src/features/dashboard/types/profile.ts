@@ -49,13 +49,44 @@ export interface UserProfile {
 
 // Enums for dropdown fields
 export type MaritalStatus = "single" | "married" | "divorced" | "widowed";
-export type EducationLevel = "none" | "primary" | "secondary" | "diploma" | "degree" | "postgraduate";
+export type EducationLevel =
+  | "none"
+  | "primary"
+  | "secondary"
+  | "diploma"
+  | "degree"
+  | "postgraduate";
 export type ResidencyStatus = "citizen" | "permanent resident" | "foreigner";
-export type EmploymentType = "salaried" | "self-employed" | "unemployed" | "retired" | "student";
-export type SalaryRange = "<1000" | "1000-2999" | "3000-4999" | "5000-6999" | "7000-9999" | "10000+";
+export type EmploymentType =
+  | "salaried"
+  | "self-employed"
+  | "unemployed"
+  | "retired"
+  | "student";
+export type SalaryRange =
+  | "<1000"
+  | "1000-2999"
+  | "3000-4999"
+  | "5000-6999"
+  | "7000-9999"
+  | "10000+";
 export type AccountType = "savings" | "current" | "fixed deposit";
-export type PurposeOfAccount = "savings" | "salary credit" | "investment" | "business" | "education" | "travel" | "others";
-export type NextOfKinRelationship = "parent" | "spouse" | "child" | "sibling" | "relative" | "friend" | "other";
+export type PurposeOfAccount =
+  | "savings"
+  | "salary credit"
+  | "investment"
+  | "business"
+  | "education"
+  | "travel"
+  | "others";
+export type NextOfKinRelationship =
+  | "parent"
+  | "spouse"
+  | "child"
+  | "sibling"
+  | "relative"
+  | "friend"
+  | "other";
 
 // Editable fields only
 export interface UpdateProfileRequest {
@@ -93,4 +124,17 @@ export interface UserProfileResponse {
   data: UserProfile;
   errors: null | string[];
   meta: any;
+}
+
+export interface ChangePasswordRequest {
+  currentPassword: string;
+  newPassword: string;
+}
+
+export interface ChangePasswordResponse {
+  success: boolean;
+  message: string;
+  data: null;
+  errors?: string[] | null;
+  meta?: any;
 }
