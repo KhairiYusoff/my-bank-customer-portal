@@ -30,6 +30,7 @@ const AccountDetailsForm: React.FC<AccountDetailsFormProps> = ({
   editMode,
 }) => (
   <Grid container spacing={2}>
+    {/* Account Type Field */}
     <Grid item xs={12} sm={6}>
       <Controller
         name="accountType"
@@ -54,6 +55,7 @@ const AccountDetailsForm: React.FC<AccountDetailsFormProps> = ({
       />
     </Grid>
 
+    {/* Purpose of Account Field */}
     <Grid item xs={12} sm={6}>
       <Controller
         name="purposeOfAccount"

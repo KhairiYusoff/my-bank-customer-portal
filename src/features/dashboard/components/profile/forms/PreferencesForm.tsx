@@ -37,6 +37,7 @@ const PreferencesForm: React.FC<PreferencesFormProps> = ({
   editMode,
 }) => (
   <Grid container spacing={2}>
+    {/* Theme Field */}
     <Grid item xs={12} sm={4}>
       <Controller
         name="preferences.theme"
@@ -60,6 +61,7 @@ const PreferencesForm: React.FC<PreferencesFormProps> = ({
         )}
       />
     </Grid>
+    {/* Language Field */}
     <Grid item xs={12} sm={4}>
       <Controller
         name="preferences.language"
@@ -83,6 +85,7 @@ const PreferencesForm: React.FC<PreferencesFormProps> = ({
         )}
       />
     </Grid>
+    {/* Notifications Field */}
     <Grid item xs={12} sm={4}>
       <Controller
         name="preferences.notifications"
@@ -92,7 +95,13 @@ const PreferencesForm: React.FC<PreferencesFormProps> = ({
             <InputLabel id="notifications-label">Notifications</InputLabel>
             <Select
               {...field}
-              value={field.value === true ? "true" : field.value === false ? "false" : ""}
+              value={
+                field.value === true
+                  ? "true"
+                  : field.value === false
+                  ? "false"
+                  : ""
+              }
               onChange={(e) => field.onChange(e.target.value === "true")}
               labelId="notifications-label"
               label="Notifications"

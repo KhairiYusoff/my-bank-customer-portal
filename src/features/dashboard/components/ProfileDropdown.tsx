@@ -43,18 +43,22 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
         },
       }}
     >
+      {/* User Info Section */}
       <Box
         sx={{ display: "flex", alignItems: "center", gap: 1.5, px: 1, py: 1 }}
       >
+        {/* User Avatar */}
         <Avatar
           sx={{ width: 40, height: 40, bgcolor: theme.palette.primary.main }}
         >
           {user?.name ? user.name[0].toUpperCase() : <AccountCircle />}
         </Avatar>
         <Box>
+          {/* User Name */}
           <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
             {user?.name || "User"}
           </Typography>
+          {/* User Email */}
           <Typography
             variant="body2"
             color="text.secondary"
@@ -65,9 +69,11 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
         </Box>
       </Box>
       <MenuItem onClick={onProfile} sx={{ mt: 1 }}>
+        {/* My Profile */}
         <AccountCircle fontSize="small" sx={{ mr: 1 }} /> My Profile
       </MenuItem>
       <MenuItem onClick={onLogout} sx={{ color: "error.main" }}>
+        {/* Logout */}
         <LogoutIcon fontSize="small" sx={{ mr: 1 }} /> Logout
       </MenuItem>
     </Menu>
