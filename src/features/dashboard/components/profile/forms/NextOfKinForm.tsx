@@ -28,6 +28,7 @@ const relationshipOptions = [
 
 const NextOfKinForm: React.FC<NextOfKinFormProps> = ({ control, editMode }) => (
   <Grid container spacing={2}>
+    {/* Next of Kin Name Field */}
     <Grid item xs={12} sm={4}>
       <Controller
         name="nextOfKin.name"
@@ -42,6 +43,7 @@ const NextOfKinForm: React.FC<NextOfKinFormProps> = ({ control, editMode }) => (
         )}
       />
     </Grid>
+    {/* Next of Kin Phone Field */}
     <Grid item xs={12} sm={4}>
       <Controller
         name="nextOfKin.phone"
@@ -56,6 +58,7 @@ const NextOfKinForm: React.FC<NextOfKinFormProps> = ({ control, editMode }) => (
         )}
       />
     </Grid>
+    {/* Next of Kin Relationship Field */}
     <Grid item xs={12} sm={4}>
       <Controller
         name="nextOfKin.relationship"

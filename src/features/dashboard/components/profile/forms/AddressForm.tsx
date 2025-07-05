@@ -11,6 +11,7 @@ interface AddressFormProps {
 
 const AddressForm: React.FC<AddressFormProps> = ({ control, editMode }) => (
   <Grid container spacing={2}>
+    {/* Street Field */}
     <Grid item xs={12} sm={6}>
       <Controller
         name="address.street"
@@ -20,6 +21,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ control, editMode }) => (
         )}
       />
     </Grid>
+    {/* City Field */}
     <Grid item xs={12} sm={6}>
       <Controller
         name="address.city"
@@ -29,6 +31,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ control, editMode }) => (
         )}
       />
     </Grid>
+    {/* State Field */}
     <Grid item xs={12} sm={6}>
       <Controller
         name="address.state"
@@ -38,6 +41,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ control, editMode }) => (
         )}
       />
     </Grid>
+    {/* Postal Code Field */}
     <Grid item xs={12} sm={6}>
       <Controller
         name="address.postalCode"

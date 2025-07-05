@@ -43,6 +43,7 @@ export const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
   editMode,
 }) => (
   <Grid container spacing={2}>
+    {/* Full Name Field */}
     <Grid item xs={12} sm={6}>
       <Controller
         name="name"
@@ -57,6 +58,7 @@ export const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
         )}
       />
     </Grid>
+    {/* Phone Number Field */}
     <Grid item xs={12} sm={6}>
       <Controller
         name="phoneNumber"
@@ -71,6 +73,7 @@ export const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
         )}
       />
     </Grid>
+    {/* Identity Number Field */}
     <Grid item xs={12} sm={6}>
       <Controller
         name="identityNumber"
@@ -85,6 +88,7 @@ export const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
         )}
       />
     </Grid>
+    {/* Date of Birth Field */}
     <Grid item xs={12} sm={6}>
       <Controller
         name="dateOfBirth"
@@ -101,6 +105,7 @@ export const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
         )}
       />
     </Grid>
+    {/* Age Field */}
     <Grid item xs={12} sm={6}>
       <Controller
         name="age"
@@ -116,6 +121,7 @@ export const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
         )}
       />
     </Grid>
+    {/* Nationality Field */}
     <Grid item xs={12} sm={6}>
       <Controller
         name="nationality"
@@ -130,6 +136,7 @@ export const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
         )}
       />
     </Grid>
+    {/* Marital Status Field */}
     <Grid item xs={12} sm={6}>
       <Controller
         name="maritalStatus"
@@ -153,6 +160,7 @@ export const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
         )}
       />
     </Grid>
+    {/* Education Level Field */}
     <Grid item xs={12} sm={6}>
       <Controller
         name="educationLevel"
@@ -176,6 +184,7 @@ export const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
         )}
       />
     </Grid>
+    {/* Residency Status Field */}
     <Grid item xs={12} sm={6}>
       <Controller
         name="residencyStatus"

@@ -38,6 +38,7 @@ const EmploymentForm: React.FC<EmploymentFormProps> = ({
   editMode,
 }) => (
   <Grid container spacing={2}>
+    {/* Job Field */}
     <Grid item xs={12} sm={6}>
       <Controller
         name="job"
@@ -47,6 +48,7 @@ const EmploymentForm: React.FC<EmploymentFormProps> = ({
         )}
       />
     </Grid>
+    {/* Employer Name Field */}
     <Grid item xs={12} sm={6}>
       <Controller
         name="employerName"
@@ -61,6 +63,7 @@ const EmploymentForm: React.FC<EmploymentFormProps> = ({
         )}
       />
     </Grid>
+    {/* Employment Type Field */}
     <Grid item xs={12} sm={6}>
       <Controller
         name="employmentType"
@@ -84,6 +87,7 @@ const EmploymentForm: React.FC<EmploymentFormProps> = ({
         )}
       />
     </Grid>
+    {/* Salary Field */}
     <Grid item xs={12} sm={6}>
       <Controller
         name="salary"
