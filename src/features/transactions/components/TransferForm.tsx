@@ -4,7 +4,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Box, Button, TextField, CircularProgress, Alert } from "@mui/material";
 import { useTransferMutation } from "../store/transactionsApi";
+import { useGetAccountsQuery } from "@/features/accounts/store/accountsApi";
 import type { TransferRequest } from "../types/transfer";
+import type { Account } from "@/features/accounts/types/account";
 
 const schema = yup.object({
   fromAccountNumber: yup.string().required("From Account Number is required"),
@@ -21,6 +23,13 @@ type FormValues = TransferRequest;
 const TransferForm: React.FC = () => {
   const [transfer, { isLoading, error, data }] = useTransferMutation();
   const {
+    data: accountsData,
+    isLoading: isAccountsLoading,
+    error: accountsError,
+  } = useGetAccountsQuery();
+  const accounts = accountsData?.data || [];
+  const hasAccounts = Array.isArray(accounts) && accounts.length > 0;
+  const {
     register,
     handleSubmit,
     formState: { errors },
@@ -32,16 +41,47 @@ const TransferForm: React.FC = () => {
     await transfer(values);
   };
 
+  if (isAccountsLoading) {
+    return <CircularProgress sx={{ mt: 4 }} />;
+  }
+
+  if (accountsError) {
+    return (
+      <Alert severity="error" sx={{ mt: 4 }}>
+        Failed to load your accounts.
+      </Alert>
+    );
+  }
+
+  if (!hasAccounts) {
+    return (
+      <Alert severity="warning" sx={{ mt: 4 }}>
+        You do not have any accounts. Please open an account before making
+        transfers.
+      </Alert>
+    );
+  }
+
   return (
     <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 2 }}>
       <TextField
+        select
         label="From Account Number"
         fullWidth
         margin="normal"
+        SelectProps={{ native: true }}
         {...register("fromAccountNumber")}
         error={!!errors.fromAccountNumber}
         helperText={errors.fromAccountNumber?.message}
-      />
+      >
+        <option value="">Select your account</option>
+        {accounts.map((acc: Account) => (
+          <option key={acc.accountNumber} value={acc.accountNumber}>
+            {acc.accountNumber} ({acc.accountType}, Balance: {acc.balance}{" "}
+            {acc.currency})
+          </option>
+        ))}
+      </TextField>
       <TextField
         label="To Account Number"
         fullWidth

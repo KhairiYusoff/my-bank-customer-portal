@@ -2,6 +2,8 @@ import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { baseApi } from "./baseApi";
 import { profileApi } from "@/features/dashboard/store/profileApi";
+import { accountsApi } from "@/features/accounts/store/accountsApi";
+import { transactionsApi } from "@/features/transactions/store/transactionsApi";
 import authReducer from "@/features/auth/store/authSlice";
 
 // Configure the Redux store
@@ -10,6 +12,8 @@ export const store = configureStore({
     // Add the generated reducer as a specific top-level slice
     [baseApi.reducerPath]: baseApi.reducer,
     [profileApi.reducerPath]: profileApi.reducer,
+    [accountsApi.reducerPath]: accountsApi.reducer,
+    [transactionsApi.reducerPath]: transactionsApi.reducer,
     // Add the auth reducer
     auth: authReducer,
   },
@@ -24,7 +28,9 @@ export const store = configureStore({
       },
     })
       .concat(baseApi.middleware)
-      .concat(profileApi.middleware),
+      .concat(profileApi.middleware)
+      .concat(accountsApi.middleware)
+      .concat(transactionsApi.middleware),
   // Enable Redux DevTools in development
   devTools: process.env.NODE_ENV !== "production",
 });
