@@ -1,6 +1,7 @@
 import React from "react";
 import { Menu, MenuItem, Avatar, Typography, Box } from "@mui/material";
 import AccountCircle from "@mui/icons-material/AccountCircle";
+import VpnKeyIcon from "@mui/icons-material/VpnKey";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useTheme } from "@mui/material/styles";
 import type { UserProfile } from "../types/profile";
@@ -76,7 +77,7 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
       </MenuItem>
       <MenuItem onClick={onChangePassword}>
         {/* Change Password */}
-        <AccountCircle fontSize="small" sx={{ mr: 1 }} /> Change Password
+        <VpnKeyIcon fontSize="small" sx={{ mr: 1 }} /> Change Password
       </MenuItem>
       <MenuItem onClick={onLogout} sx={{ color: "error.main" }}>
         {/* Logout */}
