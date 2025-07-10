@@ -1,69 +1,61 @@
 import React from "react";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import { Box, Button, TextField, CircularProgress, Alert } from "@mui/material";
-import { useTransferMutation } from "../store/transactionsApi";
-import { useGetAccountsQuery } from "@/features/accounts/store/accountsApi";
+import type {
+  Control,
+  FieldErrors,
+  UseFormHandleSubmit,
+  UseFormRegister,
+} from "react-hook-form";
+import {
+  Box,
+  Button,
+  TextField,
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Typography,
+} from "@mui/material";
 import type { TransferRequest } from "../types/transfer";
 import type { Account } from "@/features/accounts/types/account";
 
-const schema = yup.object({
-  fromAccountNumber: yup.string().required("From Account Number is required"),
-  toAccountNumber: yup.string().required("To Account Number is required"),
-  amount: yup
-    .number()
-    .typeError("Amount must be a number")
-    .positive("Amount must be positive")
-    .required("Amount is required"),
-});
+export type FormValues = TransferRequest;
 
-type FormValues = TransferRequest;
+interface TransferFormProps {
+  accounts: Account[];
+  isLoading: boolean;
+  isDirty: boolean;
+  isValid: boolean;
+  openConfirm: boolean;
+  transferData: FormValues | null;
+  control: Control<FormValues>;
+  register: UseFormRegister<FormValues>;
+  handleSubmit: UseFormHandleSubmit<FormValues>;
+  errors: FieldErrors<FormValues>;
+  onSubmit: (values: FormValues) => void;
+  handleCloseConfirm: () => void;
+  handleConfirmTransfer: () => void;
+}
 
-const TransferForm: React.FC = () => {
-  const [transfer, { isLoading, error, data }] = useTransferMutation();
-  const {
-    data: accountsData,
-    isLoading: isAccountsLoading,
-    error: accountsError,
-  } = useGetAccountsQuery();
-  const accounts = accountsData?.data || [];
-  const hasAccounts = Array.isArray(accounts) && accounts.length > 0;
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormValues>({
-    resolver: yupResolver(schema),
-  });
-
-  const onSubmit = async (values: FormValues) => {
-    await transfer(values);
-  };
-
-  if (isAccountsLoading) {
-    return <CircularProgress sx={{ mt: 4 }} />;
-  }
-
-  if (accountsError) {
-    return (
-      <Alert severity="error" sx={{ mt: 4 }}>
-        Failed to load your accounts.
-      </Alert>
-    );
-  }
-
-  if (!hasAccounts) {
-    return (
-      <Alert severity="warning" sx={{ mt: 4 }}>
-        You do not have any accounts. Please open an account before making
-        transfers.
-      </Alert>
-    );
-  }
-
+const TransferForm: React.FC<TransferFormProps> = ({
+  accounts,
+  isLoading,
+  isDirty,
+  isValid,
+  openConfirm,
+  transferData,
+  control,
+  register,
+  handleSubmit,
+  errors,
+  onSubmit,
+  handleCloseConfirm,
+  handleConfirmTransfer,
+}) => {
   return (
-    <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 2 }}>
+    <>
+      <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 2 }}>
       <TextField
         select
         label="From Account Number"
@@ -101,31 +93,42 @@ const TransferForm: React.FC = () => {
         helperText={errors.amount?.message}
       />
 
-      {error && (
-        <Alert severity="error" sx={{ mt: 2 }}>
-          {(error as any)?.data?.message || "Transfer failed"}
-        </Alert>
-      )}
-      {data && data.success && (
-        <Alert severity="success" sx={{ mt: 2 }}>
-          {data.message}
-        </Alert>
-      )}
-      <Button
-        type="submit"
-        variant="contained"
-        color="primary"
-        disabled={isLoading}
-        sx={{ mt: 2 }}
-        fullWidth
-      >
-        {isLoading ? (
-          <CircularProgress size={24} color="inherit" />
-        ) : (
-          "Transfer"
-        )}
-      </Button>
-    </Box>
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          disabled={!isDirty || !isValid || isLoading}
+          sx={{ mt: 2 }}
+          fullWidth
+        >
+          Transfer
+        </Button>
+      </Box>
+
+      <Dialog open={openConfirm} onClose={handleCloseConfirm}>
+        <DialogTitle>Confirm Transfer</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Please review the details below before confirming the transfer.
+          </DialogContentText>
+          <Typography variant="body1" sx={{ mt: 2 }}>
+            <strong>From:</strong> {transferData?.fromAccountNumber}
+          </Typography>
+          <Typography variant="body1">
+            <strong>To:</strong> {transferData?.toAccountNumber}
+          </Typography>
+          <Typography variant="body1">
+            <strong>Amount:</strong> {transferData?.amount} {accounts.find(acc => acc.accountNumber === transferData?.fromAccountNumber)?.currency}
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseConfirm}>Cancel</Button>
+          <Button onClick={handleConfirmTransfer} variant="contained" disabled={isLoading}>
+            {isLoading ? <CircularProgress size={24} /> : "Confirm Transfer"}
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
   );
 };
 
