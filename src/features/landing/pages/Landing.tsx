@@ -4,7 +4,7 @@ import HeroSection from "@/features/landing/components/HeroSection";
 import FeaturesSection from "@/features/landing/components/FeaturesSection";
 import TestimonialsSection from "@/features/landing/components/TestimonialsSection";
 import ProductsSection from "@/features/landing/components/ProductsSection";
-import FooterSection from "@/features/landing/components/FooterSection";
+
 import FadeInSection from "@/features/landing/components/FadeInSection";
 
 const Landing: React.FC = () => {
@@ -27,7 +27,7 @@ const Landing: React.FC = () => {
       <FadeInSection>
         <TestimonialsSection />
       </FadeInSection>
-      <FooterSection />
+
     </Box>
   );
 };
