@@ -20,7 +20,7 @@ import ProtectedRoute from "./components/auth/ProtectedRoute";
 import DashboardPage from "./features/dashboard/pages/DashboardPage";
 import TransferPage from "./features/transactions/pages/TransferPage";
 import DepositPage from "./features/dashboard/pages/DepositPage";
-import WithdrawPage from "./features/dashboard/pages/WithdrawPage";
+import WithdrawPage from "./features/accounts/pages/WithdrawPage";
 import AccountDetailsPage from "./features/accounts/pages/AccountDetailsPage";
 
 const App: React.FC = () => {
