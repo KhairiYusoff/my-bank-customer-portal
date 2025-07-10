@@ -73,6 +73,7 @@ const TransferForm: React.FC = () => {
         {...register("fromAccountNumber")}
         error={!!errors.fromAccountNumber}
         helperText={errors.fromAccountNumber?.message}
+        InputLabelProps={{ shrink: true }}
       >
         <option value="">Select your account</option>
         {accounts.map((acc: Account) => (
