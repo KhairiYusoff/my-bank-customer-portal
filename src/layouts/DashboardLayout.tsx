@@ -6,6 +6,7 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import SyncAltIcon from "@mui/icons-material/SyncAlt";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/store/store";
 import { logout } from "@/features/auth/store/authSlice";
@@ -35,11 +36,12 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
 
   const drawerWidth = 240;
 
-  const navItems = [
+    const navItems = [
     { text: "Dashboard", path: "/dashboard", icon: <DashboardIcon /> },
     { text: "Transfer", path: "/transfer", icon: <SyncAltIcon /> },
     { text: "Deposit", path: "/deposit", icon: <AccountBalanceWalletIcon /> },
     { text: "Withdraw", path: "/withdraw", icon: <AttachMoneyIcon /> },
+    { text: "Contact Us", path: "/contact-us", icon: <ContactPhoneIcon /> },
   ];
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
