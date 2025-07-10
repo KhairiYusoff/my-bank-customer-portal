@@ -4,6 +4,8 @@ import type {
   AccountBalanceResponse,
   WithdrawRequest,
   WithdrawResponse,
+  DepositRequest,
+  DepositResponse,
 } from "../types/account";
 
 export const accountsApi = createApi({
@@ -32,6 +34,17 @@ export const accountsApi = createApi({
         { type: "AccountBalance", id: accountNumber },
       ],
     }),
+    deposit: builder.mutation<DepositResponse, DepositRequest>({
+      query: (depositData) => ({
+        url: "/accounts/deposit",
+        method: "POST",
+        body: depositData,
+      }),
+      invalidatesTags: (result, error, { accountNumber }) => [
+        "Accounts",
+        { type: "AccountBalance", id: accountNumber },
+      ],
+    }),
   }),
 });
 
@@ -39,4 +52,5 @@ export const {
   useGetAccountsQuery,
   useGetAccountBalanceQuery,
   useWithdrawMutation,
+  useDepositMutation,
 } = accountsApi;
