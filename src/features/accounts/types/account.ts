@@ -62,3 +62,20 @@ export interface WithdrawResponse {
   errors: string[] | null;
   meta: null;
 }
+
+export interface DepositRequest {
+  accountNumber: string;
+  amount: number;
+  description?: string;
+}
+
+export interface DepositResponse {
+  success: boolean;
+  message: string;
+  data: {
+    account: Account;
+    transaction: Transaction;
+  } | null;
+  errors: string[] | null;
+  meta: null;
+}
