@@ -1,5 +1,5 @@
-import { useSnackbar } from 'notistack';
-import { useEffect } from 'react';
+import { useSnackbar } from "notistack";
+import { useEffect } from "react";
 
 export let useSnackbarRef: any;
 
@@ -12,18 +12,21 @@ export const SnackbarUtilsConfigurator: React.FC = () => {
 // Utility functions for showing different types of toasts
 export const toast = {
   success(msg: string) {
-    this.toast(msg, 'success');
+    this.toast(msg, "success");
   },
   warning(msg: string) {
-    this.toast(msg, 'warning');
+    this.toast(msg, "warning");
   },
   info(msg: string) {
-    this.toast(msg, 'info');
+    this.toast(msg, "info");
   },
   error(msg: string) {
-    this.toast(msg, 'error');
+    this.toast(msg, "error");
   },
-  toast(msg: string, variant: 'success' | 'warning' | 'info' | 'error' = 'info') {
+  toast(
+    msg: string,
+    variant: "success" | "warning" | "info" | "error" = "info"
+  ) {
     useSnackbarRef?.enqueueSnackbar(msg, { variant });
   },
 };
@@ -31,11 +34,13 @@ export const toast = {
 // Custom hook for using snackbar
 export const useToast = () => {
   const { enqueueSnackbar } = useSnackbar();
-  
+
   return {
-    success: (message: string) => enqueueSnackbar(message, { variant: 'success' }),
-    error: (message: string) => enqueueSnackbar(message, { variant: 'error' }),
-    warning: (message: string) => enqueueSnackbar(message, { variant: 'warning' }),
-    info: (message: string) => enqueueSnackbar(message, { variant: 'info' }),
+    success: (message: string) =>
+      enqueueSnackbar(message, { variant: "success" }),
+    error: (message: string) => enqueueSnackbar(message, { variant: "error" }),
+    warning: (message: string) =>
+      enqueueSnackbar(message, { variant: "warning" }),
+    info: (message: string) => enqueueSnackbar(message, { variant: "info" }),
   };
 };
