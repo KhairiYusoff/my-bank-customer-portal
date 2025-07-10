@@ -35,3 +35,30 @@ export interface AccountBalanceResponse {
   errors: string[] | null;
   meta: null;
 }
+
+export interface WithdrawRequest {
+  accountNumber: string;
+  amount: number;
+}
+
+export interface Transaction {
+  account: string;
+  type: 'withdrawal' | 'deposit' | 'transfer';
+  amount: number;
+  description: string;
+  status: 'completed' | 'pending' | 'failed';
+  performedBy: string;
+  _id: string;
+  date: string;
+}
+
+export interface WithdrawResponse {
+  success: boolean;
+  message: string;
+  data: {
+    account: Account;
+    transaction: Transaction;
+  } | null;
+  errors: string[] | null;
+  meta: null;
+}
