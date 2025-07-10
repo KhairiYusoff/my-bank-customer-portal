@@ -25,3 +25,13 @@ export interface AccountsResponse {
     pages: number;
   } | null;
 }
+
+export interface AccountBalanceResponse {
+  success: boolean;
+  message: string;
+  data: {
+    balance: number;
+  } | null;
+  errors: string[] | null;
+  meta: null;
+}

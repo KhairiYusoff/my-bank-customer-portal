@@ -37,9 +37,13 @@ const LoginPage = () => {
     resolver: yupResolver(loginSchema),
     defaultValues:
       process.env.NODE_ENV === "development"
-        ? {
-            email: "sarah.jay@example.com",
-            password: "Sarah*123",
+        ? // ? {
+          //     email: "sarah.jay@example.com",
+          //     password: "Sarah*123",
+          //   }
+          {
+            email: "david.johnson@example.com",
+            password: "DavJ0hns!",
           }
         : {},
   });

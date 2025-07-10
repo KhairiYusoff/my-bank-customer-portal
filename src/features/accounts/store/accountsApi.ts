@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import type { AccountsResponse } from '../types/account';
+import type { AccountsResponse, AccountBalanceResponse } from '../types/account';
 
 export const accountsApi = createApi({
   reducerPath: 'accountsApi',
@@ -8,7 +8,11 @@ export const accountsApi = createApi({
     getAccounts: builder.query<AccountsResponse, void>({
       query: () => '/accounts',
     }),
+    getAccountBalance: builder.query<AccountBalanceResponse, string>({
+      query: (accountNumber) => `/accounts/balance/${accountNumber}`,
+    }),
+
   }),
 });
 
-export const { useGetAccountsQuery } = accountsApi;
+export const { useGetAccountsQuery, useGetAccountBalanceQuery } = accountsApi;
