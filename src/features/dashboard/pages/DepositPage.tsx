@@ -7,7 +7,7 @@ import DashboardLayout from '@/layouts/DashboardLayout';
 import { useGetAccountsQuery, useDepositMutation } from '@/features/accounts/store/accountsApi';
 import { useToast } from '@/utils/snackbarUtils';
 
-const schema = yup.object().shape({
+const schema: yup.ObjectSchema<IDepositForm> = yup.object().shape({
   accountNumber: yup.string().required('Account is required'),
   amount: yup.number().typeError('Amount must be a number').positive('Amount must be positive').required('Amount is required'),
   description: yup.string(),
