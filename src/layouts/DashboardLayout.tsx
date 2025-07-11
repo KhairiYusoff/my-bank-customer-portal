@@ -6,16 +6,16 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import SyncAltIcon from "@mui/icons-material/SyncAlt";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
+import ContactPhoneIcon from "@mui/icons-material/ContactPhone";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/store/store";
 import { logout } from "@/features/auth/store/authSlice";
 import DashboardSidebar from "./DashboardSidebar";
 import DashboardHeader from "./DashboardHeader";
-import ProfileDropdown from "@/features/dashboard/components/ProfileDropdown";
-import ProfileModal from "@/features/dashboard/components/ProfileModal";
-import ChangePasswordDialog from "@/features/dashboard/components/ChangePasswordDialog";
-import { useGetProfileQuery } from "@/features/dashboard/store/profileApi";
+import ProfileDropdown from "@/features/profile/components/ProfileDropdown";
+import ProfileModal from "@/features/profile/pages/ProfileModal";
+import ChangePasswordDialog from "@/features/profile/pages/ChangePasswordDialog";
+import { useGetProfileQuery } from "@/features/profile/store/profileApi";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -36,7 +36,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
 
   const drawerWidth = 240;
 
-    const navItems = [
+  const navItems = [
     { text: "Dashboard", path: "/dashboard", icon: <DashboardIcon /> },
     { text: "Transfer", path: "/transfer", icon: <SyncAltIcon /> },
     { text: "Deposit", path: "/deposit", icon: <AccountBalanceWalletIcon /> },

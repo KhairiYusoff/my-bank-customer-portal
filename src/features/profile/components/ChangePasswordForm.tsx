@@ -2,10 +2,17 @@ import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { Box, Button, TextField, InputAdornment, IconButton, CircularProgress } from "@mui/material";
+import {
+  Box,
+  Button,
+  TextField,
+  InputAdornment,
+  IconButton,
+  CircularProgress,
+} from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import type { ChangePasswordRequest } from "@features/dashboard/types/profile";
+import type { ChangePasswordRequest } from "@/features/profile/types/profile";
 
 // --- ChangePasswordForm: Handles password change fields and validation ---
 
@@ -26,7 +33,10 @@ export interface ChangePasswordFormProps {
   loading: boolean;
 }
 
-const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({ onSubmit, loading }) => {
+const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
+  onSubmit,
+  loading,
+}) => {
   const [showCurrent, setShowCurrent] = React.useState(false);
   const [showNew, setShowNew] = React.useState(false);
   const {

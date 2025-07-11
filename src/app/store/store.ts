@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { baseApi } from "./baseApi";
-import { profileApi } from "@/features/dashboard/store/profileApi";
+import { profileApi } from "@/features/profile/store/profileApi";
 import { accountsApi } from "@/features/accounts/store/accountsApi";
 import { transactionsApi } from "@/features/transactions/store/transactionsApi";
 import authReducer from "@/features/auth/store/authSlice";
@@ -22,7 +22,11 @@ export const store = configureStore({
     getDefaultMiddleware({
       serializableCheck: {
         // Ignore these field paths in all actions
-        ignoredActionPaths: ["meta.arg", "payload.timestamp", "meta.baseQueryMeta.request"],
+        ignoredActionPaths: [
+          "meta.arg",
+          "payload.timestamp",
+          "meta.baseQueryMeta.request",
+        ],
         // Ignore these field paths in the state
         ignoredPaths: ["api.queries", "api.mutations"],
       },

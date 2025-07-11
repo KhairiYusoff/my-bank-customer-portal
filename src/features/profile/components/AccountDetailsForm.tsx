@@ -2,7 +2,7 @@ import React from "react";
 import { Controller } from "react-hook-form";
 import { Grid, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import type { Control } from "react-hook-form";
-import type { UpdateProfileRequest } from "@features/dashboard/types/profile";
+import type { UpdateProfileRequest } from "@/features/profile/types/profile";
 
 interface AccountDetailsFormProps {
   control: Control<UpdateProfileRequest>;
