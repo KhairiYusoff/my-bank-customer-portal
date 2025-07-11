@@ -22,7 +22,7 @@ import TransferPage from "./features/transactions/pages/TransferPage";
 import DepositPage from "./features/dashboard/pages/DepositPage";
 import WithdrawPage from "./features/accounts/pages/WithdrawPage";
 import AccountDetailsPage from "./features/accounts/pages/AccountDetailsPage";
-import ContactUsPage from "./features/dashboard/pages/ContactUsPage";
+import ContactUsPage from "./features/contacts/pages/ContactUsPage";
 import FooterSection from "./components/FooterSection";
 
 const App: React.FC = () => {
@@ -32,7 +32,13 @@ const App: React.FC = () => {
         <CssBaseline />
         <SnackbarProvider>
           <Router>
-            <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                minHeight: "100vh",
+              }}
+            >
               <Box component="main" sx={{ flexGrow: 1 }}>
                 <Routes>
                   <Route path="/" element={<Landing />} />
