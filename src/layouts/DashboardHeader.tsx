@@ -23,8 +23,22 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
       sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}
     >
       <Toolbar>
-        <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-          My Bank Customer Portal
+        <Typography
+          noWrap
+          component="div"
+          sx={{
+            flexGrow: 1,
+            fontWeight: 100,
+            color: theme.palette.common.white,
+            fontSize: "0.9rem",
+            lineHeight: 1.5,
+            fontFamily: '"Poppins", "Roboto", "Helvetica", "Arial", sans-serif',
+            textTransform: "capitalize",
+          }}
+        >
+          {user?.name
+            ? `Hi ${user.name}, welcome back!`
+            : "Hi Customer, welcome back!"}
         </Typography>
         <IconButton
           size="large"
