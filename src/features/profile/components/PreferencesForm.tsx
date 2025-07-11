@@ -9,7 +9,7 @@ import {
   MenuItem,
 } from "@mui/material";
 import type { Control } from "react-hook-form";
-import type { UpdateProfileRequest } from "@features/dashboard/types/profile";
+import type { UpdateProfileRequest } from "@/features/profile/types/profile";
 
 interface PreferencesFormProps {
   control: Control<UpdateProfileRequest>;

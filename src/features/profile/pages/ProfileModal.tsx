@@ -25,20 +25,20 @@ import type {
   AccountType,
   PurposeOfAccount,
   NextOfKinRelationship,
-} from "@features/dashboard/types/profile";
+} from "@/features/profile/types/profile";
 import ConfirmationDialog from "@components/ConfirmationDialog";
-import { useUpdateProfileMutation } from "../store/profileApi";
+import { useUpdateProfileMutation } from "@/features/profile/store/profileApi";
 import { useSnackbar } from "notistack";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { getErrorMessage } from "@/utils/errorUtils";
 import { profileFormSchema } from "../validations/profileSchema";
-import PersonalInfoForm from "./profile/forms/PersonalInfoForm";
-import AddressForm from "./profile/forms/AddressForm";
-import EmploymentForm from "./profile/forms/EmploymentForm";
-import AccountDetailsForm from "./profile/forms/AccountDetailsForm";
-import PreferencesForm from "./profile/forms/PreferencesForm";
-import NextOfKinForm from "./profile/forms/NextOfKinForm";
+import PersonalInfoForm from "../components/PersonalInfoForm";
+import AddressForm from "../components/AddressForm";
+import EmploymentForm from "../components/EmploymentForm";
+import AccountDetailsForm from "../components/AccountDetailsForm";
+import PreferencesForm from "../components/PreferencesForm";
+import NextOfKinForm from "../components/NextOfKinForm";
 
 interface ProfileModalProps {
   open: boolean;

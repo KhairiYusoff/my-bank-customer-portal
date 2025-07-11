@@ -4,10 +4,10 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
-import { useChangePasswordMutation } from "../store/profileApi";
+import { useChangePasswordMutation } from "@/features/profile/store/profileApi";
 import { useSnackbar } from "notistack";
-import ChangePasswordForm from "./profile/forms/ChangePasswordForm";
-import type { ChangePasswordRequest } from "@features/dashboard/types/profile";
+import ChangePasswordForm from "../components/ChangePasswordForm";
+import type { ChangePasswordRequest } from "@/features/profile/types/profile";
 
 interface ChangePasswordDialogProps {
   open: boolean;

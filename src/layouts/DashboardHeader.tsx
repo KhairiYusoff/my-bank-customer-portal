@@ -3,7 +3,7 @@ import { AppBar, Toolbar, Typography, IconButton, Avatar } from "@mui/material";
 import { styled, useTheme } from "@mui/material/styles";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 
-import type { UserProfile } from "@/features/dashboard/types/profile";
+import type { UserProfile } from "@/features/profile/types/profile";
 
 interface DashboardHeaderProps {
   drawerWidth: number;

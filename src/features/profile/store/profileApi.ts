@@ -10,8 +10,8 @@ export const profileApi = createApi({
       transformResponse: (response: UserProfileResponse) => response.data,
     }),
     updateProfile: builder.mutation<
-      import("@features/dashboard/types/profile").UpdateProfileResponse,
-      import("@features/dashboard/types/profile").UpdateProfileRequest
+      import("@/features/profile/types/profile").UpdateProfileResponse,
+      import("@/features/profile/types/profile").UpdateProfileRequest
     >({
       query: (body) => ({
         url: "/users/me",
@@ -20,8 +20,8 @@ export const profileApi = createApi({
       }),
     }),
     changePassword: builder.mutation<
-      import("@features/dashboard/types/profile").ChangePasswordResponse,
-      import("@features/dashboard/types/profile").ChangePasswordRequest
+      import("@/features/profile/types/profile").ChangePasswordResponse,
+      import("@/features/profile/types/profile").ChangePasswordRequest
     >({
       query: (body) => ({
         url: "/users/me/password",
