@@ -8,7 +8,15 @@ import {
   Typography,
   CircularProgress,
   Alert,
+  Card,
+  CardContent,
+  Paper,
+  Avatar,
 } from "@mui/material";
+import {
+  SwapHoriz as TransferIcon,
+  AccountBalance as AccountBalanceIcon,
+} from "@mui/icons-material";
 import DashboardLayout from "@/layouts/DashboardLayout";
 import TransferForm, { FormValues } from "../components/TransferForm";
 import { useGetAccountsQuery } from "@/features/accounts/store/accountsApi";
@@ -84,23 +92,56 @@ const TransferPage: React.FC = () => {
 
   const renderContent = () => {
     if (isAccountsLoading) {
-      return <CircularProgress sx={{ mt: 4 }} />;
+      return (
+        <Card>
+          <CardContent sx={{ textAlign: 'center', py: 6 }}>
+            <CircularProgress size={60} />
+            <Typography variant="h6" sx={{ mt: 2, color: 'text.secondary' }}>
+              Loading your accounts...
+            </Typography>
+          </CardContent>
+        </Card>
+      );
     }
 
     if (accountsError) {
       return (
-        <Alert severity="error" sx={{ mt: 4 }}>
-          Failed to load your accounts.
+        <Alert 
+          severity="error" 
+          sx={{ 
+            borderRadius: 3,
+            '& .MuiAlert-icon': { fontSize: '2rem' }
+          }}
+        >
+          <Typography variant="h6" gutterBottom>Failed to load accounts</Typography>
+          <Typography variant="body2">
+            Unable to retrieve your account information. Please try refreshing the page.
+          </Typography>
         </Alert>
       );
     }
 
     if (!hasAccounts) {
       return (
-        <Alert severity="warning" sx={{ mt: 4 }}>
-          You do not have any accounts. Please open an account before making
-          transfers.
-        </Alert>
+        <Card>
+          <CardContent sx={{ textAlign: 'center', py: 6 }}>
+            <Avatar sx={{ 
+              backgroundColor: 'rgba(0, 80, 158, 0.1)',
+              width: 80, 
+              height: 80, 
+              mx: 'auto',
+              mb: 2 
+            }}>
+              <AccountBalanceIcon sx={{ fontSize: '2.5rem', color: '#00509e' }} />
+            </Avatar>
+            <Typography variant="h5" color="text.secondary" gutterBottom>
+              No Accounts Available
+            </Typography>
+            <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
+              You need at least one account to make transfers. Please open an account first.
+            </Typography>
+          </CardContent>
+        </Card>
       );
     }
 
@@ -125,11 +166,41 @@ const TransferPage: React.FC = () => {
 
   return (
     <DashboardLayout>
-      <Container maxWidth="sm">
+      <Container maxWidth="md">
         <Box sx={{ my: 4 }}>
-          <Typography variant="h4" component="h1" gutterBottom>
-            Transfer Funds
-          </Typography>
+          {/* Header Section */}
+          <Paper sx={{ 
+            p: 4, 
+            mb: 4, 
+            background: 'linear-gradient(135deg, #00509e 0%, #1976d2 100%)',
+            color: 'white',
+            borderRadius: 3
+          }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+              <Avatar sx={{ 
+                backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                mr: 2,
+                width: 56,
+                height: 56
+              }}>
+                <TransferIcon fontSize="large" />
+              </Avatar>
+              <Box>
+                <Typography 
+                  variant="h4" 
+                  component="h1"
+                  sx={{ fontWeight: 'bold', mb: 1 }}
+                >
+                  Transfer Funds
+                </Typography>
+                <Typography variant="subtitle1" sx={{ opacity: 0.9 }}>
+                  Send money securely between your accounts
+                </Typography>
+              </Box>
+            </Box>
+          </Paper>
+
+          {/* Content Section */}
           {renderContent()}
         </Box>
       </Container>
