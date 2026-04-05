@@ -23,6 +23,7 @@ import DepositPage from "./features/accounts/pages/DepositPage";
 import WithdrawPage from "./features/accounts/pages/WithdrawPage";
 import AccountDetailsPage from "./features/accounts/pages/AccountDetailsPage";
 import ContactUsPage from "./features/contacts/pages/ContactUsPage";
+import ProfilePage from "./features/profile/pages/ProfilePage";
 import FooterSection from "./components/FooterSection";
 
 const App: React.FC = () => {
@@ -101,6 +102,14 @@ const App: React.FC = () => {
                     element={
                       <ProtectedRoute>
                         <ContactUsPage />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/profile"
+                    element={
+                      <ProtectedRoute>
+                        <ProfilePage />
                       </ProtectedRoute>
                     }
                   />

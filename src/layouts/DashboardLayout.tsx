@@ -7,13 +7,13 @@ import SyncAltIcon from "@mui/icons-material/SyncAlt";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import ContactPhoneIcon from "@mui/icons-material/ContactPhone";
+import PersonIcon from "@mui/icons-material/Person";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/store/store";
 import { logout } from "@/features/auth/store/authSlice";
 import DashboardSidebar from "./DashboardSidebar";
 import DashboardHeader from "./DashboardHeader";
 import ProfileDropdown from "@/features/profile/components/ProfileDropdown";
-import ProfileModal from "@/features/profile/pages/ProfileModal";
 import ChangePasswordDialog from "@/features/profile/pages/ChangePasswordDialog";
 import { useGetProfileQuery } from "@/features/profile/store/profileApi";
 
@@ -23,7 +23,6 @@ interface DashboardLayoutProps {
 
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   const [showChangePassword, setShowChangePassword] = React.useState(false);
-  const [profileModalOpen, setProfileModalOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -41,6 +40,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
     { text: "Transfer", path: "/transfer", icon: <SyncAltIcon /> },
     { text: "Deposit", path: "/deposit", icon: <AccountBalanceWalletIcon /> },
     { text: "Withdraw", path: "/withdraw", icon: <AttachMoneyIcon /> },
+    { text: "Profile", path: "/profile", icon: <PersonIcon /> },
     { text: "Contact Us", path: "/contact-us", icon: <ContactPhoneIcon /> },
   ];
 
@@ -60,7 +60,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
 
   const handleProfile = () => {
     handleClose();
-    setProfileModalOpen(true);
+    navigate("/profile");
   };
 
   interface ListItemLinkProps extends LinkProps {
@@ -132,11 +132,6 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
         <ChangePasswordDialog
           open={showChangePassword}
           onClose={() => setShowChangePassword(false)}
-        />
-        <ProfileModal
-          open={profileModalOpen}
-          onClose={() => setProfileModalOpen(false)}
-          user={profile}
         />
         <div style={{ height: 64 }} /> {/* Spacer for AppBar */}
         {children}
