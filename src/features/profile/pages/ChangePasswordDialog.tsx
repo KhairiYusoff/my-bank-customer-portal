@@ -1,9 +1,18 @@
 import React from "react";
-import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import DialogActions from "@mui/material/DialogActions";
-import Button from "@mui/material/Button";
+import {
+  Dialog,
+  DialogContent,
+  DialogActions,
+  Button,
+  Box,
+  Typography,
+  Avatar,
+  Paper,
+} from "@mui/material";
+import {
+  Lock as LockIcon,
+  Close as CloseIcon,
+} from "@mui/icons-material";
 import { useChangePasswordMutation } from "@/features/profile/store/profileApi";
 import { useSnackbar } from "notistack";
 import ChangePasswordForm from "../components/ChangePasswordForm";
@@ -36,20 +45,76 @@ const ChangePasswordDialog: React.FC<ChangePasswordDialogProps> = ({
   };
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="xs" fullWidth>
-      <DialogTitle>Change Password</DialogTitle>
-      <DialogContent>
-        <ChangePasswordForm
-          key={formKey}
-          onSubmit={handleSubmit}
-          loading={isLoading}
-        />
+    <Dialog 
+      open={open} 
+      onClose={onClose} 
+      maxWidth="sm" 
+      fullWidth
+      PaperProps={{
+        sx: { 
+          borderRadius: 3,
+          overflow: 'visible'
+        }
+      }}
+    >
+      <DialogContent sx={{ p: 0 }}>
+        {/* Header Section */}
+        <Paper sx={{ 
+          px: 4,
+          py: 3,
+          background: 'linear-gradient(135deg, #00509e 0%, #1976d2 100%)',
+          color: 'white',
+          borderRadius: '12px 12px 0 0',
+          position: 'relative'
+        }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <Avatar sx={{ 
+                backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                mr: 2,
+                width: 48,
+                height: 48
+              }}>
+                <LockIcon fontSize="medium" />
+              </Avatar>
+              <Box>
+                <Typography 
+                  variant="h5" 
+                  sx={{ fontWeight: 'bold', mb: 0.5 }}
+                >
+                  Change Password
+                </Typography>
+                <Typography variant="body2" sx={{ opacity: 0.9 }}>
+                  Update your account security
+                </Typography>
+              </Box>
+            </Box>
+            <Button
+              onClick={onClose}
+              sx={{ 
+                color: 'white',
+                minWidth: 'auto',
+                p: 1,
+                '&:hover': {
+                  backgroundColor: 'rgba(255, 255, 255, 0.1)'
+                }
+              }}
+              disabled={isLoading}
+            >
+              <CloseIcon />
+            </Button>
+          </Box>
+        </Paper>
+
+        {/* Form Section */}
+        <Box sx={{ p: 4 }}>
+          <ChangePasswordForm
+            key={formKey}
+            onSubmit={handleSubmit}
+            loading={isLoading}
+          />
+        </Box>
       </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose} color="primary" disabled={isLoading}>
-          Cancel
-        </Button>
-      </DialogActions>
     </Dialog>
   );
 };
