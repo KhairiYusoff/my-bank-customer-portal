@@ -1,9 +1,10 @@
 import React from "react";
-import { AppBar, Toolbar, Typography, IconButton, Avatar } from "@mui/material";
+import { AppBar, Toolbar, Typography, IconButton, Avatar, Box } from "@mui/material";
 import { styled, useTheme } from "@mui/material/styles";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 
 import type { UserProfile } from "@/features/profile/types/profile";
+import NotificationCenter from "@/features/notifications/components/NotificationCenter";
 
 interface DashboardHeaderProps {
   drawerWidth: number;
@@ -40,20 +41,23 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
             ? `Hi ${user.name}, welcome back!`
             : "Hi Customer, welcome back!"}
         </Typography>
-        <IconButton
-          size="large"
-          aria-label="account of current user"
-          aria-controls="menu-appbar"
-          aria-haspopup="true"
-          onClick={onMenuClick}
-          color="inherit"
-        >
-          <Avatar
-            sx={{ width: 40, height: 40, bgcolor: theme.palette.primary.dark }}
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <NotificationCenter userId={user?._id} />
+          <IconButton
+            size="large"
+            aria-label="account of current user"
+            aria-controls="menu-appbar"
+            aria-haspopup="true"
+            onClick={onMenuClick}
+            color="inherit"
           >
-            {user?.name ? user.name[0].toUpperCase() : <AccountCircle />}
-          </Avatar>
-        </IconButton>
+            <Avatar
+              sx={{ width: 40, height: 40, bgcolor: theme.palette.primary.dark }}
+            >
+              {user?.name ? user.name[0].toUpperCase() : <AccountCircle />}
+            </Avatar>
+          </IconButton>
+        </Box>
       </Toolbar>
     </AppBar>
   );

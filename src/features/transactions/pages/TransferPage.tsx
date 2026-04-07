@@ -22,6 +22,8 @@ import TransferForm, { FormValues } from "../components/TransferForm";
 import { useGetAccountsQuery } from "@/features/accounts/store/accountsApi";
 import { useTransferMutation } from "../store/transactionsApi";
 import { useToast } from "@/utils/snackbarUtils";
+import { useAppSelector } from "@/app/hooks";
+import { notificationService } from "@/features/notifications/services/notificationService";
 import type { TransferRequest } from "../types/transfer";
 
 const schema = yup.object({
@@ -43,6 +45,7 @@ const TransferPage: React.FC = () => {
     error: accountsError,
   } = useGetAccountsQuery();
   const toast = useToast();
+  const user = useAppSelector((state) => state.auth.user);
 
   const [openConfirm, setOpenConfirm] = useState(false);
   const [transferData, setTransferData] = useState<FormValues | null>(null);
@@ -62,16 +65,28 @@ const TransferPage: React.FC = () => {
   });
 
   useEffect(() => {
-    if (isSuccess) {
+    if (isSuccess && transferData && user) {
+      // Show immediate toast
       toast.success("Transfer successful!");
+      
+      // Create backend notification
+      notificationService.createTransactionNotification({
+        userId: user.id,
+        type: 'transfer',
+        amount: transferData.amount,
+        fromAccountNumber: transferData.fromAccountNumber,
+        toAccountNumber: transferData.toAccountNumber,
+      }).catch(console.error);
+      
       reset();
       resetMutation();
+      setTransferData(null);
     }
     if (error) {
       const apiError = error as any;
       toast.error(apiError.data?.message || "Transfer failed.");
     }
-  }, [isSuccess, error, reset, resetMutation, toast]);
+  }, [isSuccess, error, reset, resetMutation, toast, transferData, user]);
 
   const handleOpenConfirm = (values: FormValues) => {
     setTransferData(values);

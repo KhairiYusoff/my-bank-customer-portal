@@ -46,7 +46,7 @@ const baseQueryWithReauth: BaseQueryFn<
 export const baseApi = createApi({
   reducerPath: 'api',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['Auth', 'Account', 'Transaction', 'User'],
+  tagTypes: ['Auth', 'Account', 'Transaction', 'User', 'Notification'],
   endpoints: () => ({}), // Inject endpoints in feature slices
 });
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -27,6 +27,8 @@ import {
 import DashboardLayout from '@/layouts/DashboardLayout';
 import { useGetAccountsQuery, useDepositMutation } from '@/features/accounts/store/accountsApi';
 import { useToast } from '@/utils/snackbarUtils';
+import { useAppSelector } from '@/app/hooks';
+import { notificationService } from '@/features/notifications/services/notificationService';
 
 const schema: yup.ObjectSchema<IDepositForm> = yup.object().shape({
   accountNumber: yup.string().required('Account is required'),
@@ -44,6 +46,8 @@ const DepositPage: React.FC = () => {
   const { data: accountsResponse, isLoading: isLoadingAccounts } = useGetAccountsQuery();
   const [deposit, { isLoading, isSuccess, isError, error, reset: resetMutation }] = useDepositMutation();
   const toast = useToast();
+  const user = useAppSelector((state) => state.auth.user);
+  const [depositData, setDepositData] = useState<IDepositForm | null>(null);
 
   const {
     control,
@@ -57,18 +61,30 @@ const DepositPage: React.FC = () => {
   });
 
   useEffect(() => {
-    if (isSuccess) {
+    if (isSuccess && depositData && user) {
+      // Show immediate toast
       toast.success('Deposit successful!');
+      
+      // Create backend notification
+      notificationService.createTransactionNotification({
+        userId: user.id,
+        type: 'deposit',
+        amount: depositData.amount,
+        accountNumber: depositData.accountNumber,
+      }).catch(console.error);
+      
       reset();
       resetMutation();
+      setDepositData(null);
     }
     if (isError) {
       const apiError = error as any;
       toast.error(apiError.data?.message || 'Deposit failed.');
     }
-  }, [isSuccess, isError, error, reset, resetMutation, toast]);
+  }, [isSuccess, isError, error, reset, resetMutation, toast, depositData, user]);
 
   const onSubmit = (data: IDepositForm) => {
+    setDepositData(data);
     deposit(data);
   };
 

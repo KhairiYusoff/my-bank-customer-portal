@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -28,6 +28,8 @@ import {
   useWithdrawMutation,
 } from "@/features/accounts/store/accountsApi";
 import { useToast } from '@/utils/snackbarUtils';
+import { useAppSelector } from '@/app/hooks';
+import { notificationService } from '@/features/notifications/services/notificationService';
 
 const schema = yup.object().shape({
   accountNumber: yup.string().required("Account is required"),
@@ -51,6 +53,8 @@ const WithdrawPage: React.FC = () => {
     { isLoading, isSuccess, isError, error, reset: resetMutation },
   ] = useWithdrawMutation();
   const toast = useToast();
+  const user = useAppSelector((state) => state.auth.user);
+  const [withdrawData, setWithdrawData] = useState<IWithdrawForm | null>(null);
 
   const {
     control,
@@ -64,18 +68,30 @@ const WithdrawPage: React.FC = () => {
   });
 
   useEffect(() => {
-    if (isSuccess) {
+    if (isSuccess && withdrawData && user) {
+      // Show immediate toast
       toast.success('Withdrawal successful!');
+      
+      // Create backend notification
+      notificationService.createTransactionNotification({
+        userId: user.id,
+        type: 'withdraw',
+        amount: withdrawData.amount,
+        accountNumber: withdrawData.accountNumber,
+      }).catch(console.error);
+      
       reset();
       resetMutation();
+      setWithdrawData(null);
     }
     if (isError) {
       const apiError = error as any;
       toast.error(apiError.data?.message || 'Withdrawal failed.');
     }
-  }, [isSuccess, isError, error, reset, resetMutation, toast]);
+  }, [isSuccess, isError, error, reset, resetMutation, toast, withdrawData, user]);
 
   const onSubmit = (data: IWithdrawForm) => {
+    setWithdrawData(data);
     withdraw(data);
   };
 

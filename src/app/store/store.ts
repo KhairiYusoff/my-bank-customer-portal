@@ -4,6 +4,7 @@ import { baseApi } from "./baseApi";
 import { profileApi } from "@/features/profile/store/profileApi";
 import { accountsApi } from "@/features/accounts/store/accountsApi";
 import { transactionsApi } from "@/features/transactions/store/transactionsApi";
+import { notificationsApi } from "@/features/notifications/store/notificationsApi";
 import authReducer from "@/features/auth/store/authSlice";
 
 // Configure the Redux store
@@ -14,6 +15,7 @@ export const store = configureStore({
     [profileApi.reducerPath]: profileApi.reducer,
     [accountsApi.reducerPath]: accountsApi.reducer,
     [transactionsApi.reducerPath]: transactionsApi.reducer,
+    [notificationsApi.reducerPath]: notificationsApi.reducer,
     // Add the auth reducer
     auth: authReducer,
   },
@@ -34,7 +36,8 @@ export const store = configureStore({
       .concat(baseApi.middleware)
       .concat(profileApi.middleware)
       .concat(accountsApi.middleware)
-      .concat(transactionsApi.middleware),
+      .concat(transactionsApi.middleware)
+      .concat(notificationsApi.middleware),
   // Enable Redux DevTools in development
   devTools: process.env.NODE_ENV !== "production",
 });

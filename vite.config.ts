@@ -18,6 +18,11 @@ export default defineConfig({
     port: 5190,
     host: "127.0.0.1",
     proxy: {
+      "/api/notifications": {
+        target: "http://127.0.0.1:4001",
+        changeOrigin: true,
+        secure: false,
+      },
       "/api": {
         target: "http://127.0.0.1:5001",
         changeOrigin: true,
