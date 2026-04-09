@@ -8,6 +8,7 @@ import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import ContactPhoneIcon from "@mui/icons-material/ContactPhone";
 import PersonIcon from "@mui/icons-material/Person";
+import ReceiptIcon from "@mui/icons-material/Receipt";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/store/store";
 import { logout } from "@/features/auth/store/authSlice";
@@ -40,6 +41,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
     { text: "Transfer", path: "/transfer", icon: <SyncAltIcon /> },
     { text: "Deposit", path: "/deposit", icon: <AccountBalanceWalletIcon /> },
     { text: "Withdraw", path: "/withdraw", icon: <AttachMoneyIcon /> },
+    { text: "Expenses", path: "/expenses", icon: <ReceiptIcon /> },
     { text: "Profile", path: "/profile", icon: <PersonIcon /> },
     { text: "Contact Us", path: "/contact-us", icon: <ContactPhoneIcon /> },
   ];

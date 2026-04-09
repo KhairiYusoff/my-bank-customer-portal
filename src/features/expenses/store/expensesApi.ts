@@ -2,6 +2,8 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import type {
   GetCategoriesResponse,
   GetPaymentMethodsResponse,
+  CreateExpenseRequest,
+  CreateExpenseResponse,
 } from '../types/expense';
 
 export const expensesApi = createApi({
@@ -17,10 +19,19 @@ export const expensesApi = createApi({
       query: () => '/expenses/payment-methods',
       providesTags: ['PaymentMethods'],
     }),
+    createExpense: builder.mutation<CreateExpenseResponse, CreateExpenseRequest>({
+      query: (expenseData) => ({
+        url: '/expenses',
+        method: 'POST',
+        body: expenseData,
+      }),
+      invalidatesTags: ['Expenses'],
+    }),
   }),
 });
 
 export const {
   useGetCategoriesQuery,
   useGetPaymentMethodsQuery,
+  useCreateExpenseMutation,
 } = expensesApi;
