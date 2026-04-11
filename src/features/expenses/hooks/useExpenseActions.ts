@@ -1,13 +1,14 @@
 import { useEffect } from "react";
-import { useCreateExpenseMutation } from "../store/expensesApi";
+import { useCreateExpenseMutation, useGetExpensesQuery } from "../store/expensesApi";
 import { useGetAccountsQuery } from "@/features/accounts/store/accountsApi";
 import { useGetCategoriesQuery, useGetPaymentMethodsQuery } from "../store/expensesApi";
 import { useToast } from "@/utils/snackbarUtils";
 import { useAppSelector } from "@/app/hooks";
 import { notificationService } from "@/features/notifications/services/notificationService";
 import type { FormValues } from "../components/expense-form";
+import type { ExpenseFilters } from "../types/expense";
 
-export const useExpenseActions = (expenseData: FormValues | null) => {
+export const useExpenseActions = (expenseData: FormValues | null, filters?: ExpenseFilters) => {
   const toast = useToast();
   const user = useAppSelector((state) => state.auth.user);
 
@@ -29,6 +30,11 @@ export const useExpenseActions = (expenseData: FormValues | null) => {
     isLoading: isPaymentMethodsLoading,
     error: paymentMethodsError,
   } = useGetPaymentMethodsQuery();
+  const {
+    data: expensesData,
+    isLoading: isExpensesLoading,
+    error: expensesError,
+  } = useGetExpensesQuery(filters || {});
 
   // Show success notification
   useEffect(() => {
@@ -73,6 +79,7 @@ export const useExpenseActions = (expenseData: FormValues | null) => {
   const accounts = accountsData?.data || [];
   const categories = categoriesData?.data || [];
   const paymentMethods = paymentMethodsData?.data || [];
+  const expenses = expensesData?.data || [];
 
   return {
     // API state
@@ -82,11 +89,16 @@ export const useExpenseActions = (expenseData: FormValues | null) => {
     accounts,
     categories,
     paymentMethods,
+    expenses,
     
     // Loading states
     isAccountsLoading,
     isCategoriesLoading,
     isPaymentMethodsLoading,
+    isExpensesLoading,
+    
+    // Error states
+    expensesError,
     
     // Actions
     onConfirm,
