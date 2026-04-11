@@ -11,11 +11,6 @@ import {
   Button,
   TextField,
   CircularProgress,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
   Typography,
   Card,
   CardContent,
@@ -37,12 +32,12 @@ import {
   Store as MerchantIcon,
   LocationOn as LocationIcon,
   ReceiptLong as ReceiptNumberIcon,
-  Check as CheckIcon,
   Notes as NotesIcon,
 } from "@mui/icons-material";
 import type { ExpenseFormData } from "../validations/expenseValidation";
 import type { Account } from "@/features/accounts/types/account";
 import type { ExpenseCategory, PaymentMethod } from "../types/expense";
+import ConfirmDialog from "./dialogs/ConfirmDialog";
 
 export type FormValues = ExpenseFormData;
 
@@ -369,53 +364,15 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
       </Card>
 
       {/* Confirmation Dialog */}
-      <Dialog 
-        open={openConfirm} 
-        onClose={onCloseConfirm} 
-        maxWidth="sm" 
-        fullWidth
-        PaperProps={{
-          sx: { borderRadius: 3 }
-        }}
-      >
-        <DialogTitle>Confirm Expense</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Are you sure you want to create this expense?
-          </DialogContentText>
-          {expenseData && (
-            <Box mt={2}>
-              <Typography variant="body2" color="text.secondary">
-                Amount: <strong>RM{expenseData.amount.toFixed(2)}</strong>
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Category: <strong>{categories.find(c => c.value === expenseData.category)?.label}</strong>
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Description: <strong>{expenseData.description}</strong>
-              </Typography>
-              {getSelectedAccount() && (
-                <Typography variant="body2" color="text.secondary">
-                  Account: <strong>{getSelectedAccount()?.accountNumber}</strong>
-                </Typography>
-              )}
-            </Box>
-          )}
-        </DialogContent>
-        <DialogActions sx={{ p: 3, pt: 0 }}>
-          <Button onClick={onCloseConfirm} variant="outlined">
-            Cancel
-          </Button>
-          <Button
-            onClick={onConfirm}
-            variant="contained"
-            disabled={isLoading}
-            startIcon={isLoading ? <CircularProgress size={20} /> : <CheckIcon />}
-          >
-            {isLoading ? "Creating..." : "Create Expense"}
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <ConfirmDialog
+        open={openConfirm}
+        onClose={onCloseConfirm}
+        onConfirm={onConfirm}
+        isLoading={isLoading}
+        expenseData={expenseData}
+        categories={categories}
+        selectedAccount={getSelectedAccount()}
+      />
     </>
   );
 };
