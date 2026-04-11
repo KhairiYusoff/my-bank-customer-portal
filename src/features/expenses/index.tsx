@@ -14,10 +14,12 @@ import {
   Search as SearchIcon,
 } from "@mui/icons-material";
 import DashboardLayout from "@/layouts/DashboardLayout";
-import CreateTab from "./components/tabs/CreateTab";
-import ListTab from "./components/tabs/ListTab";
-import AnalyticsTab from "./components/tabs/AnalyticsTab";
-import FilterDialog from "./components/dialogs/FilterDialog";
+import { 
+  CreateTab, 
+  ListTab, 
+  AnalyticsTab, 
+  FilterDialog 
+} from "./components";
 import { useExpenseFilters } from "./hooks/useExpenseFilters";
 import { useExpenseForm } from "./hooks/useExpenseForm";
 import { useExpenseActions } from "./hooks/useExpenseActions";

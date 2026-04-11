@@ -5,7 +5,7 @@ import { useGetCategoriesQuery, useGetPaymentMethodsQuery } from "../store/expen
 import { useToast } from "@/utils/snackbarUtils";
 import { useAppSelector } from "@/app/hooks";
 import { notificationService } from "@/features/notifications/services/notificationService";
-import type { FormValues } from "../components/ExpenseForm";
+import type { FormValues } from "../components/expense-form";
 
 export const useExpenseActions = (expenseData: FormValues | null) => {
   const toast = useToast();

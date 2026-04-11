@@ -11,7 +11,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { Check as CheckIcon } from "@mui/icons-material";
-import type { FormValues } from "../ExpenseForm";
+import type { FormValues } from "../expense-form";
 
 interface ConfirmDialogProps {
   open: boolean;

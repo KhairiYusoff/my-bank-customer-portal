@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { expenseSchema } from "../validations/expenseValidation";
-import type { FormValues } from "../components/ExpenseForm";
+import type { FormValues } from "../components/expense-form";
 
 export const useExpenseForm = () => {
   const [openConfirm, setOpenConfirm] = useState(false);

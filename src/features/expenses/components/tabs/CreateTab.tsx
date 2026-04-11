@@ -9,7 +9,7 @@ import {
 import {
   AccountBalance as AccountBalanceIcon,
 } from "@mui/icons-material";
-import ExpenseForm, { FormValues } from "../ExpenseForm";
+import ExpenseForm, { FormValues } from "../expense-form";
 import type { Account } from "@/features/accounts/types/account";
 import type { ExpenseCategory, PaymentMethod } from "../../types/expense";
 
