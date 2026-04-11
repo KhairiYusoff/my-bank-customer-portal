@@ -23,27 +23,31 @@ import {
 } from "@mui/icons-material";
 import type { ExpenseCategory, PaymentMethod, Expense, ExpenseFilters } from "../../types/expense";
 import type { Account } from "@/features/accounts/types/account";
-import { useGetExpensesQuery } from "../../store/expensesApi";
 
 interface ListTabProps {
   categories: ExpenseCategory[];
   paymentMethods: PaymentMethod[];
   accounts: Account[];
+  expenses: Expense[];
   filters: ExpenseFilters;
   setFilters: (filters: ExpenseFilters) => void;
   onFilterDialogOpen: () => void;
+  isLoading: boolean;
+  error: any;
 }
 
 const ListTab: React.FC<ListTabProps> = ({
   categories,
   paymentMethods,
   accounts,
+  expenses,
   filters,
   setFilters,
   onFilterDialogOpen,
+  isLoading,
+  error,
 }) => {
-  // API call with filters
-  const { data: expensesData, isLoading, error, isError } = useGetExpensesQuery(filters);
+  const isError = !!error;
 
   return (
     <Box sx={{ p: 3 }}>
@@ -122,7 +126,7 @@ const ListTab: React.FC<ListTabProps> = ({
                   <Typography color="error">Error loading expenses. Please try again.</Typography>
                 </TableCell>
               </TableRow>
-            ) : !expensesData?.data?.length ? (
+            ) : !expenses?.length ? (
               <TableRow>
                 <TableCell colSpan={7} sx={{ textAlign: 'center', py: 8 }}>
                   <Box>
@@ -137,7 +141,7 @@ const ListTab: React.FC<ListTabProps> = ({
                 </TableCell>
               </TableRow>
             ) : (
-              expensesData.data.map((expense) => (
+              expenses.map((expense) => (
                 <TableRow key={expense._id}>
                   <TableCell>{new Date(expense.date).toLocaleDateString()}</TableCell>
                   <TableCell>{expense.description}</TableCell>

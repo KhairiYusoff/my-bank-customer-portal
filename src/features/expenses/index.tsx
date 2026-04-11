@@ -83,11 +83,14 @@ const ExpensesPage: React.FC = () => {
     accounts,
     categories,
     paymentMethods,
+    expenses,
     isLoading,
     isSuccess,
     error,
+    isExpensesLoading,
+    expensesError,
     onConfirm,
-  } = useExpenseActions(expenseData);
+  } = useExpenseActions(expenseData, filters);
 
   return (
     <DashboardLayout>
@@ -188,9 +191,12 @@ const ExpensesPage: React.FC = () => {
                 categories={categories}
                 paymentMethods={paymentMethods}
                 accounts={accounts}
+                expenses={expenses}
                 filters={filters}
                 setFilters={updateFilters}
                 onFilterDialogOpen={openFilterDialog}
+                isLoading={isExpensesLoading}
+                error={expensesError}
               />
             </TabPanel>
 
