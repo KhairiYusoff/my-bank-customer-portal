@@ -4,6 +4,9 @@ import type {
   GetPaymentMethodsResponse,
   CreateExpenseRequest,
   CreateExpenseResponse,
+  Expense,
+  ExpenseFilters,
+  GetExpensesResponse,
 } from '../types/expense';
 
 export const expensesApi = createApi({
@@ -19,6 +22,13 @@ export const expensesApi = createApi({
       query: () => '/expenses/payment-methods',
       providesTags: ['PaymentMethods'],
     }),
+    getExpenses: builder.query<GetExpensesResponse, ExpenseFilters>({
+      query: (filters) => ({
+        url: '/expenses',
+        params: filters,
+      }),
+      providesTags: ['Expenses'],
+    }),
     createExpense: builder.mutation<CreateExpenseResponse, CreateExpenseRequest>({
       query: (expenseData) => ({
         url: '/expenses',
@@ -33,5 +43,6 @@ export const expensesApi = createApi({
 export const {
   useGetCategoriesQuery,
   useGetPaymentMethodsQuery,
+  useGetExpensesQuery,
   useCreateExpenseMutation,
 } = expensesApi;

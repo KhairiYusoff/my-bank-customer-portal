@@ -52,6 +52,27 @@ export interface ExpenseAccount {
   accountType: string;
 }
 
+export interface Expense {
+  _id: string;
+  user: string;
+  account: ExpenseAccount;
+  amount: number;
+  category: string;
+  subCategory: string | null;
+  description: string;
+  date: string;
+  paymentMethod: string;
+  isManualEntry: boolean;
+  isRecurring: boolean;
+  recurringPattern: string | null;
+  tags: string[];
+  status: string;
+  notes?: string;
+  merchant?: MerchantInfo;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface CreatedExpense {
   user: string;
   account: ExpenseAccount;
@@ -75,4 +96,30 @@ export interface CreatedExpense {
 
 export interface CreateExpenseResponse extends BaseResponse<CreatedExpense> {
   meta: null;
+}
+
+// Expense Filters
+export interface ExpenseFilters {
+  search?: string;
+  category?: string;
+  paymentMethod?: string;
+  status?: string;
+  dateFrom?: string;
+  dateTo?: string;
+  minAmount?: number;
+  maxAmount?: number;
+  page?: number;
+  limit?: number;
+  sortBy?: 'date' | 'amount' | 'category' | undefined;
+  sortOrder?: 'asc' | 'desc';
+}
+
+// Get Expenses Response
+export interface GetExpensesResponse extends BaseResponse<Expense[]> {
+  meta: {
+    page: number;
+    limit: number;
+    total: number;
+    pages: number;
+  };
 }

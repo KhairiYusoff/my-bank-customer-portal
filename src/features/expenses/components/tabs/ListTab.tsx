@@ -21,15 +21,16 @@ import {
   FilterList as FilterIcon,
   Receipt as ExpenseIcon,
 } from "@mui/icons-material";
-import type { ExpenseCategory, PaymentMethod } from "../../types/expense";
+import type { ExpenseCategory, PaymentMethod, Expense, ExpenseFilters } from "../../types/expense";
 import type { Account } from "@/features/accounts/types/account";
+import { useGetExpensesQuery } from "../../store/expensesApi";
 
 interface ListTabProps {
   categories: ExpenseCategory[];
   paymentMethods: PaymentMethod[];
   accounts: Account[];
-  filters: any;
-  setFilters: (filters: any) => void;
+  filters: ExpenseFilters;
+  setFilters: (filters: ExpenseFilters) => void;
   onFilterDialogOpen: () => void;
 }
 
@@ -41,6 +42,9 @@ const ListTab: React.FC<ListTabProps> = ({
   setFilters,
   onFilterDialogOpen,
 }) => {
+  // API call with filters
+  const { data: expensesData, isLoading, error, isError } = useGetExpensesQuery(filters);
+
   return (
     <Box sx={{ p: 3 }}>
       {/* Search and Filter Bar */}
@@ -48,6 +52,8 @@ const ListTab: React.FC<ListTabProps> = ({
         <TextField
           placeholder="Search expenses..."
           size="small"
+          value={filters.search || ''}
+          onChange={(e) => setFilters({...filters, search: e.target.value})}
           sx={{ minWidth: 250 }}
           InputProps={{
             startAdornment: <SearchIcon sx={{ mr: 1, color: 'text.secondary' }} />,
@@ -57,7 +63,7 @@ const ListTab: React.FC<ListTabProps> = ({
           <InputLabel>Category</InputLabel>
           <Select 
             label="Category"
-            value={filters.category}
+            value={filters.category || ''}
             onChange={(e) => setFilters({...filters, category: e.target.value})}
           >
             <MenuItem value="">All Categories</MenuItem>
@@ -72,8 +78,8 @@ const ListTab: React.FC<ListTabProps> = ({
           <InputLabel>Sort By</InputLabel>
           <Select 
             label="Sort By"
-            value={filters.sortBy}
-            onChange={(e) => setFilters({...filters, sortBy: e.target.value})}
+            value={filters.sortBy || 'date'}
+            onChange={(e) => setFilters({...filters, sortBy: e.target.value as 'date' | 'amount' | 'category' | undefined})}
           >
             <MenuItem value="date">Date</MenuItem>
             <MenuItem value="amount">Amount</MenuItem>
@@ -104,20 +110,58 @@ const ListTab: React.FC<ListTabProps> = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            {/* Placeholder data - will be replaced with API data */}
-            <TableRow>
-              <TableCell colSpan={7} sx={{ textAlign: 'center', py: 8 }}>
-                <Box>
-                  <ExpenseIcon sx={{ fontSize: 48, color: 'text.secondary', mb: 2 }} />
-                  <Typography variant="h6" color="text.secondary" gutterBottom>
-                    No Expenses Found
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-                    Start by creating your first expense using the Create Expense tab.
-                  </Typography>
-                </Box>
-              </TableCell>
-            </TableRow>
+            {isLoading ? (
+              <TableRow>
+                <TableCell colSpan={7} sx={{ textAlign: 'center', py: 8 }}>
+                  <Typography>Loading expenses...</Typography>
+                </TableCell>
+              </TableRow>
+            ) : isError ? (
+              <TableRow>
+                <TableCell colSpan={7} sx={{ textAlign: 'center', py: 8 }}>
+                  <Typography color="error">Error loading expenses. Please try again.</Typography>
+                </TableCell>
+              </TableRow>
+            ) : !expensesData?.data?.length ? (
+              <TableRow>
+                <TableCell colSpan={7} sx={{ textAlign: 'center', py: 8 }}>
+                  <Box>
+                    <ExpenseIcon sx={{ fontSize: 48, color: 'text.secondary', mb: 2 }} />
+                    <Typography variant="h6" color="text.secondary" gutterBottom>
+                      No Expenses Found
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+                      Start by creating your first expense using the Create Expense tab.
+                    </Typography>
+                  </Box>
+                </TableCell>
+              </TableRow>
+            ) : (
+              expensesData.data.map((expense) => (
+                <TableRow key={expense._id}>
+                  <TableCell>{new Date(expense.date).toLocaleDateString()}</TableCell>
+                  <TableCell>{expense.description}</TableCell>
+                  <TableCell>{expense.category}</TableCell>
+                  <TableCell>RM{expense.amount.toLocaleString()}</TableCell>
+                  <TableCell>{expense.account.accountNumber}</TableCell>
+                  <TableCell>
+                    <Typography 
+                      component="span" 
+                      sx={{ 
+                        color: expense.status === 'active' ? 'success.main' : 
+                               expense.status === 'pending' ? 'warning.main' : 'error.main',
+                        fontWeight: 600 
+                      }}
+                    >
+                      {expense.status}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Button size="small" variant="outlined">View</Button>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
           </TableBody>
         </Table>
       </TableContainer>
