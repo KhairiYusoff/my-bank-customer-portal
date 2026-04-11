@@ -5,6 +5,7 @@ export { default as ListTab } from './tabs/ListTab';
 export { default as AnalyticsTab } from './tabs/AnalyticsTab';
 export { default as FilterDialog } from './dialogs/FilterDialog';
 export { default as ConfirmDialog } from './dialogs/ConfirmDialog';
+export { default as ExpenseDetailsDialog } from './dialogs/ExpenseDetailsDialog';
 
 // Field components
 export { default as AmountField } from './fields/AmountField';

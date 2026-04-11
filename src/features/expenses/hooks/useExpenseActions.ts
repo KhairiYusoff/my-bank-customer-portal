@@ -1,14 +1,23 @@
 import { useEffect } from "react";
-import { useCreateExpenseMutation, useGetExpensesQuery } from "../store/expensesApi";
+import {
+  useCreateExpenseMutation,
+  useGetExpensesQuery,
+  useGetExpenseByIdQuery,
+  useGetCategoriesQuery,
+  useGetPaymentMethodsQuery,
+} from "../store/expensesApi";
 import { useGetAccountsQuery } from "@/features/accounts/store/accountsApi";
-import { useGetCategoriesQuery, useGetPaymentMethodsQuery } from "../store/expensesApi";
 import { useToast } from "@/utils/snackbarUtils";
 import { useAppSelector } from "@/app/hooks";
 import { notificationService } from "@/features/notifications/services/notificationService";
 import type { FormValues } from "../components/expense-form";
 import type { ExpenseFilters } from "../types/expense";
 
-export const useExpenseActions = (expenseData: FormValues | null, filters?: ExpenseFilters) => {
+export const useExpenseActions = (
+  expenseData: FormValues | null,
+  filters?: ExpenseFilters,
+  expenseId?: string,
+) => {
   const toast = useToast();
   const user = useAppSelector((state) => state.auth.user);
 
@@ -35,6 +44,13 @@ export const useExpenseActions = (expenseData: FormValues | null, filters?: Expe
     isLoading: isExpensesLoading,
     error: expensesError,
   } = useGetExpensesQuery(filters || {});
+  const {
+    data: singleExpenseData,
+    isLoading: isSingleExpenseLoading,
+    error: singleExpenseError,
+  } = useGetExpenseByIdQuery(expenseId!, {
+    skip: !expenseId, // Only run when expenseId is provided
+  });
 
   // Show success notification
   useEffect(() => {
@@ -59,7 +75,10 @@ export const useExpenseActions = (expenseData: FormValues | null, filters?: Expe
   useEffect(() => {
     if (error) {
       const errorMessage = error as any;
-      toast.error(errorMessage.data?.message || "Failed to create expense. Please try again.");
+      toast.error(
+        errorMessage.data?.message ||
+          "Failed to create expense. Please try again.",
+      );
     }
   }, [error, toast]);
 
@@ -80,6 +99,7 @@ export const useExpenseActions = (expenseData: FormValues | null, filters?: Expe
   const categories = categoriesData?.data || [];
   const paymentMethods = paymentMethodsData?.data || [];
   const expenses = expensesData?.data || [];
+  const singleExpense = singleExpenseData?.data;
 
   return {
     // API state
@@ -90,16 +110,19 @@ export const useExpenseActions = (expenseData: FormValues | null, filters?: Expe
     categories,
     paymentMethods,
     expenses,
-    
+    singleExpense,
+
     // Loading states
     isAccountsLoading,
     isCategoriesLoading,
     isPaymentMethodsLoading,
     isExpensesLoading,
-    
+    isSingleExpenseLoading,
+
     // Error states
     expensesError,
-    
+    singleExpenseError,
+
     // Actions
     onConfirm,
   };

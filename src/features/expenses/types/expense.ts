@@ -114,6 +114,11 @@ export interface ExpenseFilters {
   sortOrder?: 'asc' | 'desc';
 }
 
+// Get Single Expense Response
+export interface GetSingleExpenseResponse extends BaseResponse<Expense> {
+  meta: null;
+}
+
 // Get Expenses Response
 export interface GetExpensesResponse extends BaseResponse<Expense[]> {
   meta: {
