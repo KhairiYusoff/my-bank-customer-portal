@@ -1,17 +1,5 @@
 import { useState } from "react";
-
-interface ExpenseFilters {
-  search: string;
-  category: string;
-  paymentMethod: string;
-  account: string;
-  dateFrom: string;
-  dateTo: string;
-  minAmount: number;
-  maxAmount: number;
-  sortBy: string;
-  sortOrder: string;
-}
+import type { ExpenseFilters } from "../types/expense";
 
 export const useExpenseFilters = () => {
   const [filterDialogOpen, setFilterDialogOpen] = useState(false);
@@ -19,7 +7,6 @@ export const useExpenseFilters = () => {
     search: '',
     category: '',
     paymentMethod: '',
-    account: '',
     dateFrom: '',
     dateTo: '',
     minAmount: 0,
@@ -45,7 +32,6 @@ export const useExpenseFilters = () => {
       search: '',
       category: '',
       paymentMethod: '',
-      account: '',
       dateFrom: '',
       dateTo: '',
       minAmount: 0,
