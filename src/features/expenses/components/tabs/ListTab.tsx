@@ -34,6 +34,7 @@ interface ListTabProps {
   onFilterDialogOpen: () => void;
   isLoading: boolean;
   error: any;
+  onViewExpense: (expenseId: string) => void;
 }
 
 const ListTab: React.FC<ListTabProps> = ({
@@ -46,6 +47,7 @@ const ListTab: React.FC<ListTabProps> = ({
   onFilterDialogOpen,
   isLoading,
   error,
+  onViewExpense,
 }) => {
   const isError = !!error;
 
@@ -161,7 +163,13 @@ const ListTab: React.FC<ListTabProps> = ({
                     </Typography>
                   </TableCell>
                   <TableCell>
-                    <Button size="small" variant="outlined">View</Button>
+                    <Button 
+                      size="small" 
+                      variant="outlined"
+                      onClick={() => onViewExpense(expense._id)}
+                    >
+                      View
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))

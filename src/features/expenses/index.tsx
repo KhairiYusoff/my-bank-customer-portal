@@ -18,7 +18,8 @@ import {
   CreateTab, 
   ListTab, 
   AnalyticsTab, 
-  FilterDialog 
+  FilterDialog,
+  ExpenseDetailsDialog
 } from "./components";
 import { useExpenseFilters } from "./hooks/useExpenseFilters";
 import { useExpenseForm } from "./hooks/useExpenseForm";
@@ -49,9 +50,18 @@ const TabPanel: React.FC<TabPanelProps> = ({ children, value, index }) => {
 
 const ExpensesPage: React.FC = () => {
   const [tabValue, setTabValue] = useState(0);
+  const [selectedExpenseId, setSelectedExpenseId] = useState<string | null>(null);
   
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
+  };
+
+  const handleViewExpense = (expenseId: string) => {
+    setSelectedExpenseId(expenseId);
+  };
+
+  const handleCloseExpenseDetails = () => {
+    setSelectedExpenseId(null);
   };
 
   const {
@@ -84,13 +94,16 @@ const ExpensesPage: React.FC = () => {
     categories,
     paymentMethods,
     expenses,
+    singleExpense,
     isLoading,
     isSuccess,
     error,
     isExpensesLoading,
+    isSingleExpenseLoading,
     expensesError,
+    singleExpenseError,
     onConfirm,
-  } = useExpenseActions(expenseData, filters);
+  } = useExpenseActions(expenseData, filters, selectedExpenseId || undefined);
 
   return (
     <DashboardLayout>
@@ -197,6 +210,7 @@ const ExpensesPage: React.FC = () => {
                 onFilterDialogOpen={openFilterDialog}
                 isLoading={isExpensesLoading}
                 error={expensesError}
+                onViewExpense={handleViewExpense}
               />
             </TabPanel>
 
@@ -215,6 +229,15 @@ const ExpensesPage: React.FC = () => {
           categories={categories}
           paymentMethods={paymentMethods}
           accounts={accounts}
+        />
+
+        {/* Expense Details Dialog */}
+        <ExpenseDetailsDialog
+          open={!!selectedExpenseId}
+          onClose={handleCloseExpenseDetails}
+          expense={singleExpense || null}
+          isLoading={isSingleExpenseLoading}
+          error={singleExpenseError}
         />
       </Container>
     </DashboardLayout>
