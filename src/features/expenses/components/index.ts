@@ -6,6 +6,7 @@ export { default as AnalyticsTab } from './tabs/AnalyticsTab';
 export { default as FilterDialog } from './dialogs/FilterDialog';
 export { default as ConfirmDialog } from './dialogs/ConfirmDialog';
 export { default as ExpenseDetailsDialog } from './dialogs/ExpenseDetailsDialog';
+export { default as EditExpenseDialog } from './dialogs/EditExpenseDialog';
 
 // Field components
 export { default as AmountField } from './fields/AmountField';

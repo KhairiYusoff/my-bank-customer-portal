@@ -19,7 +19,8 @@ import {
   ListTab, 
   AnalyticsTab, 
   FilterDialog,
-  ExpenseDetailsDialog
+  ExpenseDetailsDialog,
+  EditExpenseDialog
 } from "./components";
 import { useExpenseFilters } from "./hooks/useExpenseFilters";
 import { useExpenseForm } from "./hooks/useExpenseForm";
@@ -51,6 +52,7 @@ const TabPanel: React.FC<TabPanelProps> = ({ children, value, index }) => {
 const ExpensesPage: React.FC = () => {
   const [tabValue, setTabValue] = useState(0);
   const [selectedExpenseId, setSelectedExpenseId] = useState<string | null>(null);
+  const [editExpenseId, setEditExpenseId] = useState<string | null>(null);
   
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
@@ -62,6 +64,14 @@ const ExpensesPage: React.FC = () => {
 
   const handleCloseExpenseDetails = () => {
     setSelectedExpenseId(null);
+  };
+
+  const handleEditExpense = (expenseId: string) => {
+    setEditExpenseId(expenseId);
+  };
+
+  const handleCloseEditExpense = () => {
+    setEditExpenseId(null);
   };
 
   const {
@@ -95,15 +105,20 @@ const ExpensesPage: React.FC = () => {
     paymentMethods,
     expenses,
     singleExpense,
+    editExpense,
     isLoading,
     isSuccess,
     error,
     isExpensesLoading,
     isSingleExpenseLoading,
+    isEditExpenseLoading,
     expensesError,
     singleExpenseError,
+    isUpdateExpenseLoading,
+    updateExpenseError,
     onConfirm,
-  } = useExpenseActions(expenseData, filters, selectedExpenseId || undefined);
+    onUpdateExpense,
+  } = useExpenseActions(expenseData, filters, selectedExpenseId || undefined, editExpenseId || undefined);
 
   return (
     <DashboardLayout>
@@ -211,6 +226,7 @@ const ExpensesPage: React.FC = () => {
                 isLoading={isExpensesLoading}
                 error={expensesError}
                 onViewExpense={handleViewExpense}
+                onEditExpense={handleEditExpense}
               />
             </TabPanel>
 
@@ -238,6 +254,17 @@ const ExpensesPage: React.FC = () => {
           expense={singleExpense || null}
           isLoading={isSingleExpenseLoading}
           error={singleExpenseError}
+        />
+
+        <EditExpenseDialog
+          open={!!editExpenseId}
+          onClose={handleCloseEditExpense}
+          expense={editExpense || null}
+          isLoading={isEditExpenseLoading}
+          error={updateExpenseError}
+          onUpdateExpense={onUpdateExpense}
+          categories={categories}
+          paymentMethods={paymentMethods}
         />
       </Container>
     </DashboardLayout>

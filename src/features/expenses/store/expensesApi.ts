@@ -8,6 +8,8 @@ import type {
   ExpenseFilters,
   GetSingleExpenseResponse,
   GetExpensesResponse,
+  UpdateExpenseRequest,
+  UpdateExpenseResponse,
 } from '../types/expense';
 
 export const expensesApi = createApi({
@@ -34,6 +36,14 @@ export const expensesApi = createApi({
       query: (id) => `/expenses/${id}`,
       providesTags: ['Expenses'],
     }),
+    updateExpense: builder.mutation<UpdateExpenseResponse, { id: string; data: UpdateExpenseRequest }>({
+      query: ({ id, data }) => ({
+        url: `/expenses/${id}`,
+        method: 'PUT',
+        body: data,
+      }),
+      invalidatesTags: ['Expenses'],
+    }),
     createExpense: builder.mutation<CreateExpenseResponse, CreateExpenseRequest>({
       query: (expenseData) => ({
         url: '/expenses',
@@ -50,5 +60,6 @@ export const {
   useGetPaymentMethodsQuery,
   useGetExpensesQuery,
   useGetExpenseByIdQuery,
+  useUpdateExpenseMutation,
   useCreateExpenseMutation,
 } = expensesApi;

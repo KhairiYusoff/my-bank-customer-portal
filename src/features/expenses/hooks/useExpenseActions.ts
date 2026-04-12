@@ -5,6 +5,7 @@ import {
   useGetExpenseByIdQuery,
   useGetCategoriesQuery,
   useGetPaymentMethodsQuery,
+  useUpdateExpenseMutation,
 } from "../store/expensesApi";
 import { useGetAccountsQuery } from "@/features/accounts/store/accountsApi";
 import { useToast } from "@/utils/snackbarUtils";
@@ -16,10 +17,16 @@ import type { ExpenseFilters } from "../types/expense";
 export const useExpenseActions = (
   expenseData: FormValues | null,
   filters?: ExpenseFilters,
-  expenseId?: string,
+  selectedExpenseId?: string,
+  editExpenseId?: string,
 ) => {
   const toast = useToast();
   const user = useAppSelector((state) => state.auth.user);
+
+  const [
+    updateExpense,
+    { isLoading: isUpdateExpenseLoading, error: updateExpenseError },
+  ] = useUpdateExpenseMutation();
 
   // API hooks
   const [createExpense, { isLoading, isSuccess, error, reset: resetMutation }] =
@@ -48,8 +55,15 @@ export const useExpenseActions = (
     data: singleExpenseData,
     isLoading: isSingleExpenseLoading,
     error: singleExpenseError,
-  } = useGetExpenseByIdQuery(expenseId!, {
-    skip: !expenseId, // Only run when expenseId is provided
+  } = useGetExpenseByIdQuery(selectedExpenseId || '', {
+    skip: !selectedExpenseId,
+  });
+  const {
+    data: editExpenseData,
+    isLoading: isEditExpenseLoading,
+    error: editExpenseError,
+  } = useGetExpenseByIdQuery(editExpenseId || '', {
+    skip: !editExpenseId,
   });
 
   // Show success notification
@@ -94,36 +108,56 @@ export const useExpenseActions = (
     }
   };
 
+  const onUpdateExpense = async (id: string, updateData: any) => {
+    try {
+      await updateExpense({ id, data: updateData }).unwrap();
+      toast.success("Expense updated successfully!");
+      return true;
+    } catch (error: any) {
+      toast.error(
+        error.data?.message || "Failed to update expense. Please try again.",
+      );
+      return false;
+    }
+  };
+
   // Extract data from API responses
   const accounts = accountsData?.data || [];
   const categories = categoriesData?.data || [];
   const paymentMethods = paymentMethodsData?.data || [];
   const expenses = expensesData?.data || [];
   const singleExpense = singleExpenseData?.data;
+  const editExpense = editExpenseData?.data;
 
   return {
-    // API state
-    isLoading,
-    isSuccess,
-    error,
+    // Data
     accounts,
     categories,
     paymentMethods,
     expenses,
     singleExpense,
+    editExpense,
 
     // Loading states
+    isLoading,
+    isSuccess,
+    error,
     isAccountsLoading,
     isCategoriesLoading,
     isPaymentMethodsLoading,
     isExpensesLoading,
     isSingleExpenseLoading,
+    isEditExpenseLoading,
+    isUpdateExpenseLoading,
 
     // Error states
     expensesError,
     singleExpenseError,
+    editExpenseError,
+    updateExpenseError,
 
     // Actions
     onConfirm,
+    onUpdateExpense,
   };
 };
