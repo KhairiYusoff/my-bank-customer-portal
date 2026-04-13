@@ -10,6 +10,7 @@ import type {
   GetExpensesResponse,
   UpdateExpenseRequest,
   UpdateExpenseResponse,
+  DeleteExpenseResponse,
 } from '../types/expense';
 
 export const expensesApi = createApi({
@@ -44,6 +45,13 @@ export const expensesApi = createApi({
       }),
       invalidatesTags: ['Expenses'],
     }),
+    deleteExpense: builder.mutation<DeleteExpenseResponse, string>({
+      query: (id) => ({
+        url: `/expenses/${id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Expenses'],
+    }),
     createExpense: builder.mutation<CreateExpenseResponse, CreateExpenseRequest>({
       query: (expenseData) => ({
         url: '/expenses',
@@ -61,5 +69,6 @@ export const {
   useGetExpensesQuery,
   useGetExpenseByIdQuery,
   useUpdateExpenseMutation,
+  useDeleteExpenseMutation,
   useCreateExpenseMutation,
 } = expensesApi;

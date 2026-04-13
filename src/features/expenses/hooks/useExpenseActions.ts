@@ -6,6 +6,7 @@ import {
   useGetCategoriesQuery,
   useGetPaymentMethodsQuery,
   useUpdateExpenseMutation,
+  useDeleteExpenseMutation,
 } from "../store/expensesApi";
 import { useGetAccountsQuery } from "@/features/accounts/store/accountsApi";
 import { useToast } from "@/utils/snackbarUtils";
@@ -27,6 +28,11 @@ export const useExpenseActions = (
     updateExpense,
     { isLoading: isUpdateExpenseLoading, error: updateExpenseError },
   ] = useUpdateExpenseMutation();
+
+  const [
+    deleteExpense,
+    { isLoading: isDeleteExpenseLoading, error: deleteExpenseError },
+  ] = useDeleteExpenseMutation();
 
   // API hooks
   const [createExpense, { isLoading, isSuccess, error, reset: resetMutation }] =
@@ -121,6 +127,19 @@ export const useExpenseActions = (
     }
   };
 
+  const onDeleteExpense = async (id: string) => {
+    try {
+      await deleteExpense(id).unwrap();
+      toast.success("Expense deleted successfully!");
+      return true;
+    } catch (error: any) {
+      toast.error(
+        error.data?.message || "Failed to delete expense. Please try again.",
+      );
+      return false;
+    }
+  };
+
   // Extract data from API responses
   const accounts = accountsData?.data || [];
   const categories = categoriesData?.data || [];
@@ -149,15 +168,18 @@ export const useExpenseActions = (
     isSingleExpenseLoading,
     isEditExpenseLoading,
     isUpdateExpenseLoading,
+    isDeleteExpenseLoading,
 
     // Error states
     expensesError,
     singleExpenseError,
     editExpenseError,
     updateExpenseError,
+    deleteExpenseError,
 
     // Actions
     onConfirm,
     onUpdateExpense,
+    onDeleteExpense,
   };
 };

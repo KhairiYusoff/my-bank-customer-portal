@@ -150,3 +150,8 @@ export interface GetExpensesResponse extends BaseResponse<Expense[]> {
     pages: number;
   };
 }
+
+// Delete Expense Response
+export interface DeleteExpenseResponse extends BaseResponse<null> {
+  meta: null;
+}
