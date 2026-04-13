@@ -21,6 +21,7 @@ import {
   Search as SearchIcon,
   FilterList as FilterIcon,
   Receipt as ExpenseIcon,
+  Delete as DeleteIcon,
 } from "@mui/icons-material";
 import type { ExpenseCategory, PaymentMethod, Expense, ExpenseFilters } from "../../types/expense";
 import type { Account } from "@/features/accounts/types/account";
@@ -37,6 +38,7 @@ interface ListTabProps {
   error: any;
   onViewExpense: (expenseId: string) => void;
   onEditExpense: (expenseId: string) => void;
+  onDeleteExpense: (expenseId: string) => void;
 }
 
 const ListTab: React.FC<ListTabProps> = ({
@@ -51,6 +53,7 @@ const ListTab: React.FC<ListTabProps> = ({
   error,
   onViewExpense,
   onEditExpense,
+  onDeleteExpense,
 }) => {
   const isError = !!error;
 
@@ -181,6 +184,15 @@ const ListTab: React.FC<ListTabProps> = ({
                         onClick={() => onViewExpense(expense._id)}
                       >
                         View
+                      </Button>
+                      <Button 
+                        size="small" 
+                        variant="outlined"
+                        color="error"
+                        onClick={() => onDeleteExpense(expense._id)}
+                        startIcon={<DeleteIcon />}
+                      >
+                        Delete
                       </Button>
                     </Stack>
                   </TableCell>
