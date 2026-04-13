@@ -20,7 +20,8 @@ import {
   AnalyticsTab, 
   FilterDialog,
   ExpenseDetailsDialog,
-  EditExpenseDialog
+  EditExpenseDialog,
+  DeleteExpenseDialog
 } from "./components";
 import { useExpenseFilters } from "./hooks/useExpenseFilters";
 import { useExpenseForm } from "./hooks/useExpenseForm";
@@ -53,6 +54,7 @@ const ExpensesPage: React.FC = () => {
   const [tabValue, setTabValue] = useState(0);
   const [selectedExpenseId, setSelectedExpenseId] = useState<string | null>(null);
   const [editExpenseId, setEditExpenseId] = useState<string | null>(null);
+  const [deleteExpenseId, setDeleteExpenseId] = useState<string | null>(null);
   
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
@@ -72,6 +74,14 @@ const ExpensesPage: React.FC = () => {
 
   const handleCloseEditExpense = () => {
     setEditExpenseId(null);
+  };
+
+  const handleDeleteExpense = (expenseId: string) => {
+    setDeleteExpenseId(expenseId);
+  };
+
+  const handleCloseDeleteExpense = () => {
+    setDeleteExpenseId(null);
   };
 
   const {
@@ -116,8 +126,11 @@ const ExpensesPage: React.FC = () => {
     singleExpenseError,
     isUpdateExpenseLoading,
     updateExpenseError,
+    isDeleteExpenseLoading,
+    deleteExpenseError,
     onConfirm,
     onUpdateExpense,
+    onDeleteExpense,
   } = useExpenseActions(expenseData, filters, selectedExpenseId || undefined, editExpenseId || undefined);
 
   return (
@@ -227,6 +240,7 @@ const ExpensesPage: React.FC = () => {
                 error={expensesError}
                 onViewExpense={handleViewExpense}
                 onEditExpense={handleEditExpense}
+                onDeleteExpense={handleDeleteExpense}
               />
             </TabPanel>
 
@@ -265,6 +279,16 @@ const ExpensesPage: React.FC = () => {
           onUpdateExpense={onUpdateExpense}
           categories={categories}
           paymentMethods={paymentMethods}
+        />
+
+        {/* Delete Expense Dialog */}
+        <DeleteExpenseDialog
+          open={!!deleteExpenseId}
+          onClose={handleCloseDeleteExpense}
+          expense={expenses.find(e => e._id === deleteExpenseId) || null}
+          isLoading={isDeleteExpenseLoading}
+          error={deleteExpenseError}
+          onDeleteExpense={onDeleteExpense}
         />
       </Container>
     </DashboardLayout>
