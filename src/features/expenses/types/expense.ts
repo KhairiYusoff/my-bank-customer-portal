@@ -119,6 +119,28 @@ export interface GetSingleExpenseResponse extends BaseResponse<Expense> {
   meta: null;
 }
 
+// Update Expense Request
+export interface UpdateExpenseRequest {
+  amount?: number;
+  category?: string;
+  subCategory?: string;
+  description?: string;
+  date?: string;
+  paymentMethod?: string;
+  notes?: string;
+  tags?: string[];
+  merchant?: {
+    name?: string;
+    location?: string;
+    receiptNumber?: string;
+  };
+}
+
+// Update Expense Response
+export interface UpdateExpenseResponse extends BaseResponse<Expense> {
+  meta: null;
+}
+
 // Get Expenses Response
 export interface GetExpensesResponse extends BaseResponse<Expense[]> {
   meta: {
@@ -127,4 +149,9 @@ export interface GetExpensesResponse extends BaseResponse<Expense[]> {
     total: number;
     pages: number;
   };
+}
+
+// Delete Expense Response
+export interface DeleteExpenseResponse extends BaseResponse<null> {
+  meta: null;
 }

@@ -15,6 +15,7 @@ import {
   TableRow,
   Paper,
   Typography,
+  Stack,
 } from "@mui/material";
 import {
   Search as SearchIcon,
@@ -35,6 +36,7 @@ interface ListTabProps {
   isLoading: boolean;
   error: any;
   onViewExpense: (expenseId: string) => void;
+  onEditExpense: (expenseId: string) => void;
 }
 
 const ListTab: React.FC<ListTabProps> = ({
@@ -48,6 +50,7 @@ const ListTab: React.FC<ListTabProps> = ({
   isLoading,
   error,
   onViewExpense,
+  onEditExpense,
 }) => {
   const isError = !!error;
 
@@ -163,13 +166,23 @@ const ListTab: React.FC<ListTabProps> = ({
                     </Typography>
                   </TableCell>
                   <TableCell>
-                    <Button 
-                      size="small" 
-                      variant="outlined"
-                      onClick={() => onViewExpense(expense._id)}
-                    >
-                      View
-                    </Button>
+                    <Stack direction="row" spacing={1}>
+                      <Button 
+                        size="small" 
+                        variant="contained"
+                        onClick={() => onEditExpense(expense._id)}
+                        color="primary"
+                      >
+                        Edit
+                      </Button>
+                      <Button 
+                        size="small" 
+                        variant="outlined"
+                        onClick={() => onViewExpense(expense._id)}
+                      >
+                        View
+                      </Button>
+                    </Stack>
                   </TableCell>
                 </TableRow>
               ))
