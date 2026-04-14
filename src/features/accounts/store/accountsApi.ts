@@ -1,4 +1,4 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { baseApi } from "@/app/store/baseApi";
 import type {
   AccountsResponse,
   AccountBalanceResponse,
@@ -8,14 +8,11 @@ import type {
   DepositResponse,
 } from "../types/account";
 
-export const accountsApi = createApi({
-  reducerPath: "accountsApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "/api" }), // Adjust as needed
-  tagTypes: ["Accounts", "AccountBalance"],
+export const accountsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAccounts: builder.query<AccountsResponse, void>({
       query: () => "/accounts",
-      providesTags: ["Accounts"],
+      providesTags: ["Account"],
     }),
     getAccountBalance: builder.query<AccountBalanceResponse, string>({
       query: (accountNumber) => `/accounts/balance/${accountNumber}`,
@@ -30,7 +27,7 @@ export const accountsApi = createApi({
         body: withdrawData,
       }),
       invalidatesTags: (result, error, { accountNumber }) => [
-        "Accounts",
+        "Account",
         { type: "AccountBalance", id: accountNumber },
       ],
     }),
@@ -41,7 +38,7 @@ export const accountsApi = createApi({
         body: depositData,
       }),
       invalidatesTags: (result, error, { accountNumber }) => [
-        "Accounts",
+        "Account",
         { type: "AccountBalance", id: accountNumber },
       ],
     }),

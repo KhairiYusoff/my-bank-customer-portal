@@ -1,11 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { baseApi } from "./baseApi";
-import { profileApi } from "@/features/profile/store/profileApi";
-import { accountsApi } from "@/features/accounts/store/accountsApi";
-import { transactionsApi } from "@/features/transactions/store/transactionsApi";
-import { notificationsApi } from "@/features/notifications/store/notificationsApi";
-import { expensesApi } from "@/features/expenses/store/expensesApi";
 import authReducer from "@/features/auth/store/authSlice";
 
 // Configure the Redux store
@@ -13,11 +8,6 @@ export const store = configureStore({
   reducer: {
     // Add the generated reducer as a specific top-level slice
     [baseApi.reducerPath]: baseApi.reducer,
-    [profileApi.reducerPath]: profileApi.reducer,
-    [accountsApi.reducerPath]: accountsApi.reducer,
-    [transactionsApi.reducerPath]: transactionsApi.reducer,
-    [notificationsApi.reducerPath]: notificationsApi.reducer,
-    [expensesApi.reducerPath]: expensesApi.reducer,
     // Add the auth reducer
     auth: authReducer,
   },
@@ -31,16 +21,11 @@ export const store = configureStore({
           "payload.timestamp",
           "meta.baseQueryMeta.request",
         ],
-        // Ignore these field paths in the state
+        // Ignore these field paths in state
         ignoredPaths: ["api.queries", "api.mutations"],
       },
     })
-      .concat(baseApi.middleware)
-      .concat(profileApi.middleware)
-      .concat(accountsApi.middleware)
-      .concat(transactionsApi.middleware)
-      .concat(notificationsApi.middleware)
-      .concat(expensesApi.middleware),
+      .concat(baseApi.middleware),
   // Enable Redux DevTools in development
   devTools: process.env.NODE_ENV !== "production",
 });

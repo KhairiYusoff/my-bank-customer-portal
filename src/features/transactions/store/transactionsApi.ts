@@ -1,4 +1,4 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { baseApi } from '@/app/store/baseApi';
 import type { 
   TransferRequest, 
   TransferResponse, 
@@ -6,10 +6,7 @@ import type {
   TransactionHistoryResponse 
 } from '../types/transfer';
 
-export const transactionsApi = createApi({
-  reducerPath: 'transactionsApi',
-  baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
-  tagTypes: ['Transactions'],
+export const transactionsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     transfer: builder.mutation<TransferResponse, TransferRequest>({
       query: (body) => ({
@@ -17,14 +14,14 @@ export const transactionsApi = createApi({
         method: 'POST',
         body,
       }),
-      invalidatesTags: ['Transactions'],
+      invalidatesTags: ['Transaction'],
     }),
     getAccountTransactions: builder.query<TransactionHistoryResponse, TransactionHistoryParams>({
       query: ({ accountNumber, page = 1, limit = 10 }) => 
         `/transactions/account/${accountNumber}?page=${page}&limit=${limit}`,
       providesTags: (result, error, { accountNumber }) => [
-        { type: 'Transactions', id: accountNumber },
-        'Transactions'
+        { type: 'Transaction', id: accountNumber },
+        'Transaction'
       ],
     }),
   }),

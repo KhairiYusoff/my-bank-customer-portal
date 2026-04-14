@@ -5,6 +5,10 @@
   "framework": "vite",
   "rewrites": [
     {
+      "source": "/api/(.*)",
+      "destination": "https://my-bank-api-p57h.onrender.com/api/$1"
+    },
+    {
       "source": "/((?!api).*)",
       "destination": "/index.html"
     }

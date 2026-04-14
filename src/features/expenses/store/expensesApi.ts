@@ -1,4 +1,4 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { baseApi } from '@/app/store/baseApi';
 import type {
   GetCategoriesResponse,
   GetPaymentMethodsResponse,
@@ -13,10 +13,7 @@ import type {
   DeleteExpenseResponse,
 } from '../types/expense';
 
-export const expensesApi = createApi({
-  reducerPath: 'expensesApi',
-  baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
-  tagTypes: ['Expenses', 'Categories', 'PaymentMethods'],
+export const expensesApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getCategories: builder.query<GetCategoriesResponse, void>({
       query: () => '/expenses/categories',
