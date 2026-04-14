@@ -3,8 +3,8 @@ import type { BaseQueryFn, FetchArgs, FetchBaseQueryError } from '@reduxjs/toolk
 import type { BaseResponse, ApiError } from '@/types/api';
 
 // API URL configuration
-// In production (Vercel), this should be the actual backend URL
-// In development, this uses the Vite proxy
+// Development uses Vite proxy (/api)
+// Production (Vercel) uses environment variable
 const API_URL = import.meta.env.VITE_API_URL || '/api';
 
 // Create base query with credentials for cookie-based auth
