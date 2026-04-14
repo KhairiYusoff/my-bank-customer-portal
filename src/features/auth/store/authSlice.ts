@@ -25,7 +25,6 @@ const authSlice = createSlice({
       state.token = null;
       state.isAuthenticated = false;
       state.error = null;
-      // TODO: Add API call to invalidate token on the server
     },
     setError: (state, action: PayloadAction<string>) => {
       state.error = action.payload;

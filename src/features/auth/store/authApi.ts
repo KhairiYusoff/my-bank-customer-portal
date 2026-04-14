@@ -137,6 +137,30 @@ export const authApi = baseApi.injectEndpoints({
         statusCode: response.status,
       }),
     }),
+
+    /**
+     * Check if current session is valid
+     * Used on app initialization to restore auth state from cookies
+     */
+    checkToken: builder.query<LoginResponse, void>({
+      query: () => ({
+        url: "/auth/check-token",
+        method: "GET",
+        credentials: "include",
+      }),
+    }),
+
+    /**
+     * Logout user and clear session
+     * Invalidates refresh token on server and clears cookies
+     */
+    logout: builder.mutation<{ success: boolean; message: string }, void>({
+      query: () => ({
+        url: "/auth/logout",
+        method: "POST",
+        credentials: "include",
+      }),
+    }),
   }),
   overrideExisting: false,
 });
@@ -147,4 +171,6 @@ export const {
   useLoginMutation,
   useCompleteProfileMutation,
   useResetPasswordMutation,
+  useLazyCheckTokenQuery,
+  useLogoutMutation,
 } = authApi;
