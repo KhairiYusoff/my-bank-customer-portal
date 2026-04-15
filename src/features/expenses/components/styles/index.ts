@@ -1,5 +1,5 @@
 import { styled, alpha } from "@mui/material/styles";
-import { Paper, TableCell, Tabs } from "@mui/material";
+import { Card, Paper, TableCell, Tabs } from "@mui/material";
 
 export const ExpensesPaper = styled(Paper)(({ theme }) => ({
   borderRadius: theme.shape.borderRadius * 3,
@@ -42,4 +42,11 @@ export const TableHeaderCell = styled(TableCell)(({ theme }) => ({
 export const SectionLabel = styled("span")(({ theme }) => ({
   color: theme.palette.primary.main,
   fontWeight: 600,
+}));
+
+export const ExpenseAmountCard = styled(Card)(({ theme }) => ({
+  marginBottom: theme.spacing(3),
+  background: "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)",
+  border: "none",
+  boxShadow: `0 4px 20px ${alpha(theme.palette.primary.main, 0.1)}`,
 }));

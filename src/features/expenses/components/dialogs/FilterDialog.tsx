@@ -18,6 +18,7 @@ import {
 import {
   FilterList as FilterIcon,
 } from "@mui/icons-material";
+import { DialogHeaderBox, SectionLabel } from "../styles";
 import type { ExpenseCategory, PaymentMethod } from "../../types/expense";
 import type { Account } from "@/features/accounts/types/account";
 
@@ -65,26 +66,21 @@ const FilterDialog: React.FC<FilterDialogProps> = ({
         sx: { borderRadius: 3 }
       }}
     >
-      <DialogTitle sx={{ 
-        backgroundColor: 'rgba(0, 80, 158, 0.05)',
-        borderBottom: 1,
-        borderColor: 'divider',
-        pb: 2
-      }}>
-        <Box display="flex" alignItems="center">
-          <FilterIcon sx={{ mr: 2, color: '#00509e' }} />
-          <Typography variant="h6" sx={{ color: '#00509e', fontWeight: 600 }}>
-            Advanced Filters
-          </Typography>
-        </Box>
+      <DialogTitle sx={{ p: 0 }}>
+        <DialogHeaderBox>
+          <Box display="flex" alignItems="center">
+            <FilterIcon sx={{ mr: 2, color: 'primary.main' }} />
+            <Typography variant="h6" sx={{ color: 'primary.main', fontWeight: 600 }}>
+              Advanced Filters
+            </Typography>
+          </Box>
+        </DialogHeaderBox>
       </DialogTitle>
       <DialogContent sx={{ p: 3 }}>
         <Grid container spacing={3}>
           {/* Date Range */}
           <Grid item xs={12}>
-            <Typography variant="subtitle2" gutterBottom sx={{ color: '#00509e', fontWeight: 600 }}>
-              Date Range
-            </Typography>
+            <SectionLabel>Date Range</SectionLabel>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -117,9 +113,7 @@ const FilterDialog: React.FC<FilterDialogProps> = ({
 
           {/* Payment Method and Account */}
           <Grid item xs={12}>
-            <Typography variant="subtitle2" gutterBottom sx={{ color: '#00509e', fontWeight: 600 }}>
-              Filters
-            </Typography>
+            <SectionLabel>Filters</SectionLabel>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <FormControl size="small" fullWidth>
@@ -160,9 +154,7 @@ const FilterDialog: React.FC<FilterDialogProps> = ({
 
           {/* Amount Range */}
           <Grid item xs={12}>
-            <Typography variant="subtitle2" gutterBottom sx={{ color: '#00509e', fontWeight: 600 }}>
-              Amount Range: RM{filters.minAmount} - RM{filters.maxAmount}
-            </Typography>
+            <SectionLabel>Amount Range: RM{filters.minAmount} - RM{filters.maxAmount}</SectionLabel>
             <Box sx={{ px: 2 }}>
               <Slider
                 value={[filters.minAmount, filters.maxAmount]}
@@ -181,21 +173,14 @@ const FilterDialog: React.FC<FilterDialogProps> = ({
                   { value: 7500, label: 'RM7.5K' },
                   { value: 10000, label: 'RM10K' },
                 ]}
-                sx={{
-                  color: '#00509e',
-                  '& .MuiSlider-thumb': {
-                    backgroundColor: '#00509e',
-                  },
-                }}
+                color="primary"
               />
             </Box>
           </Grid>
 
           {/* Sort Options */}
           <Grid item xs={12}>
-            <Typography variant="subtitle2" gutterBottom sx={{ color: '#00509e', fontWeight: 600 }}>
-              Sort Options
-            </Typography>
+            <SectionLabel>Sort Options</SectionLabel>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <FormControl size="small" fullWidth>
