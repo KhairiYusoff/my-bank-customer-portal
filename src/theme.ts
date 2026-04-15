@@ -111,21 +111,6 @@ const theme = createTheme({
         size: "small",
       },
     },
-    MuiCard: {
-      styleOverrides: {
-        root: {
-          borderRadius: 12,
-          transition: "all 0.3s ease-in-out",
-        },
-      },
-    },
-    MuiPaper: {
-      styleOverrides: {
-        root: {
-          borderRadius: 12,
-        },
-      },
-    },
   },
 });
 
