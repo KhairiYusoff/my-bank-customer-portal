@@ -37,7 +37,7 @@ const AuthLoadingScreen: React.FC = () => (
       justifyContent: "center",
       alignItems: "center",
       minHeight: "100vh",
-      backgroundColor: "#f6f8fa",
+      backgroundColor: theme.palette.background.default,
     }}
   >
     <CircularProgress size={60} />
