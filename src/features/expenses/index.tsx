@@ -3,11 +3,10 @@ import {
   Box,
   Container,
   Typography,
-  Paper,
   Avatar,
-  Tabs,
   Tab,
 } from "@mui/material";
+import { ExpensesPaper, TabsContainer } from "./components/styles";
 import {
   Receipt as ExpenseIcon,
   FilterList as FilterIcon,
@@ -154,36 +153,10 @@ const ExpensesPage: React.FC = () => {
         </Box>
 
         {/* Tabs */}
-        <Paper 
-          sx={{ 
-            borderRadius: 3, 
-            boxShadow: '0 8px 32px rgba(0, 80, 158, 0.08)',
-            overflow: 'hidden'
-          }}
-        >
-          <Tabs
+        <ExpensesPaper>
+          <TabsContainer
             value={tabValue}
             onChange={handleTabChange}
-            sx={{
-              borderBottom: 1,
-              borderColor: 'divider',
-              backgroundColor: 'rgba(0, 80, 158, 0.02)',
-              '& .MuiTab-root': {
-                minHeight: 64,
-                fontSize: '0.95rem',
-                fontWeight: 500,
-                textTransform: 'none',
-                color: 'text.secondary',
-                '&.Mui-selected': {
-                  color: '#00509e',
-                  fontWeight: 600,
-                },
-              },
-              '& .MuiTabs-indicator': {
-                backgroundColor: '#00509e',
-                height: 3,
-              },
-            }}
           >
             <Tab 
               icon={<ExpenseIcon sx={{ mr: 1 }} />} 
@@ -201,10 +174,10 @@ const ExpensesPage: React.FC = () => {
               iconPosition="start"
               disabled
             />
-          </Tabs>
+          </TabsContainer>
 
           {/* Tab Panels */}
-          <Box sx={{ p: 0 }}>
+          <Box>
             <TabPanel value={tabValue} index={0}>
               <CreateTab
                 accounts={accounts}
@@ -248,7 +221,7 @@ const ExpensesPage: React.FC = () => {
               <AnalyticsTab />
             </TabPanel>
           </Box>
-        </Paper>
+        </ExpensesPaper>
 
         {/* Filter Dialog */}
         <FilterDialog
