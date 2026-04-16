@@ -29,6 +29,9 @@ declare module "@mui/material/styles" {
 }
 
 const theme = createTheme({
+  shape: {
+    borderRadius: 4,
+  },
   palette: {
     mode: "light",
     primary: {
@@ -106,21 +109,6 @@ const theme = createTheme({
         variant: "outlined",
         fullWidth: true,
         size: "small",
-      },
-    },
-    MuiCard: {
-      styleOverrides: {
-        root: {
-          borderRadius: 12,
-          transition: "all 0.3s ease-in-out",
-        },
-      },
-    },
-    MuiPaper: {
-      styleOverrides: {
-        root: {
-          borderRadius: 12,
-        },
       },
     },
   },

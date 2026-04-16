@@ -35,6 +35,7 @@ import {
   Info as InfoIcon,
 } from "@mui/icons-material";
 import type { Expense } from "../../types/expense";
+import { ExpenseAmountCard } from "../styles";
 
 interface ExpenseDetailsDialogProps {
   open: boolean;
@@ -98,15 +99,7 @@ const ExpenseDetailsDialog: React.FC<ExpenseDetailsDialogProps> = ({
         ) : expense ? (
           <Box>
             {/* Amount and Status Card */}
-            <Card
-              variant="outlined"
-              sx={{
-                mb: 3,
-                background: "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)",
-                border: "none",
-                boxShadow: "0 4px 20px rgba(0, 80, 158, 0.1)",
-              }}
-            >
+            <ExpenseAmountCard variant="outlined">
               <CardContent sx={{ pb: 2 }}>
                 <Box
                   display="flex"
@@ -140,9 +133,7 @@ const ExpenseDetailsDialog: React.FC<ExpenseDetailsDialogProps> = ({
                   </Box>
                 </Box>
               </CardContent>
-            </Card>
-
-            {/* Basic Information */}
+            </ExpenseAmountCard>
             <Card variant="outlined" sx={{ mb: 3 }}>
               <CardContent>
                 <Typography variant="h6" gutterBottom sx={{ mb: 3 }}>

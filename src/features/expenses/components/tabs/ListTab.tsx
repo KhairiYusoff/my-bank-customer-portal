@@ -17,6 +17,7 @@ import {
   Typography,
   Stack,
 } from "@mui/material";
+import { TableHeaderCell } from "../styles";
 import {
   Search as SearchIcon,
   FilterList as FilterIcon,
@@ -110,15 +111,15 @@ const ListTab: React.FC<ListTabProps> = ({
       {/* Data Table */}
       <TableContainer component={Paper} variant="outlined" sx={{ borderRadius: 2 }}>
         <Table>
-          <TableHead sx={{ backgroundColor: 'rgba(0, 80, 158, 0.05)' }}>
+          <TableHead>
             <TableRow>
-              <TableCell sx={{ fontWeight: 600, color: '#00509e' }}>Date</TableCell>
-              <TableCell sx={{ fontWeight: 600, color: '#00509e' }}>Description</TableCell>
-              <TableCell sx={{ fontWeight: 600, color: '#00509e' }}>Category</TableCell>
-              <TableCell sx={{ fontWeight: 600, color: '#00509e' }}>Amount</TableCell>
-              <TableCell sx={{ fontWeight: 600, color: '#00509e' }}>Account</TableCell>
-              <TableCell sx={{ fontWeight: 600, color: '#00509e' }}>Status</TableCell>
-              <TableCell sx={{ fontWeight: 600, color: '#00509e' }}>Actions</TableCell>
+              <TableHeaderCell>Date</TableHeaderCell>
+              <TableHeaderCell>Description</TableHeaderCell>
+              <TableHeaderCell>Category</TableHeaderCell>
+              <TableHeaderCell>Amount</TableHeaderCell>
+              <TableHeaderCell>Account</TableHeaderCell>
+              <TableHeaderCell>Status</TableHeaderCell>
+              <TableHeaderCell>Actions</TableHeaderCell>
             </TableRow>
           </TableHead>
           <TableBody>
