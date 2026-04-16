@@ -42,6 +42,7 @@ import AmountField from "../fields/AmountField";
 import CategorySelect from "../fields/CategorySelect";
 import MerchantInfo from "../fields/MerchantInfo";
 import FormActions from "../fields/FormActions";
+import { ExpenseFormCard } from "../styles";
 
 export type FormValues = ExpenseFormData;
 
@@ -86,9 +87,7 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
 }) => {
   return (
     <>
-      <Card
-        sx={{ borderRadius: 3, boxShadow: "0 8px 32px rgba(0, 80, 158, 0.08)" }}
-      >
+      <ExpenseFormCard>
         <CardContent sx={{ p: 4 }}>
           <Box component="form" onSubmit={handleSubmit(onSubmit)}>
             <Grid container spacing={3}>
@@ -229,7 +228,7 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
             </Grid>
           </Box>
         </CardContent>
-      </Card>
+      </ExpenseFormCard>
 
       {/* Confirmation Dialog */}
       <ConfirmDialog

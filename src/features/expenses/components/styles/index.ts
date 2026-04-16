@@ -50,3 +50,8 @@ export const ExpenseAmountCard = styled(Card)(({ theme }) => ({
   border: "none",
   boxShadow: `0 4px 20px ${alpha(theme.palette.primary.main, 0.1)}`,
 }));
+
+export const ExpenseFormCard = styled(Card)(({ theme }) => ({
+  borderRadius: theme.shape.borderRadius * 3,
+  boxShadow: theme.palette.customShadows.card,
+}));
