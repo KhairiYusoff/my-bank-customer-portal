@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
 import { 
   Box, 
   Container, 
@@ -29,18 +28,7 @@ import { useGetAccountsQuery, useDepositMutation } from '@/features/accounts/sto
 import { useToast } from '@/utils/snackbarUtils';
 import { useAppSelector } from '@/app/hooks';
 import { notificationService } from '@/features/notifications/services/notificationService';
-
-const schema: yup.ObjectSchema<IDepositForm> = yup.object().shape({
-  accountNumber: yup.string().required('Account is required'),
-  amount: yup.number().typeError('Amount must be a number').positive('Amount must be positive').required('Amount is required'),
-  description: yup.string(),
-});
-
-interface IDepositForm {
-  accountNumber: string;
-  amount: number;
-  description?: string;
-}
+import { depositSchema, type IDepositForm } from '../validations/accountValidation';
 
 const DepositPage: React.FC = () => {
   const { data: accountsResponse, isLoading: isLoadingAccounts } = useGetAccountsQuery();
@@ -55,7 +43,7 @@ const DepositPage: React.FC = () => {
     reset,
     formState: { errors, isDirty, isValid },
   } = useForm<IDepositForm>({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(depositSchema),
     mode: 'onChange',
     defaultValues: { accountNumber: '', amount: 0, description: '' },
   });

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
 import {
   Box,
   Container,
@@ -30,20 +29,7 @@ import {
 import { useToast } from '@/utils/snackbarUtils';
 import { useAppSelector } from '@/app/hooks';
 import { notificationService } from '@/features/notifications/services/notificationService';
-
-const schema = yup.object().shape({
-  accountNumber: yup.string().required("Account is required"),
-  amount: yup
-    .number()
-    .typeError("Amount must be a number")
-    .positive("Amount must be positive")
-    .required("Amount is required"),
-});
-
-interface IWithdrawForm {
-  accountNumber: string;
-  amount: number;
-}
+import { withdrawSchema, type IWithdrawForm } from '../validations/accountValidation';
 
 const WithdrawPage: React.FC = () => {
   const { data: accountsResponse, isLoading: isLoadingAccounts } =
@@ -62,7 +48,7 @@ const WithdrawPage: React.FC = () => {
     reset,
     formState: { errors, isDirty, isValid },
   } = useForm<IWithdrawForm>({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(withdrawSchema),
     mode: "onChange",
     defaultValues: { accountNumber: "", amount: 0 },
   });
