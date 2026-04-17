@@ -14,15 +14,12 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle,
   Typography,
-  Card,
   CardContent,
   Grid,
   MenuItem,
   Divider,
   Stack,
-  Avatar,
   Chip,
 } from "@mui/material";
 import {
@@ -33,6 +30,19 @@ import {
 } from "@mui/icons-material";
 import type { TransferRequest } from "../types/transfer";
 import type { Account } from "@/features/accounts/types/account";
+import {
+  TransferFormCard,
+  PrimaryIconAvatar,
+  InfoIconAvatar,
+  WarningIconAvatar,
+  TransferIconAvatar,
+  TransferSubmitButton,
+  TransferConfirmButton,
+  GradientDialogTitle,
+  PrimaryDialogInfoBox,
+  InfoDialogInfoBox,
+  WarningDialogInfoBox,
+} from "./styles";
 
 export type FormValues = TransferRequest;
 
@@ -77,17 +87,17 @@ const TransferForm: React.FC<TransferFormProps> = ({
 
   return (
     <>
-      <Card sx={{ borderRadius: 3, boxShadow: '0 8px 32px rgba(0, 80, 158, 0.08)' }}>
+      <TransferFormCard>
         <CardContent sx={{ p: 4 }}>
           <Box component="form" onSubmit={handleSubmit(onSubmit)}>
             <Grid container spacing={3}>
               {/* From Account */}
               <Grid item xs={12}>
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                  <Avatar sx={{ backgroundColor: 'rgba(0, 80, 158, 0.1)', mr: 2 }}>
-                    <AccountBalanceIcon sx={{ color: '#00509e' }} />
-                  </Avatar>
-                  <Typography variant="h6" sx={{ color: '#00509e', fontWeight: 600 }}>
+                  <PrimaryIconAvatar sx={{ mr: 2 }}>
+                    <AccountBalanceIcon sx={{ color: 'primary.main' }} />
+                  </PrimaryIconAvatar>
+                  <Typography variant="h6" sx={{ color: 'primary.main', fontWeight: 600 }}>
                     From Account
                   </Typography>
                 </Box>
@@ -123,13 +133,9 @@ const TransferForm: React.FC<TransferFormProps> = ({
               {/* Transfer Icon */}
               <Grid item xs={12}>
                 <Box sx={{ display: 'flex', justifyContent: 'center', my: 2 }}>
-                  <Avatar sx={{ 
-                    backgroundColor: '#1976d2', 
-                    width: 48, 
-                    height: 48 
-                  }}>
+                  <TransferIconAvatar>
                     <TransferIcon />
-                  </Avatar>
+                  </TransferIconAvatar>
                 </Box>
                 <Divider />
               </Grid>
@@ -137,10 +143,10 @@ const TransferForm: React.FC<TransferFormProps> = ({
               {/* To Account */}
               <Grid item xs={12}>
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                  <Avatar sx={{ backgroundColor: 'rgba(25, 118, 210, 0.1)', mr: 2 }}>
-                    <SendIcon sx={{ color: '#1976d2' }} />
-                  </Avatar>
-                  <Typography variant="h6" sx={{ color: '#1976d2', fontWeight: 600 }}>
+                  <InfoIconAvatar sx={{ mr: 2 }}>
+                    <SendIcon sx={{ color: 'info.main' }} />
+                  </InfoIconAvatar>
+                  <Typography variant="h6" sx={{ color: 'info.main', fontWeight: 600 }}>
                     To Account
                   </Typography>
                 </Box>
@@ -162,10 +168,10 @@ const TransferForm: React.FC<TransferFormProps> = ({
               {/* Amount */}
               <Grid item xs={12}>
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                  <Avatar sx={{ backgroundColor: 'rgba(237, 108, 2, 0.1)', mr: 2 }}>
-                    <MoneyIcon sx={{ color: '#ed6c02' }} />
-                  </Avatar>
-                  <Typography variant="h6" sx={{ color: '#ed6c02', fontWeight: 600 }}>
+                  <WarningIconAvatar sx={{ mr: 2 }}>
+                    <MoneyIcon sx={{ color: 'warning.main' }} />
+                  </WarningIconAvatar>
+                  <Typography variant="h6" sx={{ color: 'warning.main', fontWeight: 600 }}>
                     Transfer Amount
                   </Typography>
                 </Box>
@@ -192,35 +198,21 @@ const TransferForm: React.FC<TransferFormProps> = ({
 
               {/* Submit Button */}
               <Grid item xs={12}>
-                <Button
+                <TransferSubmitButton
                   type="submit"
                   variant="contained"
                   disabled={!isDirty || !isValid || isLoading}
                   fullWidth
                   size="large"
                   startIcon={isLoading ? <CircularProgress size={20} /> : <TransferIcon />}
-                  sx={{
-                    mt: 3,
-                    py: 2,
-                    borderRadius: 2,
-                    background: 'linear-gradient(135deg, #00509e 0%, #1976d2 100%)',
-                    fontSize: '1.1rem',
-                    fontWeight: 600,
-                    '&:hover': {
-                      background: 'linear-gradient(135deg, #00509e 20%, #1976d2 80%)',
-                    },
-                    '&:disabled': {
-                      background: 'rgba(0, 0, 0, 0.12)',
-                    }
-                  }}
                 >
                   {isLoading ? 'Processing...' : 'Transfer Funds'}
-                </Button>
+                </TransferSubmitButton>
               </Grid>
             </Grid>
           </Box>
         </CardContent>
-      </Card>
+      </TransferFormCard>
 
       {/* Confirmation Dialog */}
       <Dialog 
@@ -232,28 +224,17 @@ const TransferForm: React.FC<TransferFormProps> = ({
           sx: { borderRadius: 3 }
         }}
       >
-        <DialogTitle sx={{ 
-          background: 'linear-gradient(135deg, #00509e 0%, #1976d2 100%)',
-          color: 'white',
-          display: 'flex',
-          alignItems: 'center',
-          gap: 2
-        }}>
+        <GradientDialogTitle>
           <TransferIcon />
           Confirm Transfer
-        </DialogTitle>
+        </GradientDialogTitle>
         <DialogContent sx={{ p: 4 }}>
           <DialogContentText sx={{ mb: 3 }}>
             Please review the transfer details carefully before confirming.
           </DialogContentText>
           
           <Stack spacing={3}>
-            <Box sx={{ 
-              backgroundColor: 'rgba(0, 80, 158, 0.05)', 
-              p: 3, 
-              borderRadius: 2,
-              border: '1px solid rgba(0, 80, 158, 0.1)'
-            }}>
+            <PrimaryDialogInfoBox>
               <Typography variant="subtitle2" color="text.secondary" gutterBottom>
                 FROM ACCOUNT
               </Typography>
@@ -269,39 +250,28 @@ const TransferForm: React.FC<TransferFormProps> = ({
                   sx={{ mt: 1 }}
                 />
               )}
-            </Box>
+            </PrimaryDialogInfoBox>
 
-            <Box sx={{ 
-              backgroundColor: 'rgba(25, 118, 210, 0.05)', 
-              p: 3, 
-              borderRadius: 2,
-              border: '1px solid rgba(25, 118, 210, 0.1)'
-            }}>
+            <InfoDialogInfoBox>
               <Typography variant="subtitle2" color="text.secondary" gutterBottom>
                 TO ACCOUNT
               </Typography>
               <Typography variant="h6" sx={{ fontFamily: 'monospace' }}>
                 {transferData?.toAccountNumber}
               </Typography>
-            </Box>
+            </InfoDialogInfoBox>
 
-            <Box sx={{ 
-              backgroundColor: 'rgba(237, 108, 2, 0.05)', 
-              p: 3, 
-              borderRadius: 2,
-              border: '1px solid rgba(237, 108, 2, 0.1)',
-              textAlign: 'center'
-            }}>
+            <WarningDialogInfoBox>
               <Typography variant="subtitle2" color="text.secondary" gutterBottom>
                 TRANSFER AMOUNT
               </Typography>
-              <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#ed6c02' }}>
+              <Typography variant="h4" sx={{ fontWeight: 'bold', color: 'warning.main' }}>
                 ${transferData?.amount?.toFixed(2)}
               </Typography>
               <Typography variant="caption" color="text.secondary">
                 {getSelectedAccount(transferData?.fromAccountNumber || '')?.currency || 'USD'}
               </Typography>
-            </Box>
+            </WarningDialogInfoBox>
           </Stack>
         </DialogContent>
         <DialogActions sx={{ p: 3, pt: 0 }}>
@@ -312,19 +282,14 @@ const TransferForm: React.FC<TransferFormProps> = ({
           >
             Cancel
           </Button>
-          <Button 
+          <TransferConfirmButton
             onClick={handleConfirmTransfer} 
             variant="contained" 
             disabled={isLoading}
             startIcon={isLoading ? <CircularProgress size={20} /> : <SendIcon />}
-            sx={{
-              borderRadius: 2,
-              background: 'linear-gradient(135deg, #00509e 0%, #1976d2 100%)',
-              px: 3
-            }}
           >
             {isLoading ? 'Processing...' : 'Confirm Transfer'}
-          </Button>
+          </TransferConfirmButton>
         </DialogActions>
       </Dialog>
     </>
