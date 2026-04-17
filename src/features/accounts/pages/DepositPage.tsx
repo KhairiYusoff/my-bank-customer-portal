@@ -22,6 +22,7 @@ import {
 } from '@mui/icons-material';
 import DashboardLayout from '@/layouts/DashboardLayout';
 import { useDepositForm } from '../hooks/useDepositForm';
+import { PageHeader, EmptyState } from '../components';
 
 const DepositPage: React.FC = () => {
   const {
@@ -58,25 +59,11 @@ const DepositPage: React.FC = () => {
       <DashboardLayout>
         <Container maxWidth="md">
           <Box sx={{ my: 4 }}>
-            <Card>
-              <CardContent sx={{ textAlign: 'center', py: 6 }}>
-                <Avatar sx={{ 
-                  backgroundColor: 'rgba(0, 80, 158, 0.1)',
-                  width: 80, 
-                  height: 80, 
-                  mx: 'auto',
-                  mb: 2 
-                }}>
-                  <AccountBalanceIcon sx={{ fontSize: '2.5rem', color: '#00509e' }} />
-                </Avatar>
-                <Typography variant="h5" color="text.secondary" gutterBottom>
-                  No Accounts Available
-                </Typography>
-                <Typography variant="body1" color="text.secondary">
-                  You need at least one account to make deposits.
-                </Typography>
-              </CardContent>
-            </Card>
+            <EmptyState
+              icon={<AccountBalanceIcon />}
+              title="No Accounts Available"
+              description="You need at least one account to make deposits."
+            />
           </Box>
         </Container>
       </DashboardLayout>
@@ -88,36 +75,12 @@ const DepositPage: React.FC = () => {
       <Container maxWidth="md">
         <Box sx={{ my: 4 }}>
           {/* Header Section */}
-          <Paper sx={{ 
-            p: 4, 
-            mb: 4, 
-            background: 'linear-gradient(135deg, #2e7d32 0%, #4caf50 100%)',
-            color: 'white',
-            borderRadius: 3
-          }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-              <Avatar sx={{ 
-                backgroundColor: 'rgba(255, 255, 255, 0.2)',
-                mr: 2,
-                width: 56,
-                height: 56
-              }}>
-                <DepositIcon fontSize="large" />
-              </Avatar>
-              <Box>
-                <Typography 
-                  variant="h4" 
-                  component="h1"
-                  sx={{ fontWeight: 'bold', mb: 1 }}
-                >
-                  Deposit Funds
-                </Typography>
-                <Typography variant="subtitle1" sx={{ opacity: 0.9 }}>
-                  Add money to your account securely
-                </Typography>
-              </Box>
-            </Box>
-          </Paper>
+          <PageHeader
+            title="Deposit Funds"
+            subtitle="Add money to your account securely"
+            icon={<DepositIcon fontSize="large" />}
+            gradient="linear-gradient(135deg, #2e7d32 0%, #4caf50 100%)"
+          />
 
           {/* Deposit Form */}
           <Card sx={{ borderRadius: 3, boxShadow: '0 8px 32px rgba(46, 125, 50, 0.08)' }}>

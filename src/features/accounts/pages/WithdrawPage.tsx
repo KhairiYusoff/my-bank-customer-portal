@@ -10,7 +10,6 @@ import {
   MenuItem,
   Card,
   CardContent,
-  Paper,
   Avatar,
   Grid,
 } from "@mui/material";
@@ -21,6 +20,7 @@ import {
 } from "@mui/icons-material";
 import DashboardLayout from "@/layouts/DashboardLayout";
 import { useWithdrawForm } from "../hooks/useWithdrawForm";
+import { PageHeader, EmptyState } from "../components";
 
 const WithdrawPage: React.FC = () => {
   const {
@@ -40,12 +40,12 @@ const WithdrawPage: React.FC = () => {
       <DashboardLayout>
         <Container maxWidth="md">
           <Box sx={{ my: 4 }}>
-            <Paper sx={{ textAlign: 'center', py: 6 }}>
+            <Box sx={{ textAlign: 'center', py: 6 }}>
               <CircularProgress size={60} />
               <Typography variant="h6" sx={{ mt: 2, color: 'text.secondary' }}>
                 Loading your accounts...
               </Typography>
-            </Paper>
+            </Box>
           </Box>
         </Container>
       </DashboardLayout>
@@ -57,25 +57,11 @@ const WithdrawPage: React.FC = () => {
       <DashboardLayout>
         <Container maxWidth="md">
           <Box sx={{ my: 4 }}>
-            <Card>
-              <CardContent sx={{ textAlign: 'center', py: 6 }}>
-                <Avatar sx={{ 
-                  backgroundColor: 'rgba(211, 47, 47, 0.1)',
-                  width: 80, 
-                  height: 80, 
-                  mx: 'auto',
-                  mb: 2 
-                }}>
-                  <AccountBalanceIcon sx={{ fontSize: '2.5rem', color: '#d32f2f' }} />
-                </Avatar>
-                <Typography variant="h5" color="text.secondary" gutterBottom>
-                  No Accounts Available
-                </Typography>
-                <Typography variant="body1" color="text.secondary">
-                  You need at least one account to make withdrawals.
-                </Typography>
-              </CardContent>
-            </Card>
+            <EmptyState
+              icon={<AccountBalanceIcon />}
+              title="No Accounts Available"
+              description="You need at least one account to make withdrawals."
+            />
           </Box>
         </Container>
       </DashboardLayout>
@@ -87,36 +73,12 @@ const WithdrawPage: React.FC = () => {
       <Container maxWidth="md">
         <Box sx={{ my: 4 }}>
           {/* Header Section */}
-          <Paper sx={{ 
-            p: 4, 
-            mb: 4, 
-            background: 'linear-gradient(135deg, #d32f2f 0%, #f44336 100%)',
-            color: 'white',
-            borderRadius: 3
-          }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-              <Avatar sx={{ 
-                backgroundColor: 'rgba(255, 255, 255, 0.2)',
-                mr: 2,
-                width: 56,
-                height: 56
-              }}>
-                <WithdrawIcon fontSize="large" />
-              </Avatar>
-              <Box>
-                <Typography 
-                  variant="h4" 
-                  component="h1"
-                  sx={{ fontWeight: 'bold', mb: 1 }}
-                >
-                  Withdraw Funds
-                </Typography>
-                <Typography variant="subtitle1" sx={{ opacity: 0.9 }}>
-                  Safely withdraw money from your account
-                </Typography>
-              </Box>
-            </Box>
-          </Paper>
+          <PageHeader
+            title="Withdraw Funds"
+            subtitle="Safely withdraw money from your account"
+            icon={<WithdrawIcon fontSize="large" />}
+            gradient="linear-gradient(135deg, #d32f2f 0%, #f44336 100%)"
+          />
 
           {/* Withdraw Form */}
           <Card sx={{ borderRadius: 3, boxShadow: '0 8px 32px rgba(211, 47, 47, 0.08)' }}>
