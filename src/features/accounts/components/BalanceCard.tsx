@@ -2,15 +2,14 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Box,
-  Card,
   CardContent,
   Typography,
-  Button,
   Stack,
   IconButton,
   Alert,
   CircularProgress,
 } from "@mui/material";
+import { GradientBalanceCard, ActionButton } from "./styles";
 import {
   SwapHoriz as TransferIcon,
   Add as DepositIcon,
@@ -38,16 +37,11 @@ const BalanceCard: React.FC<BalanceCardProps> = ({
 
   if (balanceLoading) {
     return (
-      <Card
-        sx={{
-          mb: 3,
-          background: "linear-gradient(135deg, #00509e 0%, #1976d2 100%)",
-        }}
-      >
+      <GradientBalanceCard>
         <CardContent sx={{ color: "white", textAlign: "center", py: 4 }}>
           <CircularProgress color="inherit" />
         </CardContent>
-      </Card>
+      </GradientBalanceCard>
     );
   }
 
@@ -62,14 +56,7 @@ const BalanceCard: React.FC<BalanceCardProps> = ({
 
   if (balanceData?.success && balanceData.data) {
     return (
-      <Card
-        sx={{
-          mb: 3,
-          background: "linear-gradient(135deg, #00509e 0%, #1976d2 100%)",
-          color: "white",
-          boxShadow: "0 8px 32px rgba(0, 80, 158, 0.15)",
-        }}
-      >
+      <GradientBalanceCard>
         <CardContent sx={{ p: 4 }}>
           <Box
             sx={{
@@ -96,42 +83,30 @@ const BalanceCard: React.FC<BalanceCardProps> = ({
           </Box>
 
           <Stack direction="row" spacing={2} sx={{ mt: 3 }}>
-            <Button
+            <ActionButton
               variant="contained"
               startIcon={<TransferIcon />}
               onClick={() => navigate("/transfer")}
-              sx={{
-                backgroundColor: "rgba(255, 255, 255, 0.2)",
-                "&:hover": { backgroundColor: "rgba(255, 255, 255, 0.3)" },
-              }}
             >
               Transfer
-            </Button>
-            <Button
+            </ActionButton>
+            <ActionButton
               variant="contained"
               startIcon={<DepositIcon />}
               onClick={() => navigate("/deposit")}
-              sx={{
-                backgroundColor: "rgba(255, 255, 255, 0.2)",
-                "&:hover": { backgroundColor: "rgba(255, 255, 255, 0.3)" },
-              }}
             >
               Deposit
-            </Button>
-            <Button
+            </ActionButton>
+            <ActionButton
               variant="contained"
               startIcon={<WithdrawIcon />}
               onClick={() => navigate("/withdraw")}
-              sx={{
-                backgroundColor: "rgba(255, 255, 255, 0.2)",
-                "&:hover": { backgroundColor: "rgba(255, 255, 255, 0.3)" },
-              }}
             >
               Withdraw
-            </Button>
+            </ActionButton>
           </Stack>
         </CardContent>
-      </Card>
+      </GradientBalanceCard>
     );
   }
 

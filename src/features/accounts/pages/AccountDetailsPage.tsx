@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Box, Container, Typography } from '@mui/material';
+import { Box, Container } from '@mui/material';
 import DashboardLayout from '@/layouts/DashboardLayout';
 import { useGetAccountBalanceQuery } from '../store/accountsApi';
 import { useGetAccountTransactionsQuery } from '@/features/transactions/store/transactionsApi';
 import { BalanceCard, TransactionsList } from '../components';
+import { GradientTitle } from '../components/styles';
 
 const AccountDetailsPage: React.FC = () => {
   const { accountNumber } = useParams<{ accountNumber: string }>();
@@ -41,20 +42,9 @@ const AccountDetailsPage: React.FC = () => {
     <DashboardLayout>
       <Container maxWidth="lg">
         <Box sx={{ my: 4 }}>
-          <Typography
-            variant="h4"
-            component="h1"
-            gutterBottom
-            sx={{
-              fontWeight: 'bold',
-              background: 'linear-gradient(135deg, #00509e 0%, #1976d2 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              mb: 4,
-            }}
-          >
+          <GradientTitle variant="h4">
             Account Details
-          </Typography>
+          </GradientTitle>
 
           <BalanceCard
             accountNumber={accountNumber!}

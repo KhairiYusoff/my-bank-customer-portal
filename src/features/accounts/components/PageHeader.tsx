@@ -1,19 +1,26 @@
 import React from "react";
-import { Box, Typography, Avatar, Paper } from "@mui/material";
+import { Box, Typography, Paper } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+import { HeaderIconAvatar } from "./styles";
+
+type ColorScheme = "primary" | "success" | "error";
 
 interface PageHeaderProps {
   title: string;
   subtitle: string;
   icon: React.ReactNode;
-  gradient: string;
+  colorScheme: ColorScheme;
 }
 
 const PageHeader: React.FC<PageHeaderProps> = ({
   title,
   subtitle,
   icon,
-  gradient,
+  colorScheme,
 }) => {
+  const theme = useTheme();
+  const gradient = theme.palette.gradients[colorScheme];
+
   return (
     <Paper
       sx={{
@@ -25,16 +32,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({
       }}
     >
       <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
-        <Avatar
-          sx={{
-            backgroundColor: "rgba(255, 255, 255, 0.2)",
-            mr: 2,
-            width: 56,
-            height: 56,
-          }}
-        >
-          {icon}
-        </Avatar>
+        <HeaderIconAvatar>{icon}</HeaderIconAvatar>
         <Box>
           <Typography
             variant="h4"

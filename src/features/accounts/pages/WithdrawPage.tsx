@@ -8,7 +8,6 @@ import {
   Button,
   CircularProgress,
   MenuItem,
-  Card,
   CardContent,
   Avatar,
   Grid,
@@ -21,6 +20,7 @@ import {
 import DashboardLayout from "@/layouts/DashboardLayout";
 import { useWithdrawForm } from "../hooks/useWithdrawForm";
 import { PageHeader, EmptyState } from "../components";
+import { WithdrawFormCard, WithdrawSubmitButton, ErrorIconAvatar } from "../components/styles";
 
 const WithdrawPage: React.FC = () => {
   const {
@@ -77,21 +77,21 @@ const WithdrawPage: React.FC = () => {
             title="Withdraw Funds"
             subtitle="Safely withdraw money from your account"
             icon={<WithdrawIcon fontSize="large" />}
-            gradient="linear-gradient(135deg, #d32f2f 0%, #f44336 100%)"
+            colorScheme="error"
           />
 
           {/* Withdraw Form */}
-          <Card sx={{ borderRadius: 3, boxShadow: '0 8px 32px rgba(211, 47, 47, 0.08)' }}>
+          <WithdrawFormCard>
             <CardContent sx={{ p: 4 }}>
               <form onSubmit={handleSubmit(onSubmit)} noValidate>
                 <Grid container spacing={3}>
                   {/* Account Selection */}
                   <Grid item xs={12}>
                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                      <Avatar sx={{ backgroundColor: 'rgba(211, 47, 47, 0.1)', mr: 2 }}>
-                        <AccountBalanceIcon sx={{ color: '#d32f2f' }} />
-                      </Avatar>
-                      <Typography variant="h6" sx={{ color: '#d32f2f', fontWeight: 600 }}>
+                      <ErrorIconAvatar>
+                        <AccountBalanceIcon sx={{ color: 'error.main' }} />
+                      </ErrorIconAvatar>
+                      <Typography variant="h6" sx={{ color: 'error.main', fontWeight: 600 }}>
                         Select Account
                       </Typography>
                     </Box>
@@ -133,10 +133,10 @@ const WithdrawPage: React.FC = () => {
                   {/* Amount */}
                   <Grid item xs={12}>
                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                      <Avatar sx={{ backgroundColor: 'rgba(244, 67, 54, 0.1)', mr: 2 }}>
-                        <MoneyIcon sx={{ color: '#f44336' }} />
-                      </Avatar>
-                      <Typography variant="h6" sx={{ color: '#f44336', fontWeight: 600 }}>
+                      <ErrorIconAvatar>
+                        <MoneyIcon sx={{ color: 'error.main' }} />
+                      </ErrorIconAvatar>
+                      <Typography variant="h6" sx={{ color: 'error.main', fontWeight: 600 }}>
                         Withdrawal Amount
                       </Typography>
                     </Box>
@@ -169,35 +169,21 @@ const WithdrawPage: React.FC = () => {
 
                   {/* Submit Button */}
                   <Grid item xs={12}>
-                    <Button
+                    <WithdrawSubmitButton
                       type="submit"
                       variant="contained"
                       disabled={!isDirty || !isValid || isLoading}
                       fullWidth
                       size="large"
                       startIcon={isLoading ? <CircularProgress size={20} /> : <WithdrawIcon />}
-                      sx={{
-                        mt: 3,
-                        py: 2,
-                        borderRadius: 2,
-                        background: 'linear-gradient(135deg, #d32f2f 0%, #f44336 100%)',
-                        fontSize: '1.1rem',
-                        fontWeight: 600,
-                        '&:hover': {
-                          background: 'linear-gradient(135deg, #d32f2f 20%, #f44336 80%)',
-                        },
-                        '&:disabled': {
-                          background: 'rgba(0, 0, 0, 0.12)',
-                        }
-                      }}
                     >
                       {isLoading ? 'Processing Withdrawal...' : 'Withdraw Funds'}
-                    </Button>
+                    </WithdrawSubmitButton>
                   </Grid>
                 </Grid>
               </form>
             </CardContent>
-          </Card>
+          </WithdrawFormCard>
         </Box>
       </Container>
     </DashboardLayout>

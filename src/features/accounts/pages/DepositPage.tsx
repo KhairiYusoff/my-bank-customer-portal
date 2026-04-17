@@ -1,28 +1,34 @@
-import React from 'react';
-import { Controller } from 'react-hook-form';
-import { 
-  Box, 
-  Container, 
-  Typography, 
-  TextField, 
-  Button, 
-  CircularProgress, 
-  MenuItem, 
-  Card,
+import React from "react";
+import { Controller } from "react-hook-form";
+import {
+  Box,
+  Container,
+  Typography,
+  TextField,
+  Button,
+  CircularProgress,
+  MenuItem,
   CardContent,
   Paper,
   Avatar,
   Grid,
-} from '@mui/material';
+} from "@mui/material";
 import {
   Add as DepositIcon,
   AccountBalance as AccountBalanceIcon,
   AttachMoney as MoneyIcon,
   Description as DescriptionIcon,
-} from '@mui/icons-material';
-import DashboardLayout from '@/layouts/DashboardLayout';
-import { useDepositForm } from '../hooks/useDepositForm';
-import { PageHeader, EmptyState } from '../components';
+} from "@mui/icons-material";
+import DashboardLayout from "@/layouts/DashboardLayout";
+import { useDepositForm } from "../hooks/useDepositForm";
+import { PageHeader, EmptyState } from "../components";
+import {
+  DepositFormCard,
+  DepositSubmitButton,
+  PrimaryIconAvatar,
+  SuccessIconAvatar,
+  NeutralIconAvatar,
+} from "../components/styles";
 
 const DepositPage: React.FC = () => {
   const {
@@ -42,9 +48,9 @@ const DepositPage: React.FC = () => {
       <DashboardLayout>
         <Container maxWidth="md">
           <Box sx={{ my: 4 }}>
-            <Paper sx={{ textAlign: 'center', py: 6 }}>
+            <Paper sx={{ textAlign: "center", py: 6 }}>
               <CircularProgress size={60} />
-              <Typography variant="h6" sx={{ mt: 2, color: 'text.secondary' }}>
+              <Typography variant="h6" sx={{ mt: 2, color: "text.secondary" }}>
                 Loading your accounts...
               </Typography>
             </Paper>
@@ -79,21 +85,24 @@ const DepositPage: React.FC = () => {
             title="Deposit Funds"
             subtitle="Add money to your account securely"
             icon={<DepositIcon fontSize="large" />}
-            gradient="linear-gradient(135deg, #2e7d32 0%, #4caf50 100%)"
+            colorScheme="success"
           />
 
           {/* Deposit Form */}
-          <Card sx={{ borderRadius: 3, boxShadow: '0 8px 32px rgba(46, 125, 50, 0.08)' }}>
+          <DepositFormCard>
             <CardContent sx={{ p: 4 }}>
               <form onSubmit={handleSubmit(onSubmit)} noValidate>
                 <Grid container spacing={3}>
                   {/* Account Selection */}
                   <Grid item xs={12}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                      <Avatar sx={{ backgroundColor: 'rgba(0, 80, 158, 0.1)', mr: 2 }}>
-                        <AccountBalanceIcon sx={{ color: '#00509e' }} />
-                      </Avatar>
-                      <Typography variant="h6" sx={{ color: '#00509e', fontWeight: 600 }}>
+                    <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+                      <PrimaryIconAvatar>
+                        <AccountBalanceIcon sx={{ color: "primary.main" }} />
+                      </PrimaryIconAvatar>
+                      <Typography
+                        variant="h6"
+                        sx={{ color: "primary.main", fontWeight: 600 }}
+                      >
                         Select Account
                       </Typography>
                     </Box>
@@ -107,22 +116,35 @@ const DepositPage: React.FC = () => {
                           label="Choose Account to Deposit"
                           fullWidth
                           error={!!errors.accountNumber}
-                          helperText={errors.accountNumber?.message || "Select which account to deposit funds into"}
+                          helperText={
+                            errors.accountNumber?.message ||
+                            "Select which account to deposit funds into"
+                          }
                           sx={{
-                            '& .MuiOutlinedInput-root': {
+                            "& .MuiOutlinedInput-root": {
                               borderRadius: 2,
-                            }
+                            },
                           }}
                         >
                           <MenuItem value="">
                             <em>Choose your account</em>
                           </MenuItem>
                           {accountsResponse?.data?.map((account) => (
-                            <MenuItem key={account.accountNumber} value={account.accountNumber}>
+                            <MenuItem
+                              key={account.accountNumber}
+                              value={account.accountNumber}
+                            >
                               <Box>
-                                <Typography variant="subtitle2">{account.accountNumber}</Typography>
-                                <Typography variant="caption" color="text.secondary">
-                                  {account.accountType.replace(/_/g, ' ')} • Balance: ${account.balance?.toFixed(2) || '0.00'}
+                                <Typography variant="subtitle2">
+                                  {account.accountNumber}
+                                </Typography>
+                                <Typography
+                                  variant="caption"
+                                  color="text.secondary"
+                                >
+                                  {account.accountType.replace(/_/g, " ")} •
+                                  Balance: $
+                                  {account.balance?.toFixed(2) || "0.00"}
                                 </Typography>
                               </Box>
                             </MenuItem>
@@ -134,11 +156,14 @@ const DepositPage: React.FC = () => {
 
                   {/* Amount */}
                   <Grid item xs={12}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                      <Avatar sx={{ backgroundColor: 'rgba(46, 125, 50, 0.1)', mr: 2 }}>
-                        <MoneyIcon sx={{ color: '#2e7d32' }} />
-                      </Avatar>
-                      <Typography variant="h6" sx={{ color: '#2e7d32', fontWeight: 600 }}>
+                    <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+                      <SuccessIconAvatar>
+                        <MoneyIcon sx={{ color: "success.main" }} />
+                      </SuccessIconAvatar>
+                      <Typography
+                        variant="h6"
+                        sx={{ color: "success.main", fontWeight: 600 }}
+                      >
                         Deposit Amount
                       </Typography>
                     </Box>
@@ -152,17 +177,20 @@ const DepositPage: React.FC = () => {
                           type="number"
                           fullWidth
                           placeholder="0.00"
-                          inputProps={{ 
-                            min: 0.01, 
+                          inputProps={{
+                            min: 0.01,
                             step: 0.01,
-                            'aria-label': 'Deposit amount'
+                            "aria-label": "Deposit amount",
                           }}
                           error={!!errors.amount}
-                          helperText={errors.amount?.message || "Enter the amount to deposit"}
+                          helperText={
+                            errors.amount?.message ||
+                            "Enter the amount to deposit"
+                          }
                           sx={{
-                            '& .MuiOutlinedInput-root': {
+                            "& .MuiOutlinedInput-root": {
                               borderRadius: 2,
-                            }
+                            },
                           }}
                         />
                       )}
@@ -171,11 +199,14 @@ const DepositPage: React.FC = () => {
 
                   {/* Description */}
                   <Grid item xs={12}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                      <Avatar sx={{ backgroundColor: 'rgba(117, 117, 117, 0.1)', mr: 2 }}>
-                        <DescriptionIcon sx={{ color: '#757575' }} />
-                      </Avatar>
-                      <Typography variant="h6" sx={{ color: '#757575', fontWeight: 600 }}>
+                    <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+                      <NeutralIconAvatar>
+                        <DescriptionIcon sx={{ color: "text.secondary" }} />
+                      </NeutralIconAvatar>
+                      <Typography
+                        variant="h6"
+                        sx={{ color: "text.secondary", fontWeight: 600 }}
+                      >
                         Description (Optional)
                       </Typography>
                     </Box>
@@ -191,11 +222,14 @@ const DepositPage: React.FC = () => {
                           multiline
                           rows={3}
                           error={!!errors.description}
-                          helperText={errors.description?.message || "Optional description for your records"}
+                          helperText={
+                            errors.description?.message ||
+                            "Optional description for your records"
+                          }
                           sx={{
-                            '& .MuiOutlinedInput-root': {
+                            "& .MuiOutlinedInput-root": {
                               borderRadius: 2,
-                            }
+                            },
                           }}
                         />
                       )}
@@ -204,35 +238,27 @@ const DepositPage: React.FC = () => {
 
                   {/* Submit Button */}
                   <Grid item xs={12}>
-                    <Button
+                    <DepositSubmitButton
                       type="submit"
                       variant="contained"
                       disabled={!isDirty || !isValid || isLoading}
                       fullWidth
                       size="large"
-                      startIcon={isLoading ? <CircularProgress size={20} /> : <DepositIcon />}
-                      sx={{
-                        mt: 3,
-                        py: 2,
-                        borderRadius: 2,
-                        background: 'linear-gradient(135deg, #2e7d32 0%, #4caf50 100%)',
-                        fontSize: '1.1rem',
-                        fontWeight: 600,
-                        '&:hover': {
-                          background: 'linear-gradient(135deg, #2e7d32 20%, #4caf50 80%)',
-                        },
-                        '&:disabled': {
-                          background: 'rgba(0, 0, 0, 0.12)',
-                        }
-                      }}
+                      startIcon={
+                        isLoading ? (
+                          <CircularProgress size={20} />
+                        ) : (
+                          <DepositIcon />
+                        )
+                      }
                     >
-                      {isLoading ? 'Processing Deposit...' : 'Deposit Funds'}
-                    </Button>
+                      {isLoading ? "Processing Deposit..." : "Deposit Funds"}
+                    </DepositSubmitButton>
                   </Grid>
                 </Grid>
               </form>
             </CardContent>
-          </Card>
+          </DepositFormCard>
         </Box>
       </Container>
     </DashboardLayout>
@@ -240,4 +266,3 @@ const DepositPage: React.FC = () => {
 };
 
 export default DepositPage;
-
