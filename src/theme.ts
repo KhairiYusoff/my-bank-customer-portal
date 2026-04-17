@@ -4,22 +4,26 @@ declare module "@mui/material/styles" {
   interface Palette {
     gradients: {
       primary: string;
+      success: string;
       error: string;
     };
     customShadows: {
       card: string;
       cardHover: string;
+      success: string;
       error: string;
     };
   }
   interface PaletteOptions {
     gradients?: {
       primary?: string;
+      success?: string;
       error?: string;
     };
     customShadows?: {
       card?: string;
       cardHover?: string;
+      success?: string;
       error?: string;
     };
   }
@@ -61,11 +65,13 @@ const theme = createTheme({
     },
     gradients: {
       primary: "linear-gradient(135deg, #00509e 0%, #1976d2 100%)",
+      success: "linear-gradient(135deg, #2e7d32 0%, #4caf50 100%)",
       error: "linear-gradient(135deg, #d32f2f 0%, #f44336 100%)",
     },
     customShadows: {
       card: "0 8px 32px rgba(0, 80, 158, 0.08)",
       cardHover: "0 12px 40px rgba(0, 80, 158, 0.15)",
+      success: "0 8px 32px rgba(46, 125, 50, 0.08)",
       error: "0 8px 32px rgba(211, 47, 47, 0.08)",
     },
   },

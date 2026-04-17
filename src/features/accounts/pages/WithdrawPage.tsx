@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useForm, Controller } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
+import React from "react";
+import { Controller } from "react-hook-form";
 import {
   Box,
   Container,
@@ -9,11 +7,8 @@ import {
   TextField,
   Button,
   CircularProgress,
-  Alert,
   MenuItem,
-  Card,
   CardContent,
-  Paper,
   Avatar,
   Grid,
 } from "@mui/material";
@@ -23,89 +18,34 @@ import {
   AttachMoney as MoneyIcon,
 } from "@mui/icons-material";
 import DashboardLayout from "@/layouts/DashboardLayout";
-import {
-  useGetAccountsQuery,
-  useWithdrawMutation,
-} from "@/features/accounts/store/accountsApi";
-import { useToast } from '@/utils/snackbarUtils';
-import { useAppSelector } from '@/app/hooks';
-import { notificationService } from '@/features/notifications/services/notificationService';
-
-const schema = yup.object().shape({
-  accountNumber: yup.string().required("Account is required"),
-  amount: yup
-    .number()
-    .typeError("Amount must be a number")
-    .positive("Amount must be positive")
-    .required("Amount is required"),
-});
-
-interface IWithdrawForm {
-  accountNumber: string;
-  amount: number;
-}
+import { useWithdrawForm } from "../hooks/useWithdrawForm";
+import { PageHeader, EmptyState } from "../components";
+import { WithdrawFormCard, WithdrawSubmitButton, ErrorIconAvatar } from "../components/styles";
 
 const WithdrawPage: React.FC = () => {
-  const { data: accountsResponse, isLoading: isLoadingAccounts } =
-    useGetAccountsQuery();
-  const [
-    withdraw,
-    { isLoading, isSuccess, isError, error, reset: resetMutation },
-  ] = useWithdrawMutation();
-  const toast = useToast();
-  const user = useAppSelector((state) => state.auth.user);
-  const [withdrawData, setWithdrawData] = useState<IWithdrawForm | null>(null);
-
   const {
     control,
     handleSubmit,
-    reset,
-    formState: { errors, isDirty, isValid },
-  } = useForm<IWithdrawForm>({
-    resolver: yupResolver(schema),
-    mode: "onChange",
-    defaultValues: { accountNumber: "", amount: 0 },
-  });
-
-  useEffect(() => {
-    if (isSuccess && withdrawData && user) {
-      // Show immediate toast
-      toast.success('Withdrawal successful!');
-      
-      // Create backend notification
-      notificationService.createTransactionNotification({
-        userId: user.id,
-        type: 'withdraw',
-        amount: withdrawData.amount,
-        accountNumber: withdrawData.accountNumber,
-      }).catch(console.error);
-      
-      reset();
-      resetMutation();
-      setWithdrawData(null);
-    }
-    if (isError) {
-      const apiError = error as any;
-      toast.error(apiError.data?.message || 'Withdrawal failed.');
-    }
-  }, [isSuccess, isError, error, reset, resetMutation, toast, withdrawData, user]);
-
-  const onSubmit = (data: IWithdrawForm) => {
-    setWithdrawData(data);
-    withdraw(data);
-  };
+    errors,
+    isDirty,
+    isValid,
+    isLoading,
+    isLoadingAccounts,
+    accountsResponse,
+    onSubmit,
+  } = useWithdrawForm();
 
   if (isLoadingAccounts) {
     return (
       <DashboardLayout>
         <Container maxWidth="md">
           <Box sx={{ my: 4 }}>
-            <Paper sx={{ textAlign: 'center', py: 6 }}>
+            <Box sx={{ textAlign: 'center', py: 6 }}>
               <CircularProgress size={60} />
               <Typography variant="h6" sx={{ mt: 2, color: 'text.secondary' }}>
                 Loading your accounts...
               </Typography>
-            </Paper>
+            </Box>
           </Box>
         </Container>
       </DashboardLayout>
@@ -117,25 +57,11 @@ const WithdrawPage: React.FC = () => {
       <DashboardLayout>
         <Container maxWidth="md">
           <Box sx={{ my: 4 }}>
-            <Card>
-              <CardContent sx={{ textAlign: 'center', py: 6 }}>
-                <Avatar sx={{ 
-                  backgroundColor: 'rgba(211, 47, 47, 0.1)',
-                  width: 80, 
-                  height: 80, 
-                  mx: 'auto',
-                  mb: 2 
-                }}>
-                  <AccountBalanceIcon sx={{ fontSize: '2.5rem', color: '#d32f2f' }} />
-                </Avatar>
-                <Typography variant="h5" color="text.secondary" gutterBottom>
-                  No Accounts Available
-                </Typography>
-                <Typography variant="body1" color="text.secondary">
-                  You need at least one account to make withdrawals.
-                </Typography>
-              </CardContent>
-            </Card>
+            <EmptyState
+              icon={<AccountBalanceIcon />}
+              title="No Accounts Available"
+              description="You need at least one account to make withdrawals."
+            />
           </Box>
         </Container>
       </DashboardLayout>
@@ -147,49 +73,25 @@ const WithdrawPage: React.FC = () => {
       <Container maxWidth="md">
         <Box sx={{ my: 4 }}>
           {/* Header Section */}
-          <Paper sx={{ 
-            p: 4, 
-            mb: 4, 
-            background: 'linear-gradient(135deg, #d32f2f 0%, #f44336 100%)',
-            color: 'white',
-            borderRadius: 3
-          }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-              <Avatar sx={{ 
-                backgroundColor: 'rgba(255, 255, 255, 0.2)',
-                mr: 2,
-                width: 56,
-                height: 56
-              }}>
-                <WithdrawIcon fontSize="large" />
-              </Avatar>
-              <Box>
-                <Typography 
-                  variant="h4" 
-                  component="h1"
-                  sx={{ fontWeight: 'bold', mb: 1 }}
-                >
-                  Withdraw Funds
-                </Typography>
-                <Typography variant="subtitle1" sx={{ opacity: 0.9 }}>
-                  Safely withdraw money from your account
-                </Typography>
-              </Box>
-            </Box>
-          </Paper>
+          <PageHeader
+            title="Withdraw Funds"
+            subtitle="Safely withdraw money from your account"
+            icon={<WithdrawIcon fontSize="large" />}
+            colorScheme="error"
+          />
 
           {/* Withdraw Form */}
-          <Card sx={{ borderRadius: 3, boxShadow: '0 8px 32px rgba(211, 47, 47, 0.08)' }}>
+          <WithdrawFormCard>
             <CardContent sx={{ p: 4 }}>
               <form onSubmit={handleSubmit(onSubmit)} noValidate>
                 <Grid container spacing={3}>
                   {/* Account Selection */}
                   <Grid item xs={12}>
                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                      <Avatar sx={{ backgroundColor: 'rgba(211, 47, 47, 0.1)', mr: 2 }}>
-                        <AccountBalanceIcon sx={{ color: '#d32f2f' }} />
-                      </Avatar>
-                      <Typography variant="h6" sx={{ color: '#d32f2f', fontWeight: 600 }}>
+                      <ErrorIconAvatar>
+                        <AccountBalanceIcon sx={{ color: 'error.main' }} />
+                      </ErrorIconAvatar>
+                      <Typography variant="h6" sx={{ color: 'error.main', fontWeight: 600 }}>
                         Select Account
                       </Typography>
                     </Box>
@@ -231,10 +133,10 @@ const WithdrawPage: React.FC = () => {
                   {/* Amount */}
                   <Grid item xs={12}>
                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                      <Avatar sx={{ backgroundColor: 'rgba(244, 67, 54, 0.1)', mr: 2 }}>
-                        <MoneyIcon sx={{ color: '#f44336' }} />
-                      </Avatar>
-                      <Typography variant="h6" sx={{ color: '#f44336', fontWeight: 600 }}>
+                      <ErrorIconAvatar>
+                        <MoneyIcon sx={{ color: 'error.main' }} />
+                      </ErrorIconAvatar>
+                      <Typography variant="h6" sx={{ color: 'error.main', fontWeight: 600 }}>
                         Withdrawal Amount
                       </Typography>
                     </Box>
@@ -267,35 +169,21 @@ const WithdrawPage: React.FC = () => {
 
                   {/* Submit Button */}
                   <Grid item xs={12}>
-                    <Button
+                    <WithdrawSubmitButton
                       type="submit"
                       variant="contained"
                       disabled={!isDirty || !isValid || isLoading}
                       fullWidth
                       size="large"
                       startIcon={isLoading ? <CircularProgress size={20} /> : <WithdrawIcon />}
-                      sx={{
-                        mt: 3,
-                        py: 2,
-                        borderRadius: 2,
-                        background: 'linear-gradient(135deg, #d32f2f 0%, #f44336 100%)',
-                        fontSize: '1.1rem',
-                        fontWeight: 600,
-                        '&:hover': {
-                          background: 'linear-gradient(135deg, #d32f2f 20%, #f44336 80%)',
-                        },
-                        '&:disabled': {
-                          background: 'rgba(0, 0, 0, 0.12)',
-                        }
-                      }}
                     >
                       {isLoading ? 'Processing Withdrawal...' : 'Withdraw Funds'}
-                    </Button>
+                    </WithdrawSubmitButton>
                   </Grid>
                 </Grid>
               </form>
             </CardContent>
-          </Card>
+          </WithdrawFormCard>
         </Box>
       </Container>
     </DashboardLayout>
