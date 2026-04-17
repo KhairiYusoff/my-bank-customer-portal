@@ -15,13 +15,6 @@ export const ActionButton = styled(Button)(({ theme }) => ({
   },
 }));
 
-export const HeaderIconAvatar = styled(Avatar)(({ theme }) => ({
-  backgroundColor: alpha(theme.palette.common.white, 0.2),
-  width: 56,
-  height: 56,
-  marginRight: theme.spacing(2),
-}));
-
 export const GradientTitle = styled(Typography)(({ theme }) => ({
   fontWeight: "bold",
   background: theme.palette.gradients.primary,

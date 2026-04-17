@@ -21,7 +21,8 @@ import {
 } from "@mui/icons-material";
 import DashboardLayout from "@/layouts/DashboardLayout";
 import { useDepositForm } from "../hooks/useDepositForm";
-import { PageHeader, EmptyState } from "../components";
+import { PageHeader } from '@/components';
+import { EmptyState } from '../components';
 import {
   DepositFormCard,
   DepositSubmitButton,

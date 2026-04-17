@@ -1,7 +1,7 @@
 import React from "react";
-import { Box, Typography, Paper } from "@mui/material";
+import { Box, Typography, Paper, Avatar } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import { HeaderIconAvatar } from "./styles";
+import { alpha, styled } from "@mui/material/styles";
 
 type ColorScheme = "primary" | "success" | "error";
 
@@ -11,6 +11,13 @@ interface PageHeaderProps {
   icon: React.ReactNode;
   colorScheme: ColorScheme;
 }
+
+const HeaderIconAvatar = styled(Avatar)(({ theme }) => ({
+  backgroundColor: alpha(theme.palette.common.white, 0.2),
+  width: 56,
+  height: 56,
+  marginRight: theme.spacing(2),
+}));
 
 const PageHeader: React.FC<PageHeaderProps> = ({
   title,
