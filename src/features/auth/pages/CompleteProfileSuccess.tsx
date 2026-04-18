@@ -22,10 +22,6 @@ const CompleteProfileSuccess: React.FC = () => {
     navigate('/');
   };
 
-  const handleLogin = () => {
-    navigate('/login');
-  };
-
   return (
     <Container component="main" maxWidth="md">
       <Box
@@ -74,7 +70,7 @@ const CompleteProfileSuccess: React.FC = () => {
               </ListItemIcon>
               <ListItemText
                 primary="Account Activation"
-                secondary="Once approved, your account will be activated and you'll receive a confirmation email."
+                secondary="Once our team verifies your profile, you will receive a confirmation email with a link to log in. You cannot log in until this email arrives."
               />
             </ListItem>
             
@@ -94,16 +90,6 @@ const CompleteProfileSuccess: React.FC = () => {
           <Box sx={{ mt: 4, display: 'flex', justifyContent: 'center', gap: 2 }}>
             <Button
               variant="contained"
-              color="primary"
-              onClick={handleLogin}
-              size="large"
-              sx={{ minWidth: 180 }}
-            >
-              Go to Login
-            </Button>
-            
-            <Button
-              variant="outlined"
               onClick={handleBackToHome}
               startIcon={<HomeIcon />}
               size="large"
