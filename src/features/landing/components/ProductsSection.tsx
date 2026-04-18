@@ -5,7 +5,6 @@ import {
   Grid,
   Card,
   CardContent,
-  Button,
   Box,
   List,
   ListItem,
@@ -13,7 +12,9 @@ import {
   ListItemText,
 } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import { PRODUCTS, Product } from "@constants/products";
+import { PRODUCTS, Product } from "../constants/products";
+import { getProductGradient } from "../constants/productGradients";
+import { ProductApplyButton } from "./styles";
 
 const ProductsSection: React.FC = () => {
   return (
@@ -23,12 +24,7 @@ const ProductsSection: React.FC = () => {
       </Typography>
       <Grid container spacing={4} justifyContent="center" sx={{ mt: 2 }}>
         {PRODUCTS.map((product: Product, idx) => {
-          const gradients = [
-            "linear-gradient(135deg, #FF7E5F 0%, #FD3A69 100%)",
-            "linear-gradient(135deg, #43CBFF 0%, #9708CC 100%)",
-            "linear-gradient(135deg, #5EFCE8 0%, #736EFE 100%)",
-          ];
-          const bg = gradients[idx % gradients.length];
+          const bg = getProductGradient(idx);
           return (
             <Grid item xs={12} md={4} key={idx}>
               <Card
@@ -75,26 +71,12 @@ const ProductsSection: React.FC = () => {
                   </List>
                 </CardContent>
                 <Box sx={{ textAlign: "center", pb: 3 }}>
-                  <Button
+                  <ProductApplyButton
                     href={`/apply?type=${product.type.toLowerCase()}`}
                     variant="contained"
-                    color="primary"
-                    sx={{
-                      px: 5,
-                      py: 1.5,
-                      borderRadius: 3,
-                      backgroundColor: "common.white",
-                      color: "primary.main",
-                      "&:hover": {
-                        backgroundColor: "rgba(255, 255, 255, 0.9)",
-                        transform: "translateY(-2px)",
-                      },
-                      transition: "all 0.3s ease",
-                      boxShadow: 3,
-                    }}
                   >
                     Apply for {product.type}
-                  </Button>
+                  </ProductApplyButton>
                 </Box>
               </Card>
             </Grid>

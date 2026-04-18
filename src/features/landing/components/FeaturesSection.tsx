@@ -8,7 +8,7 @@ import {
   Avatar,
   Box,
 } from "@mui/material";
-import { FEATURES, Feature } from "@constants/features";
+import { FEATURES, Feature } from "../constants/features";
 
 const FeaturesSection: React.FC = () => (
   <Container maxWidth="lg" sx={{ py: { xs: 6, md: 10 } }}>

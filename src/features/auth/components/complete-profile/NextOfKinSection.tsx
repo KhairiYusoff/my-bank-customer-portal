@@ -67,7 +67,7 @@ const NextOfKinSection: React.FC = () => {
         </Grid>
       </Grid>
       
-      <Box mt={4} p={3} bgcolor="#f5f5f5" borderRadius={1}>
+      <Box mt={4} p={3} bgcolor="grey.100" borderRadius={1}>
         <Typography variant="subtitle2" color="textSecondary">
           <strong>Note:</strong> The information provided will be kept confidential and used only for verification and emergency contact purposes.
         </Typography>
