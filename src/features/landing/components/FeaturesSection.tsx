@@ -3,12 +3,11 @@ import {
   Container,
   Typography,
   Grid,
-  Card,
   CardContent,
-  Avatar,
   Box,
 } from "@mui/material";
 import { FEATURES, Feature } from "../constants/features";
+import { FeatureCard } from "./styles";
 
 const FeaturesSection: React.FC = () => (
   <Container maxWidth="lg" sx={{ py: { xs: 6, md: 10 } }}>
@@ -20,16 +19,7 @@ const FeaturesSection: React.FC = () => (
         const Icon = feature.icon;
         return (
           <Grid item xs={12} sm={6} md={3} key={idx}>
-            <Card
-              elevation={3}
-              sx={{
-                height: "100%",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                py: 4,
-              }}
-            >
+          <FeatureCard elevation={3}>
               <Box>
                 <Icon fontSize="large" color="primary" />
               </Box>
@@ -50,7 +40,7 @@ const FeaturesSection: React.FC = () => (
                   {feature.desc}
                 </Typography>
               </CardContent>
-            </Card>
+          </FeatureCard>
           </Grid>
         );
       })}

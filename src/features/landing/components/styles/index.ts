@@ -1,5 +1,54 @@
 import { alpha, Avatar, Box, Button, Card, Typography, styled } from "@mui/material";
 
+// ─── HeroSection ─────────────────────────────────────────────────────────────
+
+export const HeroBox = styled(Box)(({ theme }) => ({
+  backgroundColor: theme.palette.primary.main,
+  color: theme.palette.primary.contrastText,
+  paddingTop: theme.spacing(8),
+  paddingBottom: theme.spacing(8),
+  textAlign: "center",
+  [theme.breakpoints.up("md")]: {
+    paddingTop: theme.spacing(12),
+    paddingBottom: theme.spacing(12),
+  },
+}));
+
+export const HeroApplyButton = styled(Button)({
+  paddingLeft: 48,
+  paddingRight: 48,
+  paddingTop: 16,
+  paddingBottom: 16,
+  fontSize: "1.2rem",
+  borderRadius: 16,
+  boxShadow: "var(--mui-shadows-3)",
+}) as typeof Button;
+
+export const HeroSignInButton = styled(Button)({
+  paddingLeft: 48,
+  paddingRight: 48,
+  paddingTop: 16,
+  paddingBottom: 16,
+  fontSize: "1.2rem",
+  borderRadius: 16,
+  boxShadow: "var(--mui-shadows-3)",
+  borderWidth: 2,
+  "&:hover": {
+    borderWidth: 2,
+  },
+}) as typeof Button;
+
+// ─── FeaturesSection ─────────────────────────────────────────────────────────
+
+export const FeatureCard = styled(Card)({
+  height: "100%",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  paddingTop: 32,
+  paddingBottom: 32,
+});
+
 // ─── TestimonialsSection ──────────────────────────────────────────────────────
 
 export const TestimonialsSectionBox = styled(Box)(({ theme }) => ({
