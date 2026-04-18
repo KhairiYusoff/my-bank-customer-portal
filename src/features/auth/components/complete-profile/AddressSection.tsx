@@ -2,29 +2,10 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { TextField, Grid, Box, Typography, MenuItem } from '@mui/material';
 import { CompleteProfileFormData } from '@/features/auth/types/auth';
+import { MALAYSIAN_STATES } from '../../constants/formOptions';
 
 const AddressSection: React.FC = () => {
   const { register, formState: { errors } } = useFormContext<CompleteProfileFormData>();
-
-  // List of Malaysian states
-  const malaysianStates = [
-    'Johor',
-    'Kedah',
-    'Kelantan',
-    'Melaka',
-    'Negeri Sembilan',
-    'Pahang',
-    'Perak',
-    'Perlis',
-    'Pulau Pinang',
-    'Sabah',
-    'Sarawak',
-    'Selangor',
-    'Terengganu',
-    'Kuala Lumpur',
-    'Labuan',
-    'Putrajaya',
-  ];
 
   return (
     <Box>
@@ -65,7 +46,7 @@ const AddressSection: React.FC = () => {
             helperText={(errors.address as any)?.state?.message as string}
           >
             <MenuItem value="">Select a state</MenuItem>
-            {malaysianStates.map((state) => (
+              {MALAYSIAN_STATES.map((state) => (
               <MenuItem key={state} value={state}>
                 {state}
               </MenuItem>

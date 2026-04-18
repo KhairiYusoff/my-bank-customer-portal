@@ -1,20 +1,11 @@
 import React from 'react';
-import { useFormContext, useWatch } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import { TextField, Grid, MenuItem, Box, Typography } from '@mui/material';
 import { CompleteProfileFormData } from '@/features/auth/types/auth';
+import { NOK_RELATIONSHIPS } from '../../constants/formOptions';
 
 const NextOfKinSection: React.FC = () => {
   const { register, formState: { errors } } = useFormContext<CompleteProfileFormData>();
-
-  const relationships = [
-    { value: 'parent', label: 'Parent' },
-    { value: 'spouse', label: 'Spouse' },
-    { value: 'child', label: 'Child' },
-    { value: 'sibling', label: 'Sibling' },
-    { value: 'relative', label: 'Relative' },
-    { value: 'friend', label: 'Friend' },
-    { value: 'other', label: 'Other' },
-  ];
 
   return (
     <Box>
@@ -58,7 +49,7 @@ const NextOfKinSection: React.FC = () => {
             error={!!(errors.nextOfKin as any)?.relationship}
             helperText={(errors.nextOfKin as any)?.relationship?.message as string}
           >
-            {relationships.map((rel) => (
+            {NOK_RELATIONSHIPS.map((rel) => (
               <MenuItem key={rel.value} value={rel.value}>
                 {rel.label}
               </MenuItem>
