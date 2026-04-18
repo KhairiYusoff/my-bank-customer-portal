@@ -3,27 +3,12 @@ import { Controller } from "react-hook-form";
 import { Grid, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import type { Control } from "react-hook-form";
 import type { UpdateProfileRequest } from "@/features/profile/types/profile";
+import { accountTypeOptions, purposeOfAccountOptions } from "../constants/formOptions";
 
 interface AccountDetailsFormProps {
   control: Control<UpdateProfileRequest>;
   editMode: boolean;
 }
-
-const accountTypeOptions = [
-  { value: "savings", label: "Savings" },
-  { value: "current", label: "Current" },
-  { value: "fixed deposit", label: "Fixed Deposit" },
-];
-
-const purposeOfAccountOptions = [
-  { value: "savings", label: "Savings" },
-  { value: "salary credit", label: "Salary Credit" },
-  { value: "investment", label: "Investment" },
-  { value: "business", label: "Business" },
-  { value: "education", label: "Education" },
-  { value: "travel", label: "Travel" },
-  { value: "others", label: "Others" },
-];
 
 const AccountDetailsForm: React.FC<AccountDetailsFormProps> = ({
   control,

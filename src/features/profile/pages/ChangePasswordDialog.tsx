@@ -6,8 +6,6 @@ import {
   Button,
   Box,
   Typography,
-  Avatar,
-  Paper,
 } from "@mui/material";
 import {
   Lock as LockIcon,
@@ -17,6 +15,11 @@ import { useChangePasswordMutation } from "@/features/profile/store/profileApi";
 import { useSnackbar } from "notistack";
 import ChangePasswordForm from "../components/ChangePasswordForm";
 import type { ChangePasswordRequest } from "@/features/profile/types/profile";
+import {
+  DialogGradientHeader,
+  DialogHeaderAvatar,
+  DialogCloseButton,
+} from "../components/styles";
 
 interface ChangePasswordDialogProps {
   open: boolean;
@@ -58,30 +61,15 @@ const ChangePasswordDialog: React.FC<ChangePasswordDialogProps> = ({
       }}
     >
       <DialogContent sx={{ p: 0 }}>
-        {/* Header Section */}
-        <Paper sx={{ 
-          px: 4,
-          py: 3,
-          background: 'linear-gradient(135deg, #00509e 0%, #1976d2 100%)',
-          color: 'white',
-          borderRadius: '12px 12px 0 0',
-          position: 'relative'
-        }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <Avatar sx={{ 
-                backgroundColor: 'rgba(255, 255, 255, 0.2)',
-                mr: 2,
-                width: 48,
-                height: 48
-              }}>
+        {/* Gradient Header */}
+        <DialogGradientHeader>
+          <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <DialogHeaderAvatar>
                 <LockIcon fontSize="medium" />
-              </Avatar>
+              </DialogHeaderAvatar>
               <Box>
-                <Typography 
-                  variant="h5" 
-                  sx={{ fontWeight: 'bold', mb: 0.5 }}
-                >
+                <Typography variant="h5" sx={{ fontWeight: "bold", mb: 0.5 }}>
                   Change Password
                 </Typography>
                 <Typography variant="body2" sx={{ opacity: 0.9 }}>
@@ -89,22 +77,11 @@ const ChangePasswordDialog: React.FC<ChangePasswordDialogProps> = ({
                 </Typography>
               </Box>
             </Box>
-            <Button
-              onClick={onClose}
-              sx={{ 
-                color: 'white',
-                minWidth: 'auto',
-                p: 1,
-                '&:hover': {
-                  backgroundColor: 'rgba(255, 255, 255, 0.1)'
-                }
-              }}
-              disabled={isLoading}
-            >
+            <DialogCloseButton onClick={onClose} disabled={isLoading}>
               <CloseIcon />
-            </Button>
+            </DialogCloseButton>
           </Box>
-        </Paper>
+        </DialogGradientHeader>
 
         {/* Form Section */}
         <Box sx={{ p: 4 }}>

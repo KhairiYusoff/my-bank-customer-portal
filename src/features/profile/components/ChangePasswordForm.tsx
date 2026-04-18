@@ -4,19 +4,22 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import {
   Box,
-  Button,
   TextField,
   InputAdornment,
   IconButton,
   CircularProgress,
   Typography,
-  LinearProgress,
   Stack,
-  Chip,
   Alert,
   Grid,
-  Avatar,
 } from "@mui/material";
+import {
+  PasswordSectionAvatar,
+  PasswordRequirementsBox,
+  PasswordSubmitButton,
+  StrengthChip,
+  StrengthBar,
+} from "./styles";
 import {
   Visibility,
   VisibilityOff,
@@ -84,13 +87,6 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
     setPasswordStrength(Math.min(strength, 100));
   }, [watchedNewPassword]);
 
-  const getStrengthColor = () => {
-    if (passwordStrength < 25) return "#f44336";
-    if (passwordStrength < 50) return "#ff9800";
-    if (passwordStrength < 75) return "#2196f3";
-    return "#4caf50";
-  };
-
   const getStrengthLabel = () => {
     if (passwordStrength < 25) return "Weak";
     if (passwordStrength < 50) return "Fair";
@@ -120,11 +116,11 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
 
         {/* Current Password Section */}
         <Box>
-          <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-            <Avatar sx={{ backgroundColor: 'rgba(211, 47, 47, 0.1)', mr: 2, width: 32, height: 32 }}>
-              <LockIcon sx={{ color: '#d32f2f', fontSize: '1.25rem' }} />
-            </Avatar>
-            <Typography variant="subtitle1" sx={{ fontWeight: 600, color: '#d32f2f' }}>
+          <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+            <PasswordSectionAvatar $variant="current">
+              <LockIcon sx={{ color: "error.main", fontSize: "1.25rem" }} />
+            </PasswordSectionAvatar>
+            <Typography variant="subtitle1" sx={{ fontWeight: 600, color: "error.main" }}>
               Current Password
             </Typography>
           </Box>
@@ -142,11 +138,6 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
                 autoComplete="current-password"
                 error={!!errors.currentPassword}
                 helperText={errors.currentPassword?.message}
-                sx={{
-                  '& .MuiOutlinedInput-root': {
-                    borderRadius: 2,
-                  }
-                }}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
@@ -167,11 +158,11 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
 
         {/* New Password Section */}
         <Box>
-          <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-            <Avatar sx={{ backgroundColor: 'rgba(0, 80, 158, 0.1)', mr: 2, width: 32, height: 32 }}>
-              <KeyIcon sx={{ color: '#00509e', fontSize: '1.25rem' }} />
-            </Avatar>
-            <Typography variant="subtitle1" sx={{ fontWeight: 600, color: '#00509e' }}>
+          <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+            <PasswordSectionAvatar $variant="new">
+              <KeyIcon sx={{ color: "primary.main", fontSize: "1.25rem" }} />
+            </PasswordSectionAvatar>
+            <Typography variant="subtitle1" sx={{ fontWeight: 600, color: "primary.main" }}>
               New Password
             </Typography>
           </Box>
@@ -189,11 +180,6 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
                 autoComplete="new-password"
                 error={!!errors.newPassword}
                 helperText={errors.newPassword?.message}
-                sx={{
-                  '& .MuiOutlinedInput-root': {
-                    borderRadius: 2,
-                  }
-                }}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
@@ -214,48 +200,30 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
           {/* Password Strength Indicator */}
           {watchedNewPassword && (
             <Box sx={{ mt: 2 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
+              <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mb: 1 }}>
                 <Typography variant="body2" color="text.secondary">
                   Password Strength
                 </Typography>
-                <Chip 
-                  label={getStrengthLabel()} 
-                  size="small" 
-                  sx={{ 
-                    backgroundColor: getStrengthColor(),
-                    color: 'white',
-                    fontWeight: 600,
-                    fontSize: '0.75rem'
-                  }}
+                <StrengthChip
+                  label={getStrengthLabel()}
+                  size="small"
+                  $strength={passwordStrength}
                 />
               </Box>
-              <LinearProgress 
-                variant="determinate" 
-                value={passwordStrength} 
-                sx={{ 
-                  height: 6,
-                  borderRadius: 3,
-                  backgroundColor: 'rgba(0, 0, 0, 0.1)',
-                  '& .MuiLinearProgress-bar': {
-                    backgroundColor: getStrengthColor(),
-                    borderRadius: 3,
-                  }
-                }}
+              <StrengthBar
+                variant="determinate"
+                value={passwordStrength}
+                $strength={passwordStrength}
               />
             </Box>
           )}
         </Box>
 
         {/* Password Requirements */}
-        <Box sx={{ 
-          p: 2, 
-          backgroundColor: 'rgba(0, 80, 158, 0.03)',
-          borderRadius: 2,
-          border: '1px solid rgba(0, 80, 158, 0.1)'
-        }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
-            <SecurityIcon sx={{ color: '#00509e', mr: 1, fontSize: '1.25rem' }} />
-            <Typography variant="subtitle2" sx={{ fontWeight: 600, color: '#00509e' }}>
+        <PasswordRequirementsBox>
+          <Box sx={{ display: "flex", alignItems: "center", mb: 1.5 }}>
+            <SecurityIcon sx={{ color: "primary.main", mr: 1, fontSize: "1.25rem" }} />
+            <Typography variant="subtitle2" sx={{ fontWeight: 600, color: "primary.main" }}>
               Password Requirements
             </Typography>
           </Box>
@@ -286,32 +254,18 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
               </Typography>
             </Grid>
           </Grid>
-        </Box>
+        </PasswordRequirementsBox>
 
         {/* Action Buttons */}
         <Stack direction="row" spacing={2} sx={{ mt: 4 }}>
-          <Button
+          <PasswordSubmitButton
             type="submit"
             variant="contained"
             disabled={!isDirty || !isValid || loading}
             startIcon={loading ? <CircularProgress size={20} /> : <LockIcon />}
-            sx={{
-              flex: 1,
-              py: 1.5,
-              borderRadius: 2,
-              background: 'linear-gradient(135deg, #00509e 0%, #1976d2 100%)',
-              fontSize: '1rem',
-              fontWeight: 600,
-              '&:hover': {
-                background: 'linear-gradient(135deg, #00509e 20%, #1976d2 80%)',
-              },
-              '&:disabled': {
-                background: 'rgba(0, 0, 0, 0.12)',
-              }
-            }}
           >
-            {loading ? 'Updating...' : 'Change Password'}
-          </Button>
+            {loading ? "Updating..." : "Change Password"}
+          </PasswordSubmitButton>
         </Stack>
       </Stack>
     </Box>

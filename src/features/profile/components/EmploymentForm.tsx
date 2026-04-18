@@ -10,28 +10,12 @@ import {
 } from "@mui/material";
 import type { Control } from "react-hook-form";
 import type { UpdateProfileRequest } from "@/features/profile/types/profile";
+import { employmentTypeOptions, salaryOptions } from "../constants/formOptions";
 
 interface EmploymentFormProps {
   control: Control<UpdateProfileRequest>;
   editMode: boolean;
 }
-
-const employmentTypeOptions = [
-  { value: "salaried", label: "Salaried" },
-  { value: "self-employed", label: "Self-employed" },
-  { value: "unemployed", label: "Unemployed" },
-  { value: "retired", label: "Retired" },
-  { value: "student", label: "Student" },
-];
-
-const salaryOptions = [
-  { value: "<1000", label: "<1000" },
-  { value: "1000-2999", label: "1000-2999" },
-  { value: "3000-4999", label: "3000-4999" },
-  { value: "5000-6999", label: "5000-6999" },
-  { value: "7000-9999", label: "7000-9999" },
-  { value: "10000+", label: "10000+" },
-];
 
 const EmploymentForm: React.FC<EmploymentFormProps> = ({
   control,

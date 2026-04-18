@@ -10,33 +10,16 @@ import {
 } from "@mui/material";
 import type { Control } from "react-hook-form";
 import type { UpdateProfileRequest } from "@/features/profile/types/profile";
+import {
+  maritalStatusOptions,
+  educationLevelOptions,
+  residencyStatusOptions,
+} from "../constants/formOptions";
 
 interface PersonalInfoFormProps {
   control: Control<UpdateProfileRequest>;
   editMode: boolean;
 }
-
-const maritalStatusOptions = [
-  { value: "single", label: "Single" },
-  { value: "married", label: "Married" },
-  { value: "divorced", label: "Divorced" },
-  { value: "widowed", label: "Widowed" },
-];
-
-const educationLevelOptions = [
-  { value: "none", label: "None" },
-  { value: "primary", label: "Primary" },
-  { value: "secondary", label: "Secondary" },
-  { value: "diploma", label: "Diploma" },
-  { value: "degree", label: "Degree" },
-  { value: "postgraduate", label: "Postgraduate" },
-];
-
-const residencyStatusOptions = [
-  { value: "citizen", label: "Citizen" },
-  { value: "permanent resident", label: "Permanent Resident" },
-  { value: "foreigner", label: "Foreigner" },
-];
 
 export const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
   control,

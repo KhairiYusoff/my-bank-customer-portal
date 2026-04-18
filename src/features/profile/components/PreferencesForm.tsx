@@ -10,27 +10,12 @@ import {
 } from "@mui/material";
 import type { Control } from "react-hook-form";
 import type { UpdateProfileRequest } from "@/features/profile/types/profile";
+import { themeOptions, languageOptions, notificationsOptions } from "../constants/formOptions";
 
 interface PreferencesFormProps {
   control: Control<UpdateProfileRequest>;
   editMode: boolean;
 }
-
-const themeOptions = [
-  { value: "light", label: "Light" },
-  { value: "dark", label: "Dark" },
-];
-
-const languageOptions = [
-  { value: "en", label: "English" },
-  { value: "ms", label: "Malay" },
-  { value: "zh", label: "Chinese" },
-];
-
-const notificationsOptions = [
-  { value: true, label: "On" },
-  { value: false, label: "Off" },
-];
 
 const PreferencesForm: React.FC<PreferencesFormProps> = ({
   control,
