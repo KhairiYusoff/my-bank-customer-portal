@@ -1,10 +1,15 @@
 import React from "react";
 import { AppBar, Toolbar, Typography, IconButton, Avatar, Box } from "@mui/material";
-import { styled, useTheme } from "@mui/material/styles";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-
 import type { UserProfile } from "@/features/profile/types/profile";
 import NotificationCenter from "@/features/notifications/components/NotificationCenter";
+import { styled } from "@mui/material/styles";
+
+const HeaderAvatar = styled(Avatar)(({ theme }) => ({
+  width: 40,
+  height: 40,
+  bgcolor: theme.palette.primary.dark,
+}));
 
 interface DashboardHeaderProps {
   drawerWidth: number;
@@ -17,7 +22,6 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
   onMenuClick,
   user,
 }) => {
-  const theme = useTheme();
   return (
     <AppBar
       position="fixed"
@@ -30,7 +34,7 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
           sx={{
             flexGrow: 1,
             fontWeight: 100,
-            color: theme.palette.common.white,
+            color: "common.white",
             fontSize: "0.9rem",
             lineHeight: 1.5,
             fontFamily: '"Poppins", "Roboto", "Helvetica", "Arial", sans-serif',
@@ -51,11 +55,9 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
             onClick={onMenuClick}
             color="inherit"
           >
-            <Avatar
-              sx={{ width: 40, height: 40, bgcolor: theme.palette.primary.dark }}
-            >
+            <HeaderAvatar>
               {user?.name ? user.name[0].toUpperCase() : <AccountCircle />}
-            </Avatar>
+            </HeaderAvatar>
           </IconButton>
         </Box>
       </Toolbar>

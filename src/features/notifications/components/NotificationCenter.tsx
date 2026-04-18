@@ -27,6 +27,7 @@ import { useGetNotificationsQuery, useUpdateNotificationMutation, useDeleteNotif
 import { useToast } from '@/utils/snackbarUtils';
 import { notificationSocket } from '../services/notificationSocket';
 import type { Notification } from '../types/notification';
+import { getNotificationIcon, getNotificationColor } from '../constants/notificationConfig';
 
 interface NotificationCenterProps {
   userId?: string;
@@ -104,36 +105,6 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({ userId }) => {
       toast.success('Notification deleted');
     } catch (error) {
       toast.error('Failed to delete notification');
-    }
-  };
-
-  const getNotificationIcon = (type: string) => {
-    switch (type) {
-      case 'transfer':
-        return '💸';
-      case 'deposit':
-        return '💰';
-      case 'withdraw':
-        return '💳';
-      case 'airdrop':
-        return '🎁';
-      default:
-        return '📢';
-    }
-  };
-
-  const getNotificationColor = (type: string) => {
-    switch (type) {
-      case 'transfer':
-        return '#2196F3';
-      case 'deposit':
-        return '#4CAF50';
-      case 'withdraw':
-        return '#FF9800';
-      case 'airdrop':
-        return '#9C27B0';
-      default:
-        return '#757575';
     }
   };
 
