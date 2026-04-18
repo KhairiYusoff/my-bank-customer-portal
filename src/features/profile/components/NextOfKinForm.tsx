@@ -10,21 +10,12 @@ import {
 } from "@mui/material";
 import type { Control } from "react-hook-form";
 import type { UpdateProfileRequest } from "@/features/profile/types/profile";
+import { relationshipOptions } from "../constants/formOptions";
 
 interface NextOfKinFormProps {
   control: Control<UpdateProfileRequest>;
   editMode: boolean;
 }
-
-const relationshipOptions = [
-  { value: "parent", label: "Parent" },
-  { value: "spouse", label: "Spouse" },
-  { value: "child", label: "Child" },
-  { value: "sibling", label: "Sibling" },
-  { value: "relative", label: "Relative" },
-  { value: "friend", label: "Friend" },
-  { value: "other", label: "Other" },
-];
 
 const NextOfKinForm: React.FC<NextOfKinFormProps> = ({ control, editMode }) => (
   <Grid container spacing={2}>
