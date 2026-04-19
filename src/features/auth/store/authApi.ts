@@ -22,7 +22,7 @@ export const authApi = baseApi.injectEndpoints({
      */
     apply: builder.mutation<ApplyResponse, ApplyRequest>({
       query: (applicationData) => ({
-        url: "/auth/apply",
+        url: "/v2/onboarding/apply",
         method: "POST",
         body: applicationData,
       }),
@@ -101,7 +101,7 @@ export const authApi = baseApi.injectEndpoints({
       { data: CompleteProfileRequest; token: string }
     >({
       query: ({ data, token }) => ({
-        url: "/v2/users/complete-profile",
+        url: "/v2/onboarding/complete-profile",
         method: "PUT",
         body: data,
         headers: {
