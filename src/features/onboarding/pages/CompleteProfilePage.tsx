@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useCompleteProfileMutation } from "@/features/auth/store/authApi";
-import { CompleteProfileFormData } from "@/features/auth/validations/schemas";
-import { completeProfileSchema } from "@/features/auth/validations/schemas";
+import { useCompleteProfileMutation } from "@/features/onboarding/store/onboardingApi";
+import {
+  CompleteProfileFormData,
+  completeProfileSchema,
+} from "@/features/onboarding/validations/schemas";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, FormProvider } from "react-hook-form";
 import {
@@ -22,7 +24,7 @@ import {
   AddressSection,
   EmploymentSection,
   NextOfKinSection,
-} from "@/features/auth/components/complete-profile";
+} from "@/features/onboarding/components/complete-profile";
 import { useSnackbar } from "notistack";
 import { toast } from "@utils/snackbarUtils";
 
@@ -79,7 +81,7 @@ const CompleteProfilePage: React.FC = () => {
         {
           variant: "error",
           autoHideDuration: 10000,
-        }
+        },
       );
       navigate("/login");
     }

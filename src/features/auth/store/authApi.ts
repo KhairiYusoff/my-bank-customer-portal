@@ -1,13 +1,8 @@
 import { baseApi } from "@/app/store/baseApi";
 import {
   ApiErrorResponse,
-  ApplyRequest,
-  ApplyResponse,
-  CompleteProfileRequest,
-  CompleteProfileResponse,
   LoginRequest,
   LoginResponse,
-  User,
 } from "@/features/auth/types/auth";
 
 /**
@@ -16,27 +11,6 @@ import {
 
 export const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    /**
-     * Apply for a new bank account
-     * @param applicationData - User's application details
-     */
-    apply: builder.mutation<ApplyResponse, ApplyRequest>({
-      query: (applicationData) => ({
-        url: "/onboarding/apply",
-        method: "POST",
-        body: applicationData,
-      }),
-      // Invalidate user data on successful application
-      invalidatesTags: ["Auth"],
-      // Transform error response to match our error format
-      transformErrorResponse: (response: any): ApiErrorResponse => ({
-        success: false,
-        message: response?.data?.message || "Failed to submit application",
-        errors: response?.data?.errors,
-        statusCode: response.status,
-      }),
-    }),
-
     /**
      * Login user with email and password
      * @param credentials - User's login credentials (email and password)
@@ -91,31 +65,6 @@ export const authApi = baseApi.injectEndpoints({
         };
       },
     }),
-
-    /**
-     * Complete user profile after account approval
-     * @param data - Complete profile data including personal, address, employment, and next of kin information
-     */
-    completeProfile: builder.mutation<
-      CompleteProfileResponse,
-      { data: CompleteProfileRequest; token: string }
-    >({
-      query: ({ data, token }) => ({
-        url: "/onboarding/complete-profile",
-        method: "PUT",
-        body: data,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }),
-      // Transform error response to match our error format
-      transformErrorResponse: (response: any): ApiErrorResponse => ({
-        success: false,
-        message: response?.data?.message || "Failed to complete profile",
-        errors: response?.data?.errors,
-        statusCode: response.status,
-      }),
-    }),
     /**
      * Reset password for users who forgot their password
      * @param data - { email, newPassword }
@@ -167,9 +116,7 @@ export const authApi = baseApi.injectEndpoints({
 
 // Export hooks for usage in components
 export const {
-  useApplyMutation,
   useLoginMutation,
-  useCompleteProfileMutation,
   useResetPasswordMutation,
   useLazyCheckTokenQuery,
   useLogoutMutation,

@@ -16,7 +16,7 @@ import FormField from "@/components/forms/FormField";
 import {
   ApplicationFormData,
   applicationSchema,
-} from "@/features/auth/validations/schemas";
+} from "@/features/onboarding/validations/schemas";
 
 interface ApplicationFormProps {
   onSubmit: (data: ApplicationFormData) => Promise<void>;

@@ -11,9 +11,9 @@ import { ThemeProvider, CssBaseline, Box, CircularProgress } from "@mui/material
 import { SnackbarProvider } from "@/providers/SnackbarProvider";
 import theme from "@/theme";
 import Landing from "./features/landing/pages/Landing";
-import ApplyPage from "./features/auth/pages/ApplyPage";
-import CompleteProfilePage from "./features/auth/pages/CompleteProfilePage";
-import CompleteProfileSuccess from "./features/auth/pages/CompleteProfileSuccess";
+import ApplyPage from "./features/onboarding/pages/ApplyPage";
+import CompleteProfilePage from "./features/onboarding/pages/CompleteProfilePage";
+import CompleteProfileSuccess from "./features/onboarding/pages/CompleteProfileSuccess";
 import LoginPage from "./features/auth/pages/LoginPage";
 import ForgotPasswordPage from "./features/auth/pages/ForgotPasswordPage";
 import ProtectedRoute from "./components/auth/ProtectedRoute";

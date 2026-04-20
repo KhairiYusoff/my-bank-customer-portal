@@ -1,64 +1,67 @@
-import React from 'react';
-import { useFormContext } from 'react-hook-form';
-import { TextField, Grid, Box, Typography, MenuItem } from '@mui/material';
-import { CompleteProfileFormData } from '@/features/auth/types/auth';
-import { MALAYSIAN_STATES } from '../../constants/formOptions';
+import React from "react";
+import { useFormContext } from "react-hook-form";
+import { TextField, Grid, Box, Typography, MenuItem } from "@mui/material";
+import { CompleteProfileFormData } from "@/features/onboarding/validations/schemas";
+import { MALAYSIAN_STATES } from "../../constants/formOptions";
 
 const AddressSection: React.FC = () => {
-  const { register, formState: { errors } } = useFormContext<CompleteProfileFormData>();
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext<CompleteProfileFormData>();
 
   return (
     <Box>
       <Typography variant="h6" gutterBottom>
         Address Information
       </Typography>
-      
+
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <TextField
             fullWidth
             label="Street Address"
-            {...register('address.street')}
+            {...register("address.street")}
             error={!!(errors.address as any)?.street}
             helperText={(errors.address as any)?.street?.message as string}
             placeholder="e.g., No 123, Jalan Example"
           />
         </Grid>
-        
+
         <Grid item xs={12} md={6}>
           <TextField
             fullWidth
             label="City"
-            {...register('address.city')}
+            {...register("address.city")}
             error={!!(errors.address as any)?.city}
             helperText={(errors.address as any)?.city?.message as string}
             placeholder="e.g., Petaling Jaya"
           />
         </Grid>
-        
+
         <Grid item xs={12} md={6}>
           <TextField
             select
             fullWidth
             label="State"
-            {...register('address.state')}
+            {...register("address.state")}
             error={!!(errors.address as any)?.state}
             helperText={(errors.address as any)?.state?.message as string}
           >
             <MenuItem value="">Select a state</MenuItem>
-              {MALAYSIAN_STATES.map((state) => (
+            {MALAYSIAN_STATES.map((state) => (
               <MenuItem key={state} value={state}>
                 {state}
               </MenuItem>
             ))}
           </TextField>
         </Grid>
-        
+
         <Grid item xs={12} md={6}>
           <TextField
             fullWidth
             label="Postal Code"
-            {...register('address.postalCode')}
+            {...register("address.postalCode")}
             error={!!(errors.address as any)?.postalCode}
             helperText={(errors.address as any)?.postalCode?.message as string}
             placeholder="e.g., 47800"

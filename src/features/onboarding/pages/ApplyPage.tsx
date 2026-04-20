@@ -1,13 +1,13 @@
 import React from "react";
 import { Container, Typography, Box, Paper } from "@mui/material";
-import { useApplyMutation } from "@/features/auth/store/authApi";
-import type { ApplyRequest } from "@/features/auth/types/auth";
+import { useApplyMutation } from "@/features/onboarding/store/onboardingApi";
+import type { ApplyRequest } from "@/features/onboarding/types/onboarding";
 import {
   applicationSchema,
   type ApplicationFormData,
-} from "@/features/auth/validations/schemas";
-import ApplicationForm from "@/features/auth/components/apply/ApplicationForm";
-import SuccessMessage from "@/features/auth/components/apply/SuccessMessage";
+} from "@/features/onboarding/validations/schemas";
+import ApplicationForm from "@/features/onboarding/components/apply/ApplicationForm";
+import SuccessMessage from "@/features/onboarding/components/apply/SuccessMessage";
 
 const ApplyPage: React.FC = () => {
   const [apply, { isLoading, isSuccess }] = useApplyMutation();
@@ -32,7 +32,7 @@ const ApplyPage: React.FC = () => {
         setServerError(error.message);
       } else if (error?.status === "FETCH_ERROR") {
         setServerError(
-          "Network error. Please check your connection and try again."
+          "Network error. Please check your connection and try again.",
         );
       } else {
         setServerError("Failed to submit application. Please try again.");

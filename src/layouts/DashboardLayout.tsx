@@ -12,6 +12,7 @@ import { useLogoutMutation } from "@/features/auth/store/authApi";
 import { useSnackbar } from "notistack";
 import { baseApi } from "@/app/store/baseApi";
 import { navItems } from "./constants/navItems";
+import { WelcomeModal } from "@/components";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -101,6 +102,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
           open={showChangePassword}
           onClose={() => setShowChangePassword(false)}
         />
+        <WelcomeModal />
         <div style={{ height: 64 }} /> {/* Spacer for AppBar */}
         {children}
       </Box>

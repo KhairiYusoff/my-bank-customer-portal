@@ -1,11 +1,10 @@
 import React from "react";
-import { useFormContext, Controller, useWatch } from "react-hook-form";
+import { useFormContext, Controller } from "react-hook-form";
 import { TextField, Grid, MenuItem, Box, Typography } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { format } from "date-fns";
-import { CompleteProfileFormData } from "@/features/auth/types/auth";
+import { CompleteProfileFormData } from "@/features/onboarding/validations/schemas";
 
 const PersonalInfoSection: React.FC = () => {
   const {
@@ -13,9 +12,7 @@ const PersonalInfoSection: React.FC = () => {
     formState: { errors },
     control,
     setValue,
-    trigger,
   } = useFormContext<CompleteProfileFormData>();
-  const dateOfBirth = useWatch({ control, name: "dateOfBirth" });
 
   // Calculate age from date of birth
   const calculateAge = (birthDate: Date): number => {
@@ -31,21 +28,6 @@ const PersonalInfoSection: React.FC = () => {
     }
 
     return age;
-  };
-
-  // Handle date change
-  const handleDateChange = (date: Date | null) => {
-    setValue("dateOfBirth", date, { shouldValidate: true });
-
-    // Trigger age validation when date changes
-    if (date) {
-      const age = calculateAge(date);
-      setValue("age", age, { shouldValidate: true });
-      trigger("age");
-    } else {
-      setValue("age", 0, { shouldValidate: true });
-      trigger("age");
-    }
   };
 
   return (
