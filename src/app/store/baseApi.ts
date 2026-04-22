@@ -5,7 +5,7 @@ import type { BaseResponse, ApiError } from '@/types/api';
 // API URL configuration
 // Development uses Vite proxy (/api)
 // Production (Vercel) uses environment variable
-const API_URL = import.meta.env.VITE_API_URL || '/api';
+import { API_URL } from '@/config/env';
 
 // Create base query with credentials for cookie-based auth
 const baseQuery = fetchBaseQuery({
