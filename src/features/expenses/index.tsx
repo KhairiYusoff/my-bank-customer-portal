@@ -172,7 +172,6 @@ const ExpensesPage: React.FC = () => {
               icon={<SearchIcon sx={{ mr: 1 }} />} 
               label="Analytics" 
               iconPosition="start"
-              disabled
             />
           </TabsContainer>
 

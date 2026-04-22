@@ -1,5 +1,5 @@
 import { styled, alpha } from "@mui/material/styles";
-import { Card, Paper, TableCell, Tabs } from "@mui/material";
+import { Avatar, Card, Paper, TableCell, Tabs } from "@mui/material";
 
 export const ExpensesPaper = styled(Paper)(({ theme }) => ({
   borderRadius: theme.shape.borderRadius * 3,
@@ -54,4 +54,27 @@ export const ExpenseAmountCard = styled(Card)(({ theme }) => ({
 export const ExpenseFormCard = styled(Card)(({ theme }) => ({
   borderRadius: theme.shape.borderRadius * 3,
   boxShadow: theme.palette.customShadows.card,
+}));
+
+export const AnalyticsStatsCard = styled(Card)(({ theme }) => ({
+  borderRadius: theme.shape.borderRadius * 4,
+  boxShadow: theme.palette.customShadows.card,
+  border: `1px solid ${alpha(theme.palette.primary.main, 0.08)}`,
+  transition: "box-shadow 0.2s",
+  "&:hover": {
+    boxShadow: theme.palette.customShadows.cardHover,
+  },
+}));
+
+export const AnalyticsChartCard = styled(Card)(({ theme }) => ({
+  borderRadius: theme.shape.borderRadius * 4,
+  boxShadow: theme.palette.customShadows.card,
+  border: `1px solid ${alpha(theme.palette.primary.main, 0.08)}`,
+}));
+
+export const AnalyticsStatAvatar = styled(Avatar)(({ theme }) => ({
+  width: 52,
+  height: 52,
+  backgroundColor: alpha(theme.palette.primary.main, 0.1),
+  color: theme.palette.primary.main,
 }));
