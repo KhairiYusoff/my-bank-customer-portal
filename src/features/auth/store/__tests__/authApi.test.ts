@@ -4,20 +4,21 @@ import { authApi } from '../authApi';
 jest.mock('@/app/store/baseApi', () => ({
   baseApi: {
     injectEndpoints: jest.fn().mockReturnValue({
-      useApplyMutation: jest.fn(),
       useLoginMutation: jest.fn(),
-      useCompleteProfileMutation: jest.fn(),
+      useResetPasswordMutation: jest.fn(),
+      useLazyCheckTokenQuery: jest.fn(),
+      useLogoutMutation: jest.fn(),
     }),
   },
 }));
 
 describe('authApi', () => {
   it('should export the correct hooks', () => {
-    // Test that the API exports the expected hooks
     expect(authApi).toBeDefined();
-    expect(authApi.useApplyMutation).toBeDefined();
     expect(authApi.useLoginMutation).toBeDefined();
-    expect(authApi.useCompleteProfileMutation).toBeDefined();
+    expect(authApi.useResetPasswordMutation).toBeDefined();
+    expect(authApi.useLazyCheckTokenQuery).toBeDefined();
+    expect(authApi.useLogoutMutation).toBeDefined();
   });
 });
 
