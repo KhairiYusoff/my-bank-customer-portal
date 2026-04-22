@@ -155,3 +155,92 @@ export interface GetExpensesResponse extends BaseResponse<Expense[]> {
 export interface DeleteExpenseResponse extends BaseResponse<null> {
   meta: null;
 }
+
+// Monthly Analytics
+export interface CategoryBreakdownItem {
+  _id: string;
+  total: number;
+  count: number;
+  average: number;
+}
+
+export interface DailyBreakdownItem {
+  _id: { year: number; month: number; day: number };
+  total: number;
+  count: number;
+}
+
+export interface MonthlyAnalyticsData {
+  period: {
+    year: number;
+    month: number;
+    startDate: string;
+    endDate: string;
+  };
+  summary: {
+    totalAmount: number;
+    totalExpenses: number;
+    averageExpense: number;
+    dailyAverage: number;
+  };
+  categoryBreakdown: CategoryBreakdownItem[];
+  dailyBreakdown: DailyBreakdownItem[];
+  topCategories: CategoryBreakdownItem[];
+}
+
+export interface GetMonthlyAnalyticsResponse extends BaseResponse<MonthlyAnalyticsData> {
+  meta: null;
+}
+
+// Yearly Analytics
+export interface MonthlyBreakdownItem {
+  _id: { month: number };
+  total: number;
+  count: number;
+}
+
+export interface YearlyCategoryItem {
+  _id: string;
+  total: number;
+  count: number;
+}
+
+export interface YearlyAnalyticsData {
+  year: number;
+  summary: {
+    totalAmount: number;
+    totalExpenses: number;
+    monthlyAverage: number;
+  };
+  monthlyBreakdown: MonthlyBreakdownItem[];
+  categoryBreakdown: YearlyCategoryItem[];
+}
+
+export interface GetYearlyAnalyticsResponse extends BaseResponse<YearlyAnalyticsData> {
+  meta: null;
+}
+
+// Dashboard Stats
+export interface RecentExpense {
+  _id: string;
+  amount: number;
+  category: string;
+  description: string;
+  date: string;
+  account: { accountNumber: string };
+}
+
+export interface DashboardStatsData {
+  currentMonth: {
+    total: number;
+    count: number;
+    topCategories: CategoryBreakdownItem[];
+  };
+  monthOverMonthChange: number;
+  recentExpenses: RecentExpense[];
+  yearlyTotal: number;
+}
+
+export interface GetDashboardStatsResponse extends BaseResponse<DashboardStatsData> {
+  meta: null;
+}

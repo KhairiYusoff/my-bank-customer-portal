@@ -11,6 +11,9 @@ import type {
   UpdateExpenseRequest,
   UpdateExpenseResponse,
   DeleteExpenseResponse,
+  GetMonthlyAnalyticsResponse,
+  GetYearlyAnalyticsResponse,
+  GetDashboardStatsResponse,
 } from '../types/expense';
 
 export const expensesApi = baseApi.injectEndpoints({
@@ -57,6 +60,24 @@ export const expensesApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['Expenses'],
     }),
+    getMonthlyAnalytics: builder.query<GetMonthlyAnalyticsResponse, { year: number; month: number }>({
+      query: ({ year, month }) => ({
+        url: '/expenses/analytics/monthly',
+        params: { year, month },
+      }),
+      providesTags: ['Expenses'],
+    }),
+    getYearlyAnalytics: builder.query<GetYearlyAnalyticsResponse, { year: number }>({
+      query: ({ year }) => ({
+        url: '/expenses/analytics/yearly',
+        params: { year },
+      }),
+      providesTags: ['Expenses'],
+    }),
+    getDashboardStats: builder.query<GetDashboardStatsResponse, void>({
+      query: () => '/expenses/dashboard/stats',
+      providesTags: ['Expenses'],
+    }),
   }),
 });
 
@@ -68,4 +89,7 @@ export const {
   useUpdateExpenseMutation,
   useDeleteExpenseMutation,
   useCreateExpenseMutation,
+  useGetMonthlyAnalyticsQuery,
+  useGetYearlyAnalyticsQuery,
+  useGetDashboardStatsQuery,
 } = expensesApi;

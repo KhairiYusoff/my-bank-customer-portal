@@ -8,6 +8,10 @@ const config: Config = {
   },
   moduleNameMapper: {
     '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
+    // Redirect baseApi to a Jest-compatible mock (avoids import.meta.env Vite syntax)
+    // Must be listed BEFORE the generic @/ alias to take precedence
+    '^@/app/store/baseApi$': '<rootDir>/src/app/store/__mocks__/baseApi.ts',
+    '^\\.\\./baseApi$': '<rootDir>/src/app/store/__mocks__/baseApi.ts',
     '^@/(.*)$': '<rootDir>/src/$1',
   },
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],

@@ -20,6 +20,7 @@ describe('authSlice', () => {
     user: null,
     token: null,
     isAuthenticated: false,
+    isFirstTime: false,
     isLoading: false,
     error: null,
   };
@@ -37,7 +38,8 @@ describe('authSlice', () => {
         email: 'test@example.com',
         name: 'Test User',
         role: 'customer',
-        isVerified: false
+        isVerified: false,
+        isFirstTime: false,
       };
 
       const action = setCredentials({ user: mockUser });
@@ -61,10 +63,12 @@ describe('authSlice', () => {
           email: 'test@example.com', 
           name: 'Test User',
           role: 'customer',
-          isVerified: false
+          isVerified: false,
+          isFirstTime: false,
         },
         token: 'mock-token',
         isAuthenticated: true,
+        isFirstTime: false,
         isLoading: false,
         error: null,
       };

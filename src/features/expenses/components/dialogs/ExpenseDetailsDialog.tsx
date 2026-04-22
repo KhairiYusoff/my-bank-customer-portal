@@ -36,6 +36,7 @@ import {
 } from "@mui/icons-material";
 import type { Expense } from "../../types/expense";
 import { ExpenseAmountCard } from "../styles";
+import { formatCurrency } from "@/utils/formatters";
 
 interface ExpenseDetailsDialogProps {
   open: boolean;
@@ -58,10 +59,6 @@ const ExpenseDetailsDialog: React.FC<ExpenseDetailsDialogProps> = ({
       month: "long",
       day: "numeric",
     });
-  };
-
-  const formatCurrency = (amount: number) => {
-    return `RM${amount.toLocaleString()}`;
   };
 
   return (
