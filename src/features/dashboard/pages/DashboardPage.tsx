@@ -15,6 +15,7 @@ import DashboardLayout from "@/layouts/DashboardLayout";
 import { useGetAccountsQuery } from "@/features/accounts/store/accountsApi";
 import { AccountCard, QuickActions } from "../components";
 import { GradientPageTitle, AccountsSectionTitle } from "../components/styles";
+import SpendInsightsCard from "@/features/ai/components/SpendInsightsCard";
 
 // ─── Pure Helpers ─────────────────────────────────────────────────────────────
 
@@ -56,7 +57,10 @@ const DashboardPage: React.FC = () => {
   const { data: accountsResponse, error, isLoading } = useGetAccountsQuery();
 
   if (isLoading) return renderLoadingState();
-  if (error) return renderErrorState((error as any).data?.message || "Failed to load accounts.");
+  if (error)
+    return renderErrorState(
+      (error as any).data?.message || "Failed to load accounts.",
+    );
 
   // No Accounts State
   if (!accountsResponse?.data || accountsResponse.data.length === 0) {
@@ -66,7 +70,9 @@ const DashboardPage: React.FC = () => {
           <Box sx={{ my: 4 }}>
             <GradientPageTitle variant="h4">Dashboard</GradientPageTitle>
             <Paper sx={{ textAlign: "center", py: 6 }}>
-              <AccountBalanceIcon sx={{ fontSize: 80, color: "text.secondary", mb: 2 }} />
+              <AccountBalanceIcon
+                sx={{ fontSize: 80, color: "text.secondary", mb: 2 }}
+              />
               <Typography variant="h5" color="text.secondary" gutterBottom>
                 No accounts found
               </Typography>
@@ -93,6 +99,11 @@ const DashboardPage: React.FC = () => {
           {/* Quick Actions */}
           <QuickActions />
 
+          {/* AI Spend Insights */}
+          <Box sx={{ mb: 4 }}>
+            <SpendInsightsCard />
+          </Box>
+
           {/* Accounts Grid */}
           <AccountsSectionTitle variant="h5">
             Your Accounts ({accountsResponse.data.length})
@@ -109,4 +120,3 @@ const DashboardPage: React.FC = () => {
 };
 
 export default DashboardPage;
-
