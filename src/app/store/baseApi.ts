@@ -1,16 +1,20 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import type { BaseQueryFn, FetchArgs, FetchBaseQueryError } from '@reduxjs/toolkit/query';
-import type { BaseResponse, ApiError } from '@/types/api';
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import type {
+  BaseQueryFn,
+  FetchArgs,
+  FetchBaseQueryError,
+} from "@reduxjs/toolkit/query";
+import type { BaseResponse, ApiError } from "@/types/api";
 
 // API URL configuration
 // Development uses Vite proxy (/api)
 // Production (Vercel) uses environment variable
-import { API_URL } from '@/config/env';
+import { API_URL } from "@/config/env";
 
 // Create base query with credentials for cookie-based auth
 const baseQuery = fetchBaseQuery({
   baseUrl: API_URL,
-  credentials: 'include',
+  credentials: "include",
   prepareHeaders: (headers) => {
     // Content type is set automatically by fetchBaseQuery
     // Add any additional headers here if needed
@@ -25,29 +29,45 @@ const baseQueryWithReauth: BaseQueryFn<
   FetchBaseQueryError
 > = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
-  
+
   // Handle 401 Unauthorized responses
   if (result.error?.status === 401) {
     // TODO: Add token refresh logic
-    console.log('Unauthorized - redirect to login');
+    console.log("Unauthorized - redirect to login");
   }
-  
+
   // Handle API error responses
   if (result.error) {
     const error = result.error as ApiError;
-    console.error('API Error:', error);
+    console.error("API Error:", error);
   }
-  
+
   return result;
 };
 
 // Initialize an empty api service that we'll inject endpoints into
 export const baseApi = createApi({
-  reducerPath: 'api',
+  reducerPath: "api",
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['Auth', 'Account', 'AccountBalance', 'Transaction', 'User', 'Notification', 'Expenses', 'Categories', 'PaymentMethods'],
+  tagTypes: [
+    "Auth",
+    "Account",
+    "AccountBalance",
+    "Transaction",
+    "User",
+    "Notification",
+    "Expenses",
+    "Categories",
+    "PaymentMethods",
+    "AIInsights",
+  ],
   endpoints: () => ({}), // Inject endpoints in feature slices
 });
 
 // Export hooks for use in components
-export const { middleware, reducerPath, reducer, middleware: apiMiddleware } = baseApi;
+export const {
+  middleware,
+  reducerPath,
+  reducer,
+  middleware: apiMiddleware,
+} = baseApi;
