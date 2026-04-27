@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
+import ReactMarkdown from "react-markdown";
 import {
   CircularProgress,
   IconButton,
@@ -20,6 +21,24 @@ import {
   MessagesContainer,
 } from "./styles";
 import { API_URL } from "@/config/env";
+
+const mdComponents = {
+  p: ({ children }: React.PropsWithChildren) => (
+    <span style={{ display: "block", marginBottom: "0.4em" }}>{children}</span>
+  ),
+  ul: ({ children }: React.PropsWithChildren) => (
+    <ul style={{ margin: "0.25em 0", paddingLeft: "1.2em" }}>{children}</ul>
+  ),
+  ol: ({ children }: React.PropsWithChildren) => (
+    <ol style={{ margin: "0.25em 0", paddingLeft: "1.2em" }}>{children}</ol>
+  ),
+  li: ({ children }: React.PropsWithChildren) => (
+    <li style={{ marginBottom: "0.2em" }}>{children}</li>
+  ),
+  strong: ({ children }: React.PropsWithChildren) => (
+    <strong>{children}</strong>
+  ),
+};
 
 const ChatWidget: React.FC = () => {
   const [open, setOpen] = useState(false);
@@ -90,7 +109,13 @@ const ChatWidget: React.FC = () => {
                 .join("");
               return (
                 <MessageBubble key={m.id} isUser={m.role === "user"}>
-                  {text}
+                  {m.role === "user" ? (
+                    text
+                  ) : (
+                    <ReactMarkdown components={mdComponents}>
+                      {text}
+                    </ReactMarkdown>
+                  )}
                 </MessageBubble>
               );
             })}
