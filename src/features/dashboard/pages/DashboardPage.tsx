@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import {
   Box,
   Container,
-  CircularProgress,
   Alert,
   Grid,
   Button,
@@ -14,52 +13,28 @@ import { AccountBalance as AccountBalanceIcon } from "@mui/icons-material";
 import DashboardLayout from "@/layouts/DashboardLayout";
 import { useGetAccountsQuery } from "@/features/accounts/store/accountsApi";
 import { AccountCard, QuickActions } from "../components";
+import { LoadingOverlay } from "@/components";
 import { GradientPageTitle, AccountsSectionTitle } from "../components/styles";
 import SpendInsightsCard from "@/features/ai/components/SpendInsightsCard";
-
-// ─── Pure Helpers ─────────────────────────────────────────────────────────────
-
-function renderLoadingState() {
-  return (
-    <DashboardLayout>
-      <Container maxWidth="lg">
-        <Box sx={{ my: 4 }}>
-          <GradientPageTitle variant="h4">Dashboard</GradientPageTitle>
-          <Paper sx={{ textAlign: "center", py: 6 }}>
-            <CircularProgress size={60} />
-            <Typography variant="h6" sx={{ mt: 2, color: "text.secondary" }}>
-              Loading your accounts...
-            </Typography>
-          </Paper>
-        </Box>
-      </Container>
-    </DashboardLayout>
-  );
-}
-
-function renderErrorState(message: string) {
-  return (
-    <DashboardLayout>
-      <Container maxWidth="lg">
-        <Box sx={{ my: 4 }}>
-          <GradientPageTitle variant="h4">Dashboard</GradientPageTitle>
-          <Alert severity="error">{message}</Alert>
-        </Box>
-      </Container>
-    </DashboardLayout>
-  );
-}
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
 const DashboardPage: React.FC = () => {
   const navigate = useNavigate();
-  const { data: accountsResponse, error, isLoading } = useGetAccountsQuery();
+  const { data: accountsResponse, error, isFetching } = useGetAccountsQuery();
 
-  if (isLoading) return renderLoadingState();
   if (error)
-    return renderErrorState(
-      (error as any).data?.message || "Failed to load accounts.",
+    return (
+      <DashboardLayout>
+        <Container maxWidth="lg">
+          <Box sx={{ my: 4 }}>
+            <GradientPageTitle variant="h4">Dashboard</GradientPageTitle>
+            <Alert severity="error">
+              {(error as any).data?.message || "Failed to load accounts."}
+            </Alert>
+          </Box>
+        </Container>
+      </DashboardLayout>
     );
 
   // No Accounts State
@@ -91,6 +66,7 @@ const DashboardPage: React.FC = () => {
 
   return (
     <DashboardLayout>
+      <LoadingOverlay loading={isFetching} />
       <Container maxWidth="lg">
         <Box sx={{ my: 4 }}>
           {/* Page Title */}

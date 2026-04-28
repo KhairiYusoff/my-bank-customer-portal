@@ -19,9 +19,13 @@ import {
 } from "@mui/icons-material";
 import DashboardLayout from "@/layouts/DashboardLayout";
 import { useWithdrawForm } from "../hooks/useWithdrawForm";
-import { PageHeader } from "@/components";
+import { PageHeader, LoadingOverlay } from "@/components";
 import { EmptyState } from "../components";
-import { WithdrawFormCard, WithdrawSubmitButton, ErrorIconAvatar } from "../components/styles";
+import {
+  WithdrawFormCard,
+  WithdrawSubmitButton,
+  ErrorIconAvatar,
+} from "../components/styles";
 
 const WithdrawPage: React.FC = () => {
   const {
@@ -31,29 +35,12 @@ const WithdrawPage: React.FC = () => {
     isDirty,
     isValid,
     isLoading,
-    isLoadingAccounts,
+    isFetchingAccounts,
     accountsResponse,
     onSubmit,
   } = useWithdrawForm();
 
-  if (isLoadingAccounts) {
-    return (
-      <DashboardLayout>
-        <Container maxWidth="md">
-          <Box sx={{ my: 4 }}>
-            <Box sx={{ textAlign: 'center', py: 6 }}>
-              <CircularProgress size={60} />
-              <Typography variant="h6" sx={{ mt: 2, color: 'text.secondary' }}>
-                Loading your accounts...
-              </Typography>
-            </Box>
-          </Box>
-        </Container>
-      </DashboardLayout>
-    );
-  }
-
-  if (!accountsResponse?.data?.length) {
+  if (!accountsResponse?.data?.length && !isFetchingAccounts) {
     return (
       <DashboardLayout>
         <Container maxWidth="md">
@@ -71,6 +58,7 @@ const WithdrawPage: React.FC = () => {
 
   return (
     <DashboardLayout>
+      <LoadingOverlay loading={isFetchingAccounts} />
       <Container maxWidth="md">
         <Box sx={{ my: 4 }}>
           {/* Header Section */}
@@ -88,11 +76,14 @@ const WithdrawPage: React.FC = () => {
                 <Grid container spacing={3}>
                   {/* Account Selection */}
                   <Grid item xs={12}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                    <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
                       <ErrorIconAvatar>
-                        <AccountBalanceIcon sx={{ color: 'error.main' }} />
+                        <AccountBalanceIcon sx={{ color: "error.main" }} />
                       </ErrorIconAvatar>
-                      <Typography variant="h6" sx={{ color: 'error.main', fontWeight: 600 }}>
+                      <Typography
+                        variant="h6"
+                        sx={{ color: "error.main", fontWeight: 600 }}
+                      >
                         Select Account
                       </Typography>
                     </Box>
@@ -106,22 +97,35 @@ const WithdrawPage: React.FC = () => {
                           label="Choose Account to Withdraw From"
                           fullWidth
                           error={!!errors.accountNumber}
-                          helperText={errors.accountNumber?.message || "Select which account to withdraw funds from"}
+                          helperText={
+                            errors.accountNumber?.message ||
+                            "Select which account to withdraw funds from"
+                          }
                           sx={{
-                            '& .MuiOutlinedInput-root': {
+                            "& .MuiOutlinedInput-root": {
                               borderRadius: 2,
-                            }
+                            },
                           }}
                         >
                           <MenuItem value="">
                             <em>Choose your account</em>
                           </MenuItem>
                           {accountsResponse?.data?.map((account) => (
-                            <MenuItem key={account.accountNumber} value={account.accountNumber}>
+                            <MenuItem
+                              key={account.accountNumber}
+                              value={account.accountNumber}
+                            >
                               <Box>
-                                <Typography variant="subtitle2">{account.accountNumber}</Typography>
-                                <Typography variant="caption" color="text.secondary">
-                                  {account.accountType.replace(/_/g, ' ')} • Available: ${account.balance?.toFixed(2) || '0.00'}
+                                <Typography variant="subtitle2">
+                                  {account.accountNumber}
+                                </Typography>
+                                <Typography
+                                  variant="caption"
+                                  color="text.secondary"
+                                >
+                                  {account.accountType.replace(/_/g, " ")} •
+                                  Available: $
+                                  {account.balance?.toFixed(2) || "0.00"}
                                 </Typography>
                               </Box>
                             </MenuItem>
@@ -133,11 +137,14 @@ const WithdrawPage: React.FC = () => {
 
                   {/* Amount */}
                   <Grid item xs={12}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                    <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
                       <ErrorIconAvatar>
-                        <MoneyIcon sx={{ color: 'error.main' }} />
+                        <MoneyIcon sx={{ color: "error.main" }} />
                       </ErrorIconAvatar>
-                      <Typography variant="h6" sx={{ color: 'error.main', fontWeight: 600 }}>
+                      <Typography
+                        variant="h6"
+                        sx={{ color: "error.main", fontWeight: 600 }}
+                      >
                         Withdrawal Amount
                       </Typography>
                     </Box>
@@ -151,17 +158,20 @@ const WithdrawPage: React.FC = () => {
                           type="number"
                           fullWidth
                           placeholder="0.00"
-                          inputProps={{ 
-                            min: 0.01, 
+                          inputProps={{
+                            min: 0.01,
                             step: 0.01,
-                            'aria-label': 'Withdrawal amount'
+                            "aria-label": "Withdrawal amount",
                           }}
                           error={!!errors.amount}
-                          helperText={errors.amount?.message || "Enter the amount to withdraw"}
+                          helperText={
+                            errors.amount?.message ||
+                            "Enter the amount to withdraw"
+                          }
                           sx={{
-                            '& .MuiOutlinedInput-root': {
+                            "& .MuiOutlinedInput-root": {
                               borderRadius: 2,
-                            }
+                            },
                           }}
                         />
                       )}
@@ -176,9 +186,17 @@ const WithdrawPage: React.FC = () => {
                       disabled={!isDirty || !isValid || isLoading}
                       fullWidth
                       size="large"
-                      startIcon={isLoading ? <CircularProgress size={20} /> : <WithdrawIcon />}
+                      startIcon={
+                        isLoading ? (
+                          <CircularProgress size={20} />
+                        ) : (
+                          <WithdrawIcon />
+                        )
+                      }
                     >
-                      {isLoading ? 'Processing Withdrawal...' : 'Withdraw Funds'}
+                      {isLoading
+                        ? "Processing Withdrawal..."
+                        : "Withdraw Funds"}
                     </WithdrawSubmitButton>
                   </Grid>
                 </Grid>

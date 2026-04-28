@@ -2,7 +2,10 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useSnackbar } from "notistack";
-import { useUpdateProfileMutation, useGetProfileQuery } from "@/features/profile/store/profileApi";
+import {
+  useUpdateProfileMutation,
+  useGetProfileQuery,
+} from "@/features/profile/store/profileApi";
 import { profileFormSchema } from "../validations/profileSchema";
 import { mapUserProfileToUpdateProfile } from "../utils/profileUtils";
 import { getErrorMessage } from "@/utils/errorUtils";
@@ -14,14 +17,21 @@ export function useProfileForm() {
   const [showConfirm, setShowConfirm] = React.useState(false);
   const [formChanged, setFormChanged] = React.useState(false);
 
-  const { data: user, isLoading: profileLoading, error: profileError } = useGetProfileQuery();
+  const {
+    data: user,
+    isLoading: profileLoading,
+    isFetching: profileFetching,
+    error: profileError,
+  } = useGetProfileQuery();
   const [updateProfile, { isLoading }] = useUpdateProfileMutation();
 
-  const { control, handleSubmit, reset, watch } = useForm<UpdateProfileRequest>({
-    resolver: yupResolver(profileFormSchema),
-    defaultValues: mapUserProfileToUpdateProfile(user),
-    mode: "onChange",
-  });
+  const { control, handleSubmit, reset, watch } = useForm<UpdateProfileRequest>(
+    {
+      resolver: yupResolver(profileFormSchema),
+      defaultValues: mapUserProfileToUpdateProfile(user),
+      mode: "onChange",
+    },
+  );
 
   React.useEffect(() => {
     if (user) {
@@ -60,6 +70,7 @@ export function useProfileForm() {
     // Data
     user,
     profileLoading,
+    profileFetching,
     profileError,
     isLoading,
     // Form

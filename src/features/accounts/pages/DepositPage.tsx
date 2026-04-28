@@ -9,7 +9,6 @@ import {
   CircularProgress,
   MenuItem,
   CardContent,
-  Paper,
   Avatar,
   Grid,
 } from "@mui/material";
@@ -21,8 +20,8 @@ import {
 } from "@mui/icons-material";
 import DashboardLayout from "@/layouts/DashboardLayout";
 import { useDepositForm } from "../hooks/useDepositForm";
-import { PageHeader } from '@/components';
-import { EmptyState } from '../components';
+import { PageHeader, LoadingOverlay } from "@/components";
+import { EmptyState } from "../components";
 import {
   DepositFormCard,
   DepositSubmitButton,
@@ -39,29 +38,12 @@ const DepositPage: React.FC = () => {
     isDirty,
     isValid,
     isLoading,
-    isLoadingAccounts,
+    isFetchingAccounts,
     accountsResponse,
     onSubmit,
   } = useDepositForm();
 
-  if (isLoadingAccounts) {
-    return (
-      <DashboardLayout>
-        <Container maxWidth="md">
-          <Box sx={{ my: 4 }}>
-            <Paper sx={{ textAlign: "center", py: 6 }}>
-              <CircularProgress size={60} />
-              <Typography variant="h6" sx={{ mt: 2, color: "text.secondary" }}>
-                Loading your accounts...
-              </Typography>
-            </Paper>
-          </Box>
-        </Container>
-      </DashboardLayout>
-    );
-  }
-
-  if (!accountsResponse?.data?.length) {
+  if (!accountsResponse?.data?.length && !isFetchingAccounts) {
     return (
       <DashboardLayout>
         <Container maxWidth="md">
@@ -79,6 +61,7 @@ const DepositPage: React.FC = () => {
 
   return (
     <DashboardLayout>
+      <LoadingOverlay loading={isFetchingAccounts} />
       <Container maxWidth="md">
         <Box sx={{ my: 4 }}>
           {/* Header Section */}

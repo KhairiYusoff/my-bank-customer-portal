@@ -6,9 +6,9 @@ import {
   Grid,
   Paper,
   CardContent,
-  CircularProgress,
 } from "@mui/material";
 import DashboardLayout from "@/layouts/DashboardLayout";
+import { LoadingOverlay } from "@/components";
 import ConfirmationDialog from "@components/ConfirmationDialog";
 import { profileSections } from "../constants/profileSections";
 import { buildViewDataMap } from "../utils/profileUtils";
@@ -21,6 +21,7 @@ const ProfilePage: React.FC = () => {
   const {
     user,
     profileLoading,
+    profileFetching,
     profileError,
     isLoading,
     control,
@@ -40,11 +41,11 @@ const ProfilePage: React.FC = () => {
       <DashboardLayout>
         <Container maxWidth="lg">
           <Box sx={{ my: 4 }}>
-            <Paper sx={{ textAlign: 'center', py: 8 }}>
-              <Typography variant="h6" sx={{ color: 'error.main', mb: 2 }}>
+            <Paper sx={{ textAlign: "center", py: 8 }}>
+              <Typography variant="h6" sx={{ color: "error.main", mb: 2 }}>
                 Failed to load profile
               </Typography>
-              <Typography variant="body1" sx={{ color: 'text.secondary' }}>
+              <Typography variant="body1" sx={{ color: "text.secondary" }}>
                 Please try refreshing the page
               </Typography>
             </Paper>
@@ -58,13 +59,8 @@ const ProfilePage: React.FC = () => {
     return (
       <DashboardLayout>
         <Container maxWidth="lg">
-          <Box sx={{ my: 4 }}>
-            <Paper sx={{ textAlign: 'center', py: 8 }}>
-              <CircularProgress size={60} />
-              <Typography variant="h6" sx={{ mt: 2, color: 'text.secondary' }}>
-                Loading your profile...
-              </Typography>
-            </Paper>
+          <Box sx={{ my: 4, position: "relative", minHeight: 200 }}>
+            <LoadingOverlay loading={true} />
           </Box>
         </Container>
       </DashboardLayout>
@@ -76,6 +72,7 @@ const ProfilePage: React.FC = () => {
 
   return (
     <DashboardLayout>
+      <LoadingOverlay loading={profileFetching} />
       <Container maxWidth="lg">
         <Box sx={{ my: 4 }}>
           {/* Profile Hero Card */}
@@ -100,20 +97,36 @@ const ProfilePage: React.FC = () => {
                     <Grid item xs={12} lg={6} key={section.id}>
                       <SectionCard>
                         <CardContent sx={{ p: 3 }}>
-                          <Box sx={{ display: "flex", alignItems: "center", mb: 3 }}>
-                            <SectionIconAvatar $colorScheme={section.colorScheme}>
-                              <Box sx={{ color: `${section.colorScheme}.main` }}>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              mb: 3,
+                            }}
+                          >
+                            <SectionIconAvatar
+                              $colorScheme={section.colorScheme}
+                            >
+                              <Box
+                                sx={{ color: `${section.colorScheme}.main` }}
+                              >
                                 <section.IconComponent />
                               </Box>
                             </SectionIconAvatar>
                             <Typography
                               variant="h6"
-                              sx={{ fontWeight: "bold", color: `${section.colorScheme}.main` }}
+                              sx={{
+                                fontWeight: "bold",
+                                color: `${section.colorScheme}.main`,
+                              }}
                             >
                               {section.title}
                             </Typography>
                           </Box>
-                          <FormComponent control={control} editMode={editMode} />
+                          <FormComponent
+                            control={control}
+                            editMode={editMode}
+                          />
                         </CardContent>
                       </SectionCard>
                     </Grid>

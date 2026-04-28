@@ -5,11 +5,21 @@ import { useGetAccountsQuery, useWithdrawMutation } from "../store/accountsApi";
 import { useToast } from "@/utils/snackbarUtils";
 import { useAppSelector } from "@/app/hooks";
 import { notificationService } from "@/features/notifications/services/notificationService";
-import { withdrawSchema, type IWithdrawForm } from "../validations/accountValidation";
+import {
+  withdrawSchema,
+  type IWithdrawForm,
+} from "../validations/accountValidation";
 
 export const useWithdrawForm = () => {
-  const { data: accountsResponse, isLoading: isLoadingAccounts } = useGetAccountsQuery();
-  const [withdraw, { isLoading, isSuccess, isError, error, reset: resetMutation }] = useWithdrawMutation();
+  const {
+    data: accountsResponse,
+    isLoading: isLoadingAccounts,
+    isFetching: isFetchingAccounts,
+  } = useGetAccountsQuery();
+  const [
+    withdraw,
+    { isLoading, isSuccess, isError, error, reset: resetMutation },
+  ] = useWithdrawMutation();
   const toast = useToast();
   const user = useAppSelector((state) => state.auth.user);
   const [withdrawData, setWithdrawData] = useState<IWithdrawForm | null>(null);
@@ -29,12 +39,14 @@ export const useWithdrawForm = () => {
     if (isSuccess && withdrawData && user) {
       toast.success("Withdrawal successful!");
 
-      notificationService.createTransactionNotification({
-        userId: user.id,
-        type: "withdraw",
-        amount: withdrawData.amount,
-        accountNumber: withdrawData.accountNumber,
-      }).catch(console.error);
+      notificationService
+        .createTransactionNotification({
+          userId: user.id,
+          type: "withdraw",
+          amount: withdrawData.amount,
+          accountNumber: withdrawData.accountNumber,
+        })
+        .catch(console.error);
 
       reset();
       resetMutation();
@@ -44,7 +56,16 @@ export const useWithdrawForm = () => {
       const apiError = error as any;
       toast.error(apiError.data?.message || "Withdrawal failed.");
     }
-  }, [isSuccess, isError, error, reset, resetMutation, toast, withdrawData, user]);
+  }, [
+    isSuccess,
+    isError,
+    error,
+    reset,
+    resetMutation,
+    toast,
+    withdrawData,
+    user,
+  ]);
 
   const onSubmit = (data: IWithdrawForm) => {
     setWithdrawData(data);
@@ -59,6 +80,7 @@ export const useWithdrawForm = () => {
     isValid,
     isLoading,
     isLoadingAccounts,
+    isFetchingAccounts,
     accountsResponse,
     onSubmit,
   };

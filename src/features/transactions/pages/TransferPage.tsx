@@ -6,7 +6,6 @@ import {
   Box,
   Container,
   Typography,
-  CircularProgress,
   Alert,
   Card,
   CardContent,
@@ -16,7 +15,7 @@ import {
   AccountBalance as AccountBalanceIcon,
 } from "@mui/icons-material";
 import DashboardLayout from "@/layouts/DashboardLayout";
-import { PageHeader } from "@/components";
+import { PageHeader, LoadingOverlay } from "@/components";
 import { PrimaryIconAvatar } from "../components/styles";
 import TransferForm, { FormValues } from "../components/TransferForm";
 import { useGetAccountsQuery } from "@/features/accounts/store/accountsApi";
@@ -41,7 +40,7 @@ const TransferPage: React.FC = () => {
     useTransferMutation();
   const {
     data: accountsData,
-    isLoading: isAccountsLoading,
+    isFetching: isAccountsFetching,
     error: accountsError,
   } = useGetAccountsQuery();
   const toast = useToast();
@@ -68,16 +67,18 @@ const TransferPage: React.FC = () => {
     if (isSuccess && transferData && user) {
       // Show immediate toast
       toast.success("Transfer successful!");
-      
+
       // Create backend notification
-      notificationService.createTransactionNotification({
-        userId: user.id,
-        type: 'transfer',
-        amount: transferData.amount,
-        fromAccountNumber: transferData.fromAccountNumber,
-        toAccountNumber: transferData.toAccountNumber,
-      }).catch(console.error);
-      
+      notificationService
+        .createTransactionNotification({
+          userId: user.id,
+          type: "transfer",
+          amount: transferData.amount,
+          fromAccountNumber: transferData.fromAccountNumber,
+          toAccountNumber: transferData.toAccountNumber,
+        })
+        .catch(console.error);
+
       reset();
       resetMutation();
       setTransferData(null);
@@ -106,31 +107,21 @@ const TransferPage: React.FC = () => {
   };
 
   const renderContent = () => {
-    if (isAccountsLoading) {
-      return (
-        <Card>
-          <CardContent sx={{ textAlign: 'center', py: 6 }}>
-            <CircularProgress size={60} />
-            <Typography variant="h6" sx={{ mt: 2, color: 'text.secondary' }}>
-              Loading your accounts...
-            </Typography>
-          </CardContent>
-        </Card>
-      );
-    }
-
     if (accountsError) {
       return (
-        <Alert 
-          severity="error" 
-          sx={{ 
+        <Alert
+          severity="error"
+          sx={{
             borderRadius: 3,
-            '& .MuiAlert-icon': { fontSize: '2rem' }
+            "& .MuiAlert-icon": { fontSize: "2rem" },
           }}
         >
-          <Typography variant="h6" gutterBottom>Failed to load accounts</Typography>
+          <Typography variant="h6" gutterBottom>
+            Failed to load accounts
+          </Typography>
           <Typography variant="body2">
-            Unable to retrieve your account information. Please try refreshing the page.
+            Unable to retrieve your account information. Please try refreshing
+            the page.
           </Typography>
         </Alert>
       );
@@ -139,15 +130,20 @@ const TransferPage: React.FC = () => {
     if (!hasAccounts) {
       return (
         <Card>
-          <CardContent sx={{ textAlign: 'center', py: 6 }}>
-            <PrimaryIconAvatar sx={{ width: 80, height: 80, mx: 'auto', mb: 2 }}>
-              <AccountBalanceIcon sx={{ fontSize: '2.5rem', color: 'primary.main' }} />
+          <CardContent sx={{ textAlign: "center", py: 6 }}>
+            <PrimaryIconAvatar
+              sx={{ width: 80, height: 80, mx: "auto", mb: 2 }}
+            >
+              <AccountBalanceIcon
+                sx={{ fontSize: "2.5rem", color: "primary.main" }}
+              />
             </PrimaryIconAvatar>
             <Typography variant="h5" color="text.secondary" gutterBottom>
               No Accounts Available
             </Typography>
             <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
-              You need at least one account to make transfers. Please open an account first.
+              You need at least one account to make transfers. Please open an
+              account first.
             </Typography>
           </CardContent>
         </Card>
@@ -175,6 +171,7 @@ const TransferPage: React.FC = () => {
 
   return (
     <DashboardLayout>
+      <LoadingOverlay loading={isAccountsFetching} />
       <Container maxWidth="md">
         <Box sx={{ my: 4 }}>
           <PageHeader

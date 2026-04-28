@@ -25,7 +25,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const [logoutMutation] = useLogoutMutation();
-  
+
   const { data: profile } = useGetProfileQuery();
 
   const drawerWidth = 240;
@@ -42,29 +42,29 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
     try {
       // Call logout API to invalidate session on server
       await logoutMutation().unwrap();
-      
+
       // Clear all RTK Query cached data
       dispatch(baseApi.util.resetApiState());
-      
+
       // Clear Redux auth state
       dispatch(logout());
       handleClose();
-      
+
       // Redirect to login
       navigate("/login");
-      
+
       enqueueSnackbar("Logged out successfully", { variant: "success" });
     } catch (error) {
       console.error("Logout failed:", error);
-      
+
       // Still clear local state even if API call fails
       dispatch(baseApi.util.resetApiState());
       dispatch(logout());
       handleClose();
       navigate("/login");
-      
-      enqueueSnackbar("Logged out (session may still be active on server)", { 
-        variant: "warning" 
+
+      enqueueSnackbar("Logged out (session may still be active on server)", {
+        variant: "warning",
       });
     }
   };
@@ -76,13 +76,15 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
 
   return (
     <div style={{ display: "flex" }}>
-      <DashboardSidebar
-        drawerWidth={drawerWidth}
-        navItems={navItems}
-      />
+      <DashboardSidebar drawerWidth={drawerWidth} navItems={navItems} />
       <Box
         component="main"
-        sx={{ flexGrow: 1, p: 3, width: `calc(100% - ${drawerWidth}px)` }}
+        sx={{
+          flexGrow: 1,
+          p: 3,
+          width: `calc(100% - ${drawerWidth}px)`,
+          position: "relative",
+        }}
       >
         <DashboardHeader
           drawerWidth={drawerWidth}

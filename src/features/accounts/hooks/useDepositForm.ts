@@ -5,11 +5,21 @@ import { useGetAccountsQuery, useDepositMutation } from "../store/accountsApi";
 import { useToast } from "@/utils/snackbarUtils";
 import { useAppSelector } from "@/app/hooks";
 import { notificationService } from "@/features/notifications/services/notificationService";
-import { depositSchema, type IDepositForm } from "../validations/accountValidation";
+import {
+  depositSchema,
+  type IDepositForm,
+} from "../validations/accountValidation";
 
 export const useDepositForm = () => {
-  const { data: accountsResponse, isLoading: isLoadingAccounts } = useGetAccountsQuery();
-  const [deposit, { isLoading, isSuccess, isError, error, reset: resetMutation }] = useDepositMutation();
+  const {
+    data: accountsResponse,
+    isLoading: isLoadingAccounts,
+    isFetching: isFetchingAccounts,
+  } = useGetAccountsQuery();
+  const [
+    deposit,
+    { isLoading, isSuccess, isError, error, reset: resetMutation },
+  ] = useDepositMutation();
   const toast = useToast();
   const user = useAppSelector((state) => state.auth.user);
   const [depositData, setDepositData] = useState<IDepositForm | null>(null);
@@ -29,12 +39,14 @@ export const useDepositForm = () => {
     if (isSuccess && depositData && user) {
       toast.success("Deposit successful!");
 
-      notificationService.createTransactionNotification({
-        userId: user.id,
-        type: "deposit",
-        amount: depositData.amount,
-        accountNumber: depositData.accountNumber,
-      }).catch(console.error);
+      notificationService
+        .createTransactionNotification({
+          userId: user.id,
+          type: "deposit",
+          amount: depositData.amount,
+          accountNumber: depositData.accountNumber,
+        })
+        .catch(console.error);
 
       reset();
       resetMutation();
@@ -44,7 +56,16 @@ export const useDepositForm = () => {
       const apiError = error as any;
       toast.error(apiError.data?.message || "Deposit failed.");
     }
-  }, [isSuccess, isError, error, reset, resetMutation, toast, depositData, user]);
+  }, [
+    isSuccess,
+    isError,
+    error,
+    reset,
+    resetMutation,
+    toast,
+    depositData,
+    user,
+  ]);
 
   const onSubmit = (data: IDepositForm) => {
     setDepositData(data);
@@ -59,6 +80,7 @@ export const useDepositForm = () => {
     isValid,
     isLoading,
     isLoadingAccounts,
+    isFetchingAccounts,
     accountsResponse,
     onSubmit,
   };
