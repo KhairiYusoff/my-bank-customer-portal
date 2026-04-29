@@ -105,6 +105,7 @@ const AnalyticsTab: React.FC = () => {
     dashboardStats,
     monthlyData,
     yearlyData,
+    isAnyFetching,
     isDashboardLoading,
     isMonthlyLoading,
     isYearlyLoading,
@@ -177,9 +178,9 @@ const AnalyticsTab: React.FC = () => {
         </FormControl>
       </Box>
 
-      {isAnyLoading && (
-        <Box sx={{ display: "flex", justifyContent: "center", py: 8 }}>
-          <CircularProgress size={48} />
+      {isAnyFetching && !isAnyLoading && (
+        <Box sx={{ display: "flex", justifyContent: "center", py: 2 }}>
+          <CircularProgress size={24} />
         </Box>
       )}
 

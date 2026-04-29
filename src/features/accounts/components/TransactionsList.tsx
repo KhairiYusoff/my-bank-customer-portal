@@ -59,7 +59,13 @@ const formatAmount = (amount: number) => {
 };
 
 const getTransactionTypeChip = (type: string) => {
-  const configs: Record<string, { label: string; color: "primary" | "success" | "error" | "secondary" | "default" }> = {
+  const configs: Record<
+    string,
+    {
+      label: string;
+      color: "primary" | "success" | "error" | "secondary" | "default";
+    }
+  > = {
     transfer: { label: "Transfer", color: "primary" },
     deposit: { label: "Deposit", color: "success" },
     withdrawal: { label: "Withdrawal", color: "error" },
@@ -144,10 +150,7 @@ const TransactionsList: React.FC<TransactionsListProps> = ({
                         mb: 0.5,
                       }}
                     >
-                      <Typography
-                        variant="subtitle1"
-                        sx={{ fontWeight: 500 }}
-                      >
+                      <Typography variant="subtitle1" sx={{ fontWeight: 500 }}>
                         {transaction.description}
                       </Typography>
                       {getTransactionTypeChip(transaction.type)}
@@ -168,7 +171,7 @@ const TransactionsList: React.FC<TransactionsListProps> = ({
                         <Typography variant="body2" color="text.secondary">
                           {format(
                             new Date(transaction.date),
-                            "MMM dd, yyyy • hh:mm a"
+                            "MMM dd, yyyy • hh:mm a",
                           )}
                         </Typography>
                       </Box>

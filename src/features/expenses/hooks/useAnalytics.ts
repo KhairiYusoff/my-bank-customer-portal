@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useState } from "react";
 import {
   useGetDashboardStatsQuery,
   useGetMonthlyAnalyticsQuery,
   useGetYearlyAnalyticsQuery,
-} from '../store/expensesApi';
+} from "../store/expensesApi";
 
 export const useAnalytics = () => {
   const now = new Date();
@@ -13,24 +13,29 @@ export const useAnalytics = () => {
   const {
     data: dashboardStatsResponse,
     isLoading: isDashboardLoading,
+    isFetching: isDashboardFetching,
     error: dashboardError,
   } = useGetDashboardStatsQuery();
 
   const {
     data: monthlyResponse,
     isLoading: isMonthlyLoading,
+    isFetching: isMonthlyFetching,
     error: monthlyError,
   } = useGetMonthlyAnalyticsQuery({ year: selectedYear, month: selectedMonth });
 
   const {
     data: yearlyResponse,
     isLoading: isYearlyLoading,
+    isFetching: isYearlyFetching,
     error: yearlyError,
   } = useGetYearlyAnalyticsQuery({ year: selectedYear });
 
   const dashboardStats = dashboardStatsResponse?.data ?? null;
   const monthlyData = monthlyResponse?.data ?? null;
   const yearlyData = yearlyResponse?.data ?? null;
+  const isAnyFetching =
+    isDashboardFetching || isMonthlyFetching || isYearlyFetching;
 
   return {
     // Period controls
@@ -48,6 +53,7 @@ export const useAnalytics = () => {
     isDashboardLoading,
     isMonthlyLoading,
     isYearlyLoading,
+    isAnyFetching,
 
     // Error states
     dashboardError,

@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { Box, Container } from '@mui/material';
-import DashboardLayout from '@/layouts/DashboardLayout';
-import { useGetAccountBalanceQuery } from '../store/accountsApi';
-import { useGetAccountTransactionsQuery } from '@/features/transactions/store/transactionsApi';
-import { BalanceCard, TransactionsList } from '../components';
-import { GradientTitle } from '../components/styles';
-import { LoadingOverlay } from '@/components';
-import { usePageLoading } from '@/hooks';
+import React, { useState } from "react";
+import { useParams } from "react-router-dom";
+import { Box, Container } from "@mui/material";
+import DashboardLayout from "@/layouts/DashboardLayout";
+import { useGetAccountBalanceQuery } from "../store/accountsApi";
+import { useGetAccountTransactionsQuery } from "@/features/transactions/store/transactionsApi";
+import { BalanceCard, TransactionsList } from "../components";
+import { GradientTitle } from "../components/styles";
+import { LoadingOverlay } from "@/components";
+import { usePageLoading } from "@/hooks";
 
 const AccountDetailsPage: React.FC = () => {
   const { accountNumber } = useParams<{ accountNumber: string }>();
@@ -28,7 +28,7 @@ const AccountDetailsPage: React.FC = () => {
     refetch: refetchTransactions,
   } = useGetAccountTransactionsQuery(
     { accountNumber: accountNumber!, page, limit: transactionsPerPage },
-    { skip: !accountNumber }
+    { skip: !accountNumber },
   );
 
   const isLoading = usePageLoading(balanceFetching, transactionsFetching);
@@ -38,7 +38,10 @@ const AccountDetailsPage: React.FC = () => {
     refetchTransactions();
   };
 
-  const handlePageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
+  const handlePageChange = (
+    _event: React.ChangeEvent<unknown>,
+    value: number,
+  ) => {
     setPage(value);
   };
 
@@ -47,9 +50,7 @@ const AccountDetailsPage: React.FC = () => {
       <LoadingOverlay loading={isLoading} />
       <Container maxWidth="lg">
         <Box sx={{ my: 4 }}>
-          <GradientTitle variant="h4">
-            Account Details
-          </GradientTitle>
+          <GradientTitle variant="h4">Account Details</GradientTitle>
 
           <BalanceCard
             accountNumber={accountNumber!}

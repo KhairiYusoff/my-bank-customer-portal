@@ -1,26 +1,22 @@
 import React, { useState } from "react";
-import {
-  Box,
-  Container,
-  Typography,
-  Avatar,
-  Tab,
-} from "@mui/material";
+import { Box, Container, Typography, Avatar, Tab } from "@mui/material";
 import { ExpensesPaper, TabsContainer } from "./components/styles";
 import {
   Receipt as ExpenseIcon,
   FilterList as FilterIcon,
   Search as SearchIcon,
 } from "@mui/icons-material";
+import { LoadingOverlay } from "@/components";
+import { usePageLoading } from "@/hooks";
 import DashboardLayout from "@/layouts/DashboardLayout";
-import { 
-  CreateTab, 
-  ListTab, 
-  AnalyticsTab, 
+import {
+  CreateTab,
+  ListTab,
+  AnalyticsTab,
   FilterDialog,
   ExpenseDetailsDialog,
   EditExpenseDialog,
-  DeleteExpenseDialog
+  DeleteExpenseDialog,
 } from "./components";
 import { useExpenseFilters } from "./hooks/useExpenseFilters";
 import { useExpenseForm } from "./hooks/useExpenseForm";
@@ -40,21 +36,19 @@ const TabPanel: React.FC<TabPanelProps> = ({ children, value, index }) => {
       id={`expense-tabpanel-${index}`}
       aria-labelledby={`expense-tab-${index}`}
     >
-      {value === index && (
-        <Box sx={{ py: 3 }}>
-          {children}
-        </Box>
-      )}
+      {value === index && <Box sx={{ py: 3 }}>{children}</Box>}
     </div>
   );
 };
 
 const ExpensesPage: React.FC = () => {
   const [tabValue, setTabValue] = useState(0);
-  const [selectedExpenseId, setSelectedExpenseId] = useState<string | null>(null);
+  const [selectedExpenseId, setSelectedExpenseId] = useState<string | null>(
+    null,
+  );
   const [editExpenseId, setEditExpenseId] = useState<string | null>(null);
   const [deleteExpenseId, setDeleteExpenseId] = useState<string | null>(null);
-  
+
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
   };
@@ -130,15 +124,25 @@ const ExpensesPage: React.FC = () => {
     onConfirm,
     onUpdateExpense,
     onDeleteExpense,
-  } = useExpenseActions(expenseData, filters, selectedExpenseId || undefined, editExpenseId || undefined);
+  } = useExpenseActions(
+    expenseData,
+    filters,
+    selectedExpenseId || undefined,
+    editExpenseId || undefined,
+  );
+
+  const pageLoading = usePageLoading(isExpensesLoading);
 
   return (
     <DashboardLayout>
+      <LoadingOverlay loading={pageLoading} />
       <Container maxWidth="lg">
         {/* Header */}
         <Box sx={{ mb: 4 }}>
           <Box display="flex" alignItems="center" mb={3}>
-            <Avatar sx={{ bgcolor: "primary.main", mr: 3, width: 56, height: 56 }}>
+            <Avatar
+              sx={{ bgcolor: "primary.main", mr: 3, width: 56, height: 56 }}
+            >
               <ExpenseIcon sx={{ fontSize: 28 }} />
             </Avatar>
             <Box>
@@ -154,23 +158,20 @@ const ExpensesPage: React.FC = () => {
 
         {/* Tabs */}
         <ExpensesPaper>
-          <TabsContainer
-            value={tabValue}
-            onChange={handleTabChange}
-          >
-            <Tab 
-              icon={<ExpenseIcon sx={{ mr: 1 }} />} 
-              label="Create Expense" 
+          <TabsContainer value={tabValue} onChange={handleTabChange}>
+            <Tab
+              icon={<ExpenseIcon sx={{ mr: 1 }} />}
+              label="Create Expense"
               iconPosition="start"
             />
-            <Tab 
-              icon={<FilterIcon sx={{ mr: 1 }} />} 
-              label="Expense List" 
+            <Tab
+              icon={<FilterIcon sx={{ mr: 1 }} />}
+              label="Expense List"
               iconPosition="start"
             />
-            <Tab 
-              icon={<SearchIcon sx={{ mr: 1 }} />} 
-              label="Analytics" 
+            <Tab
+              icon={<SearchIcon sx={{ mr: 1 }} />}
+              label="Analytics"
               iconPosition="start"
             />
           </TabsContainer>
@@ -257,7 +258,7 @@ const ExpensesPage: React.FC = () => {
         <DeleteExpenseDialog
           open={!!deleteExpenseId}
           onClose={handleCloseDeleteExpense}
-          expense={expenses.find(e => e._id === deleteExpenseId) || null}
+          expense={expenses.find((e) => e._id === deleteExpenseId) || null}
           isLoading={isDeleteExpenseLoading}
           error={deleteExpenseError}
           onDeleteExpense={onDeleteExpense}

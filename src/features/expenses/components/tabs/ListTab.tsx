@@ -24,7 +24,12 @@ import {
   Receipt as ExpenseIcon,
   Delete as DeleteIcon,
 } from "@mui/icons-material";
-import type { ExpenseCategory, PaymentMethod, Expense, ExpenseFilters } from "../../types/expense";
+import type {
+  ExpenseCategory,
+  PaymentMethod,
+  Expense,
+  ExpenseFilters,
+} from "../../types/expense";
 import type { Account } from "@/features/accounts/types/account";
 
 interface ListTabProps {
@@ -61,23 +66,35 @@ const ListTab: React.FC<ListTabProps> = ({
   return (
     <Box sx={{ p: 3 }}>
       {/* Search and Filter Bar */}
-      <Box sx={{ mb: 3, display: 'flex', gap: 2, flexWrap: 'wrap', alignItems: 'center' }}>
+      <Box
+        sx={{
+          mb: 3,
+          display: "flex",
+          gap: 2,
+          flexWrap: "wrap",
+          alignItems: "center",
+        }}
+      >
         <TextField
           placeholder="Search expenses..."
           size="small"
-          value={filters.search || ''}
-          onChange={(e) => setFilters({...filters, search: e.target.value})}
+          value={filters.search || ""}
+          onChange={(e) => setFilters({ ...filters, search: e.target.value })}
           sx={{ minWidth: 250 }}
           InputProps={{
-            startAdornment: <SearchIcon sx={{ mr: 1, color: 'text.secondary' }} />,
+            startAdornment: (
+              <SearchIcon sx={{ mr: 1, color: "text.secondary" }} />
+            ),
           }}
         />
         <FormControl size="small" sx={{ minWidth: 150 }}>
           <InputLabel>Category</InputLabel>
-          <Select 
+          <Select
             label="Category"
-            value={filters.category || ''}
-            onChange={(e) => setFilters({...filters, category: e.target.value})}
+            value={filters.category || ""}
+            onChange={(e) =>
+              setFilters({ ...filters, category: e.target.value })
+            }
           >
             <MenuItem value="">All Categories</MenuItem>
             {categories.map((cat) => (
@@ -89,18 +106,27 @@ const ListTab: React.FC<ListTabProps> = ({
         </FormControl>
         <FormControl size="small" sx={{ minWidth: 120 }}>
           <InputLabel>Sort By</InputLabel>
-          <Select 
+          <Select
             label="Sort By"
-            value={filters.sortBy || 'date'}
-            onChange={(e) => setFilters({...filters, sortBy: e.target.value as 'date' | 'amount' | 'category' | undefined})}
+            value={filters.sortBy || "date"}
+            onChange={(e) =>
+              setFilters({
+                ...filters,
+                sortBy: e.target.value as
+                  | "date"
+                  | "amount"
+                  | "category"
+                  | undefined,
+              })
+            }
           >
             <MenuItem value="date">Date</MenuItem>
             <MenuItem value="amount">Amount</MenuItem>
             <MenuItem value="category">Category</MenuItem>
           </Select>
         </FormControl>
-        <Button 
-          variant="outlined" 
+        <Button
+          variant="outlined"
           startIcon={<FilterIcon />}
           onClick={onFilterDialogOpen}
         >
@@ -109,7 +135,11 @@ const ListTab: React.FC<ListTabProps> = ({
       </Box>
 
       {/* Data Table */}
-      <TableContainer component={Paper} variant="outlined" sx={{ borderRadius: 2 }}>
+      <TableContainer
+        component={Paper}
+        variant="outlined"
+        sx={{ borderRadius: 2 }}
+      >
         <Table>
           <TableHead>
             <TableRow>
@@ -123,28 +153,35 @@ const ListTab: React.FC<ListTabProps> = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            {isLoading ? (
+            {isError ? (
               <TableRow>
-                <TableCell colSpan={7} sx={{ textAlign: 'center', py: 8 }}>
-                  <Typography>Loading expenses...</Typography>
-                </TableCell>
-              </TableRow>
-            ) : isError ? (
-              <TableRow>
-                <TableCell colSpan={7} sx={{ textAlign: 'center', py: 8 }}>
-                  <Typography color="error">Error loading expenses. Please try again.</Typography>
+                <TableCell colSpan={7} sx={{ textAlign: "center", py: 8 }}>
+                  <Typography color="error">
+                    Error loading expenses. Please try again.
+                  </Typography>
                 </TableCell>
               </TableRow>
             ) : !expenses?.length ? (
               <TableRow>
-                <TableCell colSpan={7} sx={{ textAlign: 'center', py: 8 }}>
+                <TableCell colSpan={7} sx={{ textAlign: "center", py: 8 }}>
                   <Box>
-                    <ExpenseIcon sx={{ fontSize: 48, color: 'text.secondary', mb: 2 }} />
-                    <Typography variant="h6" color="text.secondary" gutterBottom>
+                    <ExpenseIcon
+                      sx={{ fontSize: 48, color: "text.secondary", mb: 2 }}
+                    />
+                    <Typography
+                      variant="h6"
+                      color="text.secondary"
+                      gutterBottom
+                    >
                       No Expenses Found
                     </Typography>
-                    <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-                      Start by creating your first expense using the Create Expense tab.
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{ mb: 3 }}
+                    >
+                      Start by creating your first expense using the Create
+                      Expense tab.
                     </Typography>
                   </Box>
                 </TableCell>
@@ -152,18 +189,24 @@ const ListTab: React.FC<ListTabProps> = ({
             ) : (
               expenses.map((expense) => (
                 <TableRow key={expense._id}>
-                  <TableCell>{new Date(expense.date).toLocaleDateString()}</TableCell>
+                  <TableCell>
+                    {new Date(expense.date).toLocaleDateString()}
+                  </TableCell>
                   <TableCell>{expense.description}</TableCell>
                   <TableCell>{expense.category}</TableCell>
                   <TableCell>RM{expense.amount.toLocaleString()}</TableCell>
                   <TableCell>{expense.account.accountNumber}</TableCell>
                   <TableCell>
-                    <Typography 
-                      component="span" 
-                      sx={{ 
-                        color: expense.status === 'active' ? 'success.main' : 
-                               expense.status === 'pending' ? 'warning.main' : 'error.main',
-                        fontWeight: 600 
+                    <Typography
+                      component="span"
+                      sx={{
+                        color:
+                          expense.status === "active"
+                            ? "success.main"
+                            : expense.status === "pending"
+                              ? "warning.main"
+                              : "error.main",
+                        fontWeight: 600,
                       }}
                     >
                       {expense.status}
@@ -171,23 +214,23 @@ const ListTab: React.FC<ListTabProps> = ({
                   </TableCell>
                   <TableCell>
                     <Stack direction="row" spacing={1}>
-                      <Button 
-                        size="small" 
+                      <Button
+                        size="small"
                         variant="contained"
                         onClick={() => onEditExpense(expense._id)}
                         color="primary"
                       >
                         Edit
                       </Button>
-                      <Button 
-                        size="small" 
+                      <Button
+                        size="small"
                         variant="outlined"
                         onClick={() => onViewExpense(expense._id)}
                       >
                         View
                       </Button>
-                      <Button 
-                        size="small" 
+                      <Button
+                        size="small"
                         variant="outlined"
                         color="error"
                         onClick={() => onDeleteExpense(expense._id)}
