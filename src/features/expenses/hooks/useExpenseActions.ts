@@ -10,8 +10,6 @@ import {
 } from "../store/expensesApi";
 import { useGetAccountsQuery } from "@/features/accounts/store/accountsApi";
 import { useToast } from "@/utils/snackbarUtils";
-import { useAppSelector } from "@/app/hooks";
-import { notificationService } from "@/features/notifications/services/notificationService";
 import type { FormValues } from "../components/expense-form";
 import type { ExpenseFilters } from "../types/expense";
 
@@ -22,7 +20,6 @@ export const useExpenseActions = (
   editExpenseId?: string,
 ) => {
   const toast = useToast();
-  const user = useAppSelector((state) => state.auth.user);
 
   const [
     updateExpense,
@@ -61,14 +58,14 @@ export const useExpenseActions = (
     data: singleExpenseData,
     isLoading: isSingleExpenseLoading,
     error: singleExpenseError,
-  } = useGetExpenseByIdQuery(selectedExpenseId || '', {
+  } = useGetExpenseByIdQuery(selectedExpenseId || "", {
     skip: !selectedExpenseId,
   });
   const {
     data: editExpenseData,
     isLoading: isEditExpenseLoading,
     error: editExpenseError,
-  } = useGetExpenseByIdQuery(editExpenseId || '', {
+  } = useGetExpenseByIdQuery(editExpenseId || "", {
     skip: !editExpenseId,
   });
 
@@ -77,19 +74,8 @@ export const useExpenseActions = (
     if (isSuccess) {
       toast.success("Expense created successfully!");
       resetMutation();
-      
-      // Send notification
-      if (user) {
-        notificationService.createNotification({
-          recipientId: user.id,
-          recipientRole: "customer",
-          title: "Expense Created",
-          message: "Your expense has been recorded successfully.",
-          type: "system",
-        });
-      }
     }
-  }, [isSuccess, toast, resetMutation, user]);
+  }, [isSuccess, toast, resetMutation]);
 
   // Handle API errors
   useEffect(() => {
