@@ -133,6 +133,11 @@ const ExpensesPage: React.FC = () => {
 
   const pageLoading = usePageLoading(isExpensesLoading);
 
+  const handleConfirm = async () => {
+    const ok = await onConfirm();
+    if (ok) onCloseConfirm();
+  };
+
   return (
     <DashboardLayout>
       <LoadingOverlay loading={pageLoading} />
@@ -194,7 +199,7 @@ const ExpensesPage: React.FC = () => {
                 watch={watch}
                 errors={errors}
                 onSubmit={onSubmit}
-                onConfirm={onConfirm}
+                onConfirm={handleConfirm}
                 onCancel={onCancel}
                 onCloseConfirm={onCloseConfirm}
               />

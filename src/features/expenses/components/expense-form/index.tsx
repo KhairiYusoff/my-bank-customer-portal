@@ -131,12 +131,17 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
                   error={!!errors.account}
                   helperText={errors.account?.message}
                   InputProps={{
-                    startAdornment: <AccountBalanceIcon sx={{ mr: 1, color: "text.secondary" }} />,
+                    startAdornment: (
+                      <AccountBalanceIcon
+                        sx={{ mr: 1, color: "text.secondary" }}
+                      />
+                    ),
                   }}
                 >
                   {accounts.map((account) => (
                     <MenuItem key={account._id} value={account._id}>
-                      {account.accountNumber} - {account.accountType} (RM{account.balance.toLocaleString()})
+                      {account.accountNumber} - {account.accountType} (RM
+                      {account.balance.toLocaleString()})
                     </MenuItem>
                   ))}
                 </TextField>
@@ -212,10 +217,7 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
               </Grid>
 
               {/* Merchant Info */}
-              <MerchantInfo 
-                register={register}
-                error={errors.merchant}
-              />
+              <MerchantInfo register={register} error={errors.merchant} />
 
               {/* Action Buttons */}
               <FormActions
