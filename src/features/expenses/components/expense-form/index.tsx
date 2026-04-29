@@ -1,10 +1,9 @@
 import React from "react";
+import { Controller, useWatch } from "react-hook-form";
 import type {
   Control,
   FieldErrors,
   UseFormHandleSubmit,
-  UseFormRegister,
-  UseFormWatch,
 } from "react-hook-form";
 import {
   Box,
@@ -56,9 +55,7 @@ interface ExpenseFormProps {
   openConfirm: boolean;
   expenseData: FormValues | null;
   control: Control<FormValues>;
-  register: UseFormRegister<FormValues>;
   handleSubmit: UseFormHandleSubmit<FormValues>;
-  watch: UseFormWatch<FormValues>;
   errors: FieldErrors<FormValues>;
   onSubmit: (values: FormValues) => void;
   onConfirm: () => void;
@@ -76,15 +73,14 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
   openConfirm,
   expenseData,
   control,
-  register,
   handleSubmit,
-  watch,
   errors,
   onSubmit,
   onConfirm,
   onCancel,
   onCloseConfirm,
 }) => {
+  const selectedAccountId = useWatch({ control, name: "account" });
   return (
     <>
       <ExpenseFormCard>
@@ -92,30 +88,37 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
           <Box component="form" onSubmit={handleSubmit(onSubmit)}>
             <Grid container spacing={3}>
               {/* Amount */}
-              <AmountField register={register} error={errors.amount} />
+              <AmountField control={control} error={errors.amount} />
 
               {/* Date */}
               <Grid item xs={12} md={6}>
-                <TextField
-                  {...register("date")}
-                  label="Date"
-                  type="date"
-                  fullWidth
-                  variant="outlined"
-                  error={!!errors.date}
-                  helperText={errors.date?.message}
-                  InputProps={{
-                    startAdornment: (
-                      <DateIcon sx={{ mr: 1, color: "text.secondary" }} />
-                    ),
-                    inputProps: { max: new Date().toISOString().split("T")[0] },
-                  }}
+                <Controller
+                  name="date"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      label="Date"
+                      type="date"
+                      fullWidth
+                      variant="outlined"
+                      error={!!errors.date}
+                      helperText={errors.date?.message}
+                      InputProps={{
+                        startAdornment: (
+                          <DateIcon sx={{ mr: 1, color: "text.secondary" }} />
+                        ),
+                        inputProps: {
+                          max: new Date().toISOString().split("T")[0],
+                        },
+                      }}
+                    />
+                  )}
                 />
               </Grid>
 
               <CategorySelect
-                register={register}
-                watch={watch}
+                control={control}
                 error={errors.category}
                 subCategoryError={errors.subCategory}
                 categories={categories}
@@ -123,102 +126,130 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
 
               {/* Account */}
               <Grid item xs={12} md={6}>
-                <TextField
-                  {...register("account")}
-                  label="Account"
-                  select
-                  fullWidth
-                  variant="outlined"
-                  error={!!errors.account}
-                  helperText={errors.account?.message}
-                  InputProps={{
-                    startAdornment: (
-                      <AccountBalanceIcon
-                        sx={{ mr: 1, color: "text.secondary" }}
-                      />
-                    ),
-                  }}
-                >
-                  {accounts.map((account) => (
-                    <MenuItem key={account._id} value={account._id}>
-                      {account.accountNumber} - {account.accountType} (RM
-                      {account.balance.toLocaleString()})
-                    </MenuItem>
-                  ))}
-                </TextField>
+                <Controller
+                  name="account"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      label="Account"
+                      select
+                      fullWidth
+                      variant="outlined"
+                      error={!!errors.account}
+                      helperText={errors.account?.message}
+                      InputProps={{
+                        startAdornment: (
+                          <AccountBalanceIcon
+                            sx={{ mr: 1, color: "text.secondary" }}
+                          />
+                        ),
+                      }}
+                    >
+                      {accounts.map((account) => (
+                        <MenuItem key={account._id} value={account._id}>
+                          {account.accountNumber} - {account.accountType} (RM
+                          {account.balance.toLocaleString()})
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                  )}
+                />
               </Grid>
 
               {/* Payment Method */}
               <Grid item xs={12} md={6}>
-                <TextField
-                  {...register("paymentMethod")}
-                  label="Payment Method"
-                  select
-                  fullWidth
-                  variant="outlined"
-                  error={!!errors.paymentMethod}
-                  helperText={errors.paymentMethod?.message}
-                  InputProps={{
-                    startAdornment: (
-                      <PaymentIcon sx={{ mr: 1, color: "text.secondary" }} />
-                    ),
-                  }}
-                >
-                  {paymentMethods.map((method) => (
-                    <MenuItem key={method.value} value={method.value}>
-                      {method.label}
-                    </MenuItem>
-                  ))}
-                </TextField>
+                <Controller
+                  name="paymentMethod"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      label="Payment Method"
+                      select
+                      fullWidth
+                      variant="outlined"
+                      error={!!errors.paymentMethod}
+                      helperText={errors.paymentMethod?.message}
+                      InputProps={{
+                        startAdornment: (
+                          <PaymentIcon
+                            sx={{ mr: 1, color: "text.secondary" }}
+                          />
+                        ),
+                      }}
+                    >
+                      {paymentMethods.map((method) => (
+                        <MenuItem key={method.value} value={method.value}>
+                          {method.label}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                  )}
+                />
               </Grid>
 
               {/* Description */}
               <Grid item xs={12}>
-                <TextField
-                  {...register("description")}
-                  label="Description"
-                  fullWidth
-                  variant="outlined"
-                  error={!!errors.description}
-                  helperText={errors.description?.message}
-                  InputProps={{
-                    startAdornment: (
-                      <DescriptionIcon
-                        sx={{ mr: 1, color: "text.secondary" }}
-                      />
-                    ),
-                  }}
+                <Controller
+                  name="description"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      label="Description"
+                      fullWidth
+                      variant="outlined"
+                      error={!!errors.description}
+                      helperText={errors.description?.message}
+                      InputProps={{
+                        startAdornment: (
+                          <DescriptionIcon
+                            sx={{ mr: 1, color: "text.secondary" }}
+                          />
+                        ),
+                      }}
+                    />
+                  )}
                 />
               </Grid>
 
               {/* Notes */}
               <Grid item xs={12}>
-                <TextField
-                  {...register("notes")}
-                  label="Notes (Optional)"
-                  multiline
-                  rows={3}
-                  fullWidth
-                  variant="outlined"
-                  error={!!errors.notes}
-                  helperText={errors.notes?.message || "Maximum 500 characters"}
-                  InputProps={{
-                    startAdornment: (
-                      <NotesIcon
-                        sx={{
-                          mr: 1,
-                          alignSelf: "flex-start",
-                          mt: 2,
-                          color: "text.secondary",
-                        }}
-                      />
-                    ),
-                  }}
+                <Controller
+                  name="notes"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      label="Notes (Optional)"
+                      multiline
+                      rows={3}
+                      fullWidth
+                      variant="outlined"
+                      error={!!errors.notes}
+                      helperText={
+                        errors.notes?.message || "Maximum 500 characters"
+                      }
+                      InputProps={{
+                        startAdornment: (
+                          <NotesIcon
+                            sx={{
+                              mr: 1,
+                              alignSelf: "flex-start",
+                              mt: 2,
+                              color: "text.secondary",
+                            }}
+                          />
+                        ),
+                      }}
+                    />
+                  )}
                 />
               </Grid>
 
               {/* Merchant Info */}
-              <MerchantInfo register={register} error={errors.merchant} />
+              <MerchantInfo control={control} error={errors.merchant} />
 
               {/* Action Buttons */}
               <FormActions
@@ -241,7 +272,7 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
         isLoading={isLoading}
         expenseData={expenseData}
         categories={categories}
-        selectedAccount={accounts.find((acc) => acc._id === watch("account"))}
+        selectedAccount={accounts.find((acc) => acc._id === selectedAccountId)}
       />
     </>
   );

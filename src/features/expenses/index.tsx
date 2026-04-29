@@ -88,10 +88,7 @@ const ExpensesPage: React.FC = () => {
 
   const {
     control,
-    register,
     handleSubmit,
-    watch,
-    reset,
     isDirty,
     isValid,
     openConfirm,
@@ -99,6 +96,7 @@ const ExpensesPage: React.FC = () => {
     onSubmit,
     onCancel,
     onCloseConfirm,
+    resetForm,
     errors,
   } = useExpenseForm();
 
@@ -137,7 +135,7 @@ const ExpensesPage: React.FC = () => {
     const ok = await onConfirm();
     if (ok) {
       onCloseConfirm();
-      reset();
+      resetForm();
     }
   };
 
@@ -197,9 +195,7 @@ const ExpensesPage: React.FC = () => {
                 openConfirm={openConfirm}
                 expenseData={expenseData}
                 control={control}
-                register={register}
                 handleSubmit={handleSubmit}
-                watch={watch}
                 errors={errors}
                 onSubmit={onSubmit}
                 onConfirm={handleConfirm}

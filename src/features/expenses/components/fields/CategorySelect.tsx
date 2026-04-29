@@ -1,27 +1,25 @@
 import React from "react";
 import { TextField, MenuItem, Grid } from "@mui/material";
 import { Category as CategoryIcon } from "@mui/icons-material";
-import type { UseFormRegister, UseFormWatch, FieldError } from "react-hook-form";
+import { Controller, useWatch } from "react-hook-form";
+import type { Control, FieldError } from "react-hook-form";
 import type { ExpenseCategory } from "../../types/expense";
 
 interface CategorySelectProps {
-  register: UseFormRegister<any>;
-  watch: UseFormWatch<any>;
+  control: Control<any>;
   error?: FieldError;
   subCategoryError?: FieldError;
   categories: ExpenseCategory[];
 }
 
-const CategorySelect: React.FC<CategorySelectProps> = ({ 
-  register, 
-  watch, 
+const CategorySelect: React.FC<CategorySelectProps> = ({
+  control,
   error,
   subCategoryError,
-  categories 
+  categories,
 }) => {
-  const selectedCategory = watch("category");
+  const selectedCategory = useWatch({ control, name: "category" });
 
-  // Get subcategories for selected category
   const getSubcategories = () => {
     const category = categories.find((cat) => cat.value === selectedCategory);
     return category?.subcategories || [];
@@ -29,49 +27,66 @@ const CategorySelect: React.FC<CategorySelectProps> = ({
 
   return (
     <>
+      {/* Category */}
       <Grid item xs={12} md={6}>
-        <TextField
-          {...register("category")}
-          label="Category"
-          select
-          fullWidth
-          variant="outlined"
-          error={!!error}
-          helperText={error?.message}
-          InputProps={{
-            startAdornment: <CategoryIcon sx={{ mr: 1, color: "text.secondary" }} />,
-          }}
-        >
-          {categories.map((category) => (
-            <MenuItem key={category.value} value={category.value}>
-              {category.label}
-            </MenuItem>
-          ))}
-        </TextField>
+        <Controller
+          name="category"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              label="Category"
+              select
+              fullWidth
+              variant="outlined"
+              error={!!error}
+              helperText={error?.message}
+              InputProps={{
+                startAdornment: (
+                  <CategoryIcon sx={{ mr: 1, color: "text.secondary" }} />
+                ),
+              }}
+            >
+              {categories.map((category) => (
+                <MenuItem key={category.value} value={category.value}>
+                  {category.label}
+                </MenuItem>
+              ))}
+            </TextField>
+          )}
+        />
       </Grid>
 
       {/* Subcategory */}
       <Grid item xs={12} md={6}>
-        <TextField
-          {...register("subCategory")}
-          label="Subcategory (Optional)"
-          select
-          fullWidth
-          variant="outlined"
-          error={!!subCategoryError}
-          helperText={subCategoryError?.message}
-          disabled={!selectedCategory}
-          InputProps={{
-            startAdornment: <CategoryIcon sx={{ mr: 1, color: "text.secondary" }} />,
-          }}
-        >
-          <MenuItem value="">None</MenuItem>
-          {getSubcategories().map((subcategory) => (
-            <MenuItem key={subcategory.value} value={subcategory.value}>
-              {subcategory.label}
-            </MenuItem>
-          ))}
-        </TextField>
+        <Controller
+          name="subCategory"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              label="Subcategory (Optional)"
+              select
+              fullWidth
+              variant="outlined"
+              error={!!subCategoryError}
+              helperText={subCategoryError?.message}
+              disabled={!selectedCategory}
+              InputProps={{
+                startAdornment: (
+                  <CategoryIcon sx={{ mr: 1, color: "text.secondary" }} />
+                ),
+              }}
+            >
+              <MenuItem value="">None</MenuItem>
+              {getSubcategories().map((subcategory) => (
+                <MenuItem key={subcategory.value} value={subcategory.value}>
+                  {subcategory.label}
+                </MenuItem>
+              ))}
+            </TextField>
+          )}
+        />
       </Grid>
     </>
   );

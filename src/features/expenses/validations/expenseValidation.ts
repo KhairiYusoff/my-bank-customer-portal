@@ -78,7 +78,7 @@ export const expenseSchema = yup.object().shape({
     .default(null),
 });
 
-export const expenseDefaultValues: ExpenseFormData = {
+export const getExpenseDefaultValues = (): ExpenseFormData => ({
   amount: undefined as unknown as number,
   category: "",
   subCategory: "",
@@ -93,4 +93,4 @@ export const expenseDefaultValues: ExpenseFormData = {
     location: "",
     receiptNumber: "",
   },
-};
+});

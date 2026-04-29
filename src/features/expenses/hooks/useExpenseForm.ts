@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
   expenseSchema,
-  expenseDefaultValues,
+  getExpenseDefaultValues,
 } from "../validations/expenseValidation";
 import type { FormValues } from "../components/expense-form";
 
@@ -14,15 +14,13 @@ export const useExpenseForm = () => {
   // Form hooks
   const {
     control,
-    register,
     handleSubmit,
-    watch,
     reset,
     formState: { isDirty, isValid, errors },
   } = useForm<FormValues>({
     resolver: yupResolver(expenseSchema as any),
     mode: "onTouched",
-    defaultValues: expenseDefaultValues,
+    defaultValues: getExpenseDefaultValues(),
   });
 
   const onSubmit = (values: FormValues) => {
@@ -39,13 +37,14 @@ export const useExpenseForm = () => {
     setOpenConfirm(false);
   };
 
+  const resetForm = () => {
+    reset(getExpenseDefaultValues());
+  };
+
   return {
     // Form state
     control,
-    register,
     handleSubmit,
-    watch,
-    reset,
     isDirty,
     isValid,
     errors,
@@ -58,5 +57,6 @@ export const useExpenseForm = () => {
     onSubmit,
     onCancel,
     onCloseConfirm,
+    resetForm,
   };
 };

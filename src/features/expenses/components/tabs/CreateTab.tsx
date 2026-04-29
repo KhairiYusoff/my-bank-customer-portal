@@ -1,14 +1,6 @@
 import React from "react";
-import {
-  Card,
-  CardContent,
-  Typography,
-  Button,
-  Box,
-} from "@mui/material";
-import {
-  AccountBalance as AccountBalanceIcon,
-} from "@mui/icons-material";
+import { Card, CardContent, Typography, Button, Box } from "@mui/material";
+import { AccountBalance as AccountBalanceIcon } from "@mui/icons-material";
 import ExpenseForm, { FormValues } from "../expense-form";
 import type { Account } from "@/features/accounts/types/account";
 import type { ExpenseCategory, PaymentMethod } from "../../types/expense";
@@ -23,9 +15,7 @@ interface CreateTabProps {
   openConfirm: boolean;
   expenseData: FormValues | null;
   control: any;
-  register: any;
   handleSubmit: any;
-  watch: any;
   errors: any;
   onSubmit: (values: FormValues) => void;
   onConfirm: () => void;
@@ -43,9 +33,7 @@ const CreateTab: React.FC<CreateTabProps> = ({
   openConfirm,
   expenseData,
   control,
-  register,
   handleSubmit,
-  watch,
   errors,
   onSubmit,
   onConfirm,
@@ -56,12 +44,15 @@ const CreateTab: React.FC<CreateTabProps> = ({
     <>
       {accounts.length === 0 ? (
         <Card elevation={0} sx={{ textAlign: "center", py: 8 }}>
-          <AccountBalanceIcon sx={{ fontSize: 64, color: "text.secondary", mb: 2 }} />
+          <AccountBalanceIcon
+            sx={{ fontSize: 64, color: "text.secondary", mb: 2 }}
+          />
           <Typography variant="h6" gutterBottom>
             No Accounts Available
           </Typography>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-            You need at least one account to create expenses. Contact support to open an account.
+            You need at least one account to create expenses. Contact support to
+            open an account.
           </Typography>
           <Button variant="contained" href="/contact-us">
             Contact Support
@@ -78,9 +69,7 @@ const CreateTab: React.FC<CreateTabProps> = ({
           openConfirm={openConfirm}
           expenseData={expenseData}
           control={control}
-          register={register}
           handleSubmit={handleSubmit}
-          watch={watch}
           errors={errors}
           onSubmit={onSubmit}
           onConfirm={onConfirm}
