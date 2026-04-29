@@ -7,7 +7,6 @@ import {
   Stack,
   IconButton,
   Alert,
-  CircularProgress,
 } from "@mui/material";
 import { GradientBalanceCard, ActionButton } from "./styles";
 import {
@@ -22,7 +21,6 @@ interface BalanceCardProps {
   accountNumber: string;
   balanceData?: AccountBalanceResponse;
   balanceError: unknown;
-  balanceLoading: boolean;
   onRefresh: () => void;
 }
 
@@ -30,20 +28,9 @@ const BalanceCard: React.FC<BalanceCardProps> = ({
   accountNumber,
   balanceData,
   balanceError,
-  balanceLoading,
   onRefresh,
 }) => {
   const navigate = useNavigate();
-
-  if (balanceLoading) {
-    return (
-      <GradientBalanceCard>
-        <CardContent sx={{ color: "white", textAlign: "center", py: 4 }}>
-          <CircularProgress color="inherit" />
-        </CardContent>
-      </GradientBalanceCard>
-    );
-  }
 
   if (balanceError) {
     const apiError = balanceError as any;

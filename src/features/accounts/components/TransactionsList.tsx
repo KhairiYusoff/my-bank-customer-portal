@@ -13,7 +13,6 @@ import {
   Stack,
   Chip,
   Alert,
-  CircularProgress,
   Pagination,
 } from "@mui/material";
 import {
@@ -31,7 +30,6 @@ import type { TransactionHistoryResponse } from "@/features/transactions/types/t
 interface TransactionsListProps {
   transactionsData?: TransactionHistoryResponse;
   transactionsError: unknown;
-  transactionsLoading: boolean;
   page: number;
   onPageChange: (event: React.ChangeEvent<unknown>, value: number) => void;
 }
@@ -81,23 +79,9 @@ const getTransactionTypeChip = (type: string) => {
 const TransactionsList: React.FC<TransactionsListProps> = ({
   transactionsData,
   transactionsError,
-  transactionsLoading,
   page,
   onPageChange,
 }) => {
-  if (transactionsLoading) {
-    return (
-      <Card>
-        <CardContent sx={{ textAlign: "center", py: 4 }}>
-          <CircularProgress />
-          <Typography variant="body2" sx={{ mt: 2, color: "text.secondary" }}>
-            Loading transactions...
-          </Typography>
-        </CardContent>
-      </Card>
-    );
-  }
-
   if (transactionsError) {
     const apiError = transactionsError as any;
     return (

@@ -6,6 +6,8 @@ import { useGetAccountBalanceQuery } from '../store/accountsApi';
 import { useGetAccountTransactionsQuery } from '@/features/transactions/store/transactionsApi';
 import { BalanceCard, TransactionsList } from '../components';
 import { GradientTitle } from '../components/styles';
+import { LoadingOverlay } from '@/components';
+import { usePageLoading } from '@/hooks';
 
 const AccountDetailsPage: React.FC = () => {
   const { accountNumber } = useParams<{ accountNumber: string }>();
@@ -15,19 +17,21 @@ const AccountDetailsPage: React.FC = () => {
   const {
     data: balanceData,
     error: balanceError,
-    isLoading: balanceLoading,
+    isFetching: balanceFetching,
     refetch: refetchBalance,
   } = useGetAccountBalanceQuery(accountNumber!, { skip: !accountNumber });
 
   const {
     data: transactionsData,
     error: transactionsError,
-    isLoading: transactionsLoading,
+    isFetching: transactionsFetching,
     refetch: refetchTransactions,
   } = useGetAccountTransactionsQuery(
     { accountNumber: accountNumber!, page, limit: transactionsPerPage },
     { skip: !accountNumber }
   );
+
+  const isLoading = usePageLoading(balanceFetching, transactionsFetching);
 
   const handleRefresh = () => {
     refetchBalance();
@@ -40,6 +44,7 @@ const AccountDetailsPage: React.FC = () => {
 
   return (
     <DashboardLayout>
+      <LoadingOverlay loading={isLoading} />
       <Container maxWidth="lg">
         <Box sx={{ my: 4 }}>
           <GradientTitle variant="h4">
@@ -50,14 +55,12 @@ const AccountDetailsPage: React.FC = () => {
             accountNumber={accountNumber!}
             balanceData={balanceData}
             balanceError={balanceError}
-            balanceLoading={balanceLoading}
             onRefresh={handleRefresh}
           />
 
           <TransactionsList
             transactionsData={transactionsData}
             transactionsError={transactionsError}
-            transactionsLoading={transactionsLoading}
             page={page}
             onPageChange={handlePageChange}
           />
