@@ -1,20 +1,22 @@
 import React from "react";
 import { TextField, MenuItem, Grid } from "@mui/material";
 import { Category as CategoryIcon } from "@mui/icons-material";
-import type { UseFormRegister, UseFormWatch, FieldErrors } from "react-hook-form";
+import type { UseFormRegister, UseFormWatch, FieldError } from "react-hook-form";
 import type { ExpenseCategory } from "../../types/expense";
 
 interface CategorySelectProps {
   register: UseFormRegister<any>;
   watch: UseFormWatch<any>;
-  error?: any;
+  error?: FieldError;
+  subCategoryError?: FieldError;
   categories: ExpenseCategory[];
 }
 
 const CategorySelect: React.FC<CategorySelectProps> = ({ 
   register, 
   watch, 
-  error, 
+  error,
+  subCategoryError,
   categories 
 }) => {
   const selectedCategory = watch("category");
@@ -56,8 +58,8 @@ const CategorySelect: React.FC<CategorySelectProps> = ({
           select
           fullWidth
           variant="outlined"
-          error={!!error?.subCategory}
-          helperText={error?.subCategory?.message}
+          error={!!subCategoryError}
+          helperText={subCategoryError?.message}
           disabled={!selectedCategory}
           InputProps={{
             startAdornment: <CategoryIcon sx={{ mr: 1, color: "text.secondary" }} />,

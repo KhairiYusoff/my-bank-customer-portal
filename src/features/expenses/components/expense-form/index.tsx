@@ -116,7 +116,8 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
               <CategorySelect
                 register={register}
                 watch={watch}
-                error={errors}
+                error={errors.category}
+                subCategoryError={errors.subCategory}
                 categories={categories}
               />
 

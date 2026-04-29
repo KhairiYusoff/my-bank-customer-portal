@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { expenseSchema } from "../validations/expenseValidation";
+import {
+  expenseSchema,
+  expenseDefaultValues,
+} from "../validations/expenseValidation";
 import type { FormValues } from "../components/expense-form";
 
 export const useExpenseForm = () => {
@@ -18,19 +21,8 @@ export const useExpenseForm = () => {
     formState: { isDirty, isValid, errors },
   } = useForm<FormValues>({
     resolver: yupResolver(expenseSchema as any),
-    mode: "onChange",
-    defaultValues: {
-      amount: undefined,
-      date: new Date().toISOString().split('T')[0],
-      category: "",
-      subCategory: "",
-      description: "",
-      merchant: {
-        name: "",
-        location: "",
-        receiptNumber: "",
-      },
-    },
+    mode: "onTouched",
+    defaultValues: expenseDefaultValues,
   });
 
   const onSubmit = (values: FormValues) => {
@@ -57,11 +49,11 @@ export const useExpenseForm = () => {
     isDirty,
     isValid,
     errors,
-    
+
     // Dialog state
     openConfirm,
     expenseData,
-    
+
     // Actions
     onSubmit,
     onCancel,

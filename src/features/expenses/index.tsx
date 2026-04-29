@@ -135,7 +135,10 @@ const ExpensesPage: React.FC = () => {
 
   const handleConfirm = async () => {
     const ok = await onConfirm();
-    if (ok) onCloseConfirm();
+    if (ok) {
+      onCloseConfirm();
+      reset();
+    }
   };
 
   return (
