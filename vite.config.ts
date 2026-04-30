@@ -29,6 +29,7 @@ export default defineConfig({
   },
   plugins: [react()],
   resolve: {
+    conditions: ["browser"],
     alias: {
       "@": resolve(dirname(fileURLToPath(import.meta.url)), "src"),
       "@app": resolve(dirname(fileURLToPath(import.meta.url)), "src/app"),
