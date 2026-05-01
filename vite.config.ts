@@ -10,6 +10,25 @@ export default defineConfig({
   build: {
     outDir: "dist",
     emptyOutDir: true,
+    rollupOptions: {
+      plugins: [
+        {
+          name: "resolve-vfile-subpath-imports",
+          resolveId(id: string) {
+            const map: Record<string, string> = {
+              "#minpath": "minpath.browser.js",
+              "#minproc": "minproc.browser.js",
+              "#minurl": "minurl.browser.js",
+            };
+            if (map[id]) {
+              return fileURLToPath(
+                new URL(`node_modules/vfile/lib/${map[id]}`, import.meta.url),
+              );
+            }
+          },
+        },
+      ],
+    },
   },
   server: {
     port: 5190,
@@ -29,28 +48,27 @@ export default defineConfig({
   },
   plugins: [react()],
   resolve: {
-    conditions: ["browser"],
     alias: {
       "@": resolve(dirname(fileURLToPath(import.meta.url)), "src"),
       "@app": resolve(dirname(fileURLToPath(import.meta.url)), "src/app"),
       "@components": resolve(
         dirname(fileURLToPath(import.meta.url)),
-        "src/components"
+        "src/components",
       ),
       "@constants": resolve(
         dirname(fileURLToPath(import.meta.url)),
-        "src/constants"
+        "src/constants",
       ),
       "@features": resolve(
         dirname(fileURLToPath(import.meta.url)),
-        "src/features"
+        "src/features",
       ),
       "@pages": resolve(dirname(fileURLToPath(import.meta.url)), "src/pages"),
       "@types": resolve(dirname(fileURLToPath(import.meta.url)), "src/types"),
       "@utils": resolve(dirname(fileURLToPath(import.meta.url)), "src/utils"),
       "@providers": resolve(
         dirname(fileURLToPath(import.meta.url)),
-        "src/providers"
+        "src/providers",
       ),
     },
   },
