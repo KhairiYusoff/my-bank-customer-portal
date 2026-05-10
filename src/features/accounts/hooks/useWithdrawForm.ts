@@ -4,7 +4,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useGetAccountsQuery, useWithdrawMutation } from "../store/accountsApi";
 import { useToast } from "@/utils/snackbarUtils";
 import { useAppSelector } from "@/app/hooks";
-import { notificationService } from "@/features/notifications/services/notificationService";
 import {
   withdrawSchema,
   type IWithdrawForm,
@@ -38,15 +37,6 @@ export const useWithdrawForm = () => {
   useEffect(() => {
     if (isSuccess && withdrawData && user) {
       toast.success("Withdrawal successful!");
-
-      notificationService
-        .createTransactionNotification({
-          userId: user.id,
-          type: "withdraw",
-          amount: withdrawData.amount,
-          accountNumber: withdrawData.accountNumber,
-        })
-        .catch(console.error);
 
       reset();
       resetMutation();

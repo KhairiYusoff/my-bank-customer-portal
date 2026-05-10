@@ -4,7 +4,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useGetAccountsQuery, useDepositMutation } from "../store/accountsApi";
 import { useToast } from "@/utils/snackbarUtils";
 import { useAppSelector } from "@/app/hooks";
-import { notificationService } from "@/features/notifications/services/notificationService";
 import {
   depositSchema,
   type IDepositForm,
@@ -38,15 +37,6 @@ export const useDepositForm = () => {
   useEffect(() => {
     if (isSuccess && depositData && user) {
       toast.success("Deposit successful!");
-
-      notificationService
-        .createTransactionNotification({
-          userId: user.id,
-          type: "deposit",
-          amount: depositData.amount,
-          accountNumber: depositData.accountNumber,
-        })
-        .catch(console.error);
 
       reset();
       resetMutation();

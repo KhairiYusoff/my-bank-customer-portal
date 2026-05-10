@@ -22,7 +22,6 @@ import { useGetAccountsQuery } from "@/features/accounts/store/accountsApi";
 import { useTransferMutation } from "../store/transactionsApi";
 import { useToast } from "@/utils/snackbarUtils";
 import { useAppSelector } from "@/app/hooks";
-import { notificationService } from "@/features/notifications/services/notificationService";
 import type { TransferRequest } from "../types/transfer";
 
 const schema = yup.object({
@@ -67,17 +66,6 @@ const TransferPage: React.FC = () => {
     if (isSuccess && transferData && user) {
       // Show immediate toast
       toast.success("Transfer successful!");
-
-      // Create backend notification
-      notificationService
-        .createTransactionNotification({
-          userId: user.id,
-          type: "transfer",
-          amount: transferData.amount,
-          fromAccountNumber: transferData.fromAccountNumber,
-          toAccountNumber: transferData.toAccountNumber,
-        })
-        .catch(console.error);
 
       reset();
       resetMutation();
