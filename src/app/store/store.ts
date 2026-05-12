@@ -20,6 +20,7 @@ export const store = configureStore({
           "meta.arg",
           "payload.timestamp",
           "meta.baseQueryMeta.request",
+          "meta.baseQueryMeta.response",
         ],
         // Ignore these field paths in state
         ignoredPaths: ["api.queries", "api.mutations"],
