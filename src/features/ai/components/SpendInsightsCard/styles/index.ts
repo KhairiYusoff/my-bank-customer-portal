@@ -55,18 +55,18 @@ export const CategoryRow = styled(Box)(({ theme }) => ({
   marginBottom: theme.spacing(1.5),
 }));
 
-export const CategoryBar = styled(LinearProgress)<{ $pct: number }>(
-  ({ theme, $pct: _ }) => ({
-    flex: 1,
-    height: 8,
+export const CategoryBar = styled(LinearProgress, {
+  shouldForwardProp: (prop) => prop !== "$pct",
+})<{ $pct: number }>(({ theme, $pct: _ }) => ({
+  flex: 1,
+  height: 8,
+  borderRadius: 4,
+  backgroundColor: alpha(theme.palette.primary.main, 0.1),
+  "& .MuiLinearProgress-bar": {
+    background: theme.palette.gradients.primary,
     borderRadius: 4,
-    backgroundColor: alpha(theme.palette.primary.main, 0.1),
-    "& .MuiLinearProgress-bar": {
-      background: theme.palette.gradients.primary,
-      borderRadius: 4,
-    },
-  }),
-);
+  },
+}));
 
 export const PeriodChipRow = styled(Box)(({ theme }) => ({
   display: "flex",

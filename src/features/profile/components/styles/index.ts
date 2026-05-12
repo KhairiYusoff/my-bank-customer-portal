@@ -61,37 +61,37 @@ export const SectionCard = styled(Card)(({ theme }) => ({
   },
 }));
 
-export const SectionIconAvatar = styled(Avatar)<{ $colorScheme: ProfileColorScheme }>(
-  ({ theme, $colorScheme }) => ({
-    backgroundColor: alpha(theme.palette[$colorScheme].main, 0.1),
-    marginRight: theme.spacing(2),
-    width: 48,
-    height: 48,
-  })
-);
+export const SectionIconAvatar = styled(Avatar, {
+  shouldForwardProp: (prop) => prop !== "$colorScheme",
+})<{ $colorScheme: ProfileColorScheme }>(({ theme, $colorScheme }) => ({
+  backgroundColor: alpha(theme.palette[$colorScheme].main, 0.1),
+  marginRight: theme.spacing(2),
+  width: 48,
+  height: 48,
+}));
 
-export const SectionDataBox = styled("div")<{ $colorScheme: ProfileColorScheme }>(
-  ({ theme, $colorScheme }) => ({
-    padding: theme.spacing(2),
-    backgroundColor: alpha(theme.palette[$colorScheme].main, 0.05),
-    borderRadius: theme.shape.borderRadius * 2,
-    border: `1px solid ${alpha(theme.palette[$colorScheme].main, 0.15)}`,
-  })
-);
+export const SectionDataBox = styled("div", {
+  shouldForwardProp: (prop) => prop !== "$colorScheme",
+})<{ $colorScheme: ProfileColorScheme }>(({ theme, $colorScheme }) => ({
+  padding: theme.spacing(2),
+  backgroundColor: alpha(theme.palette[$colorScheme].main, 0.05),
+  borderRadius: theme.shape.borderRadius * 2,
+  border: `1px solid ${alpha(theme.palette[$colorScheme].main, 0.15)}`,
+}));
 
 // ─── Password Form ───────────────────────────────────────────────────────────
 
-export const PasswordSectionAvatar = styled(Avatar)<{ $variant: "current" | "new" }>(
-  ({ theme, $variant }) => ({
-    backgroundColor: alpha(
-      $variant === "current" ? theme.palette.error.main : theme.palette.primary.main,
-      0.1
-    ),
-    marginRight: theme.spacing(2),
-    width: 32,
-    height: 32,
-  })
-);
+export const PasswordSectionAvatar = styled(Avatar, {
+  shouldForwardProp: (prop) => prop !== "$variant",
+})<{ $variant: "current" | "new" }>(({ theme, $variant }) => ({
+  backgroundColor: alpha(
+    $variant === "current" ? theme.palette.error.main : theme.palette.primary.main,
+    0.1
+  ),
+  marginRight: theme.spacing(2),
+  width: 32,
+  height: 32,
+}));
 
 export const PasswordRequirementsBox = styled("div")(({ theme }) => ({
   padding: theme.spacing(2),
@@ -117,8 +117,29 @@ export const PasswordSubmitButton = styled(Button)(({ theme }) => ({
   },
 }));
 
-export const StrengthChip = styled(Chip)<{ $strength: number }>(
-  ({ theme, $strength }) => ({
+export const StrengthChip = styled(Chip, {
+  shouldForwardProp: (prop) => prop !== "$strength",
+})<{ $strength: number }>(({ theme, $strength }) => ({
+  backgroundColor:
+    $strength < 25
+      ? theme.palette.error.main
+      : $strength < 50
+      ? theme.palette.warning.main
+      : $strength < 75
+      ? theme.palette.info.main
+      : theme.palette.success.main,
+  color: "white",
+  fontWeight: 600,
+  fontSize: "0.75rem",
+}));
+
+export const StrengthBar = styled(LinearProgress, {
+  shouldForwardProp: (prop) => prop !== "$strength",
+})<{ $strength: number }>(({ theme, $strength }) => ({
+  height: 6,
+  borderRadius: 3,
+  backgroundColor: alpha(theme.palette.common.black, 0.1),
+  "& .MuiLinearProgress-bar": {
     backgroundColor:
       $strength < 25
         ? theme.palette.error.main
@@ -127,30 +148,9 @@ export const StrengthChip = styled(Chip)<{ $strength: number }>(
         : $strength < 75
         ? theme.palette.info.main
         : theme.palette.success.main,
-    color: "white",
-    fontWeight: 600,
-    fontSize: "0.75rem",
-  })
-);
-
-export const StrengthBar = styled(LinearProgress)<{ $strength: number }>(
-  ({ theme, $strength }) => ({
-    height: 6,
     borderRadius: 3,
-    backgroundColor: alpha(theme.palette.common.black, 0.1),
-    "& .MuiLinearProgress-bar": {
-      backgroundColor:
-        $strength < 25
-          ? theme.palette.error.main
-          : $strength < 50
-          ? theme.palette.warning.main
-          : $strength < 75
-          ? theme.palette.info.main
-          : theme.palette.success.main,
-      borderRadius: 3,
-    },
-  })
-);
+  },
+}));
 
 // ─── Change Password Dialog ──────────────────────────────────────────────────
 

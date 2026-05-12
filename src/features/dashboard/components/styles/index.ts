@@ -22,14 +22,14 @@ export const DashboardAccountCard = styled(Card)(({ theme }) => ({
   },
 }));
 
-export const AccountTypeAvatar = styled(Avatar)<{ $colorScheme: AccountColorScheme }>(
-  ({ theme, $colorScheme }) => ({
-    backgroundColor: (theme.palette as any)[$colorScheme].main,
-    marginRight: theme.spacing(2),
-    width: 56,
-    height: 56,
-  })
-);
+export const AccountTypeAvatar = styled(Avatar, {
+  shouldForwardProp: (prop) => prop !== "$colorScheme",
+})<{ $colorScheme: AccountColorScheme }>(({ theme, $colorScheme }) => ({
+  backgroundColor: (theme.palette as any)[$colorScheme].main,
+  marginRight: theme.spacing(2),
+  width: 56,
+  height: 56,
+}));
 
 export const AccountNumberBox = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.background.subtle,
@@ -38,24 +38,24 @@ export const AccountNumberBox = styled("div")(({ theme }) => ({
   marginBottom: theme.spacing(2),
 }));
 
-export const BalanceBox = styled("div")<{ $colorScheme: AccountColorScheme }>(
-  ({ theme, $colorScheme }) => ({
-    backgroundColor: alpha((theme.palette as any)[$colorScheme].main, 0.05),
-    borderRadius: theme.shape.borderRadius * 2,
-    padding: theme.spacing(2),
-    marginBottom: theme.spacing(2),
-  })
-);
+export const BalanceBox = styled("div", {
+  shouldForwardProp: (prop) => prop !== "$colorScheme",
+})<{ $colorScheme: AccountColorScheme }>(({ theme, $colorScheme }) => ({
+  backgroundColor: alpha((theme.palette as any)[$colorScheme].main, 0.05),
+  borderRadius: theme.shape.borderRadius * 2,
+  padding: theme.spacing(2),
+  marginBottom: theme.spacing(2),
+}));
 
-export const AccountViewButton = styled(Button)<{ $colorScheme: AccountColorScheme }>(
-  ({ theme, $colorScheme }) => ({
-    marginTop: "auto",
-    background: `linear-gradient(135deg, ${(theme.palette as any)[$colorScheme].main} 0%, ${(theme.palette as any)[$colorScheme].dark} 100%)`,
-    "&:hover": {
-      background: `linear-gradient(135deg, ${(theme.palette as any)[$colorScheme].main} 20%, ${(theme.palette as any)[$colorScheme].dark} 80%)`,
-    },
-  })
-);
+export const AccountViewButton = styled(Button, {
+  shouldForwardProp: (prop) => prop !== "$colorScheme",
+})<{ $colorScheme: AccountColorScheme }>(({ theme, $colorScheme }) => ({
+  marginTop: "auto",
+  background: `linear-gradient(135deg, ${(theme.palette as any)[$colorScheme].main} 0%, ${(theme.palette as any)[$colorScheme].dark} 100%)`,
+  "&:hover": {
+    background: `linear-gradient(135deg, ${(theme.palette as any)[$colorScheme].main} 20%, ${(theme.palette as any)[$colorScheme].dark} 80%)`,
+  },
+}));
 
 // ─── Quick Actions ────────────────────────────────────────────────────────────
 
