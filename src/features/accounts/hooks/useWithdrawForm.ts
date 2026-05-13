@@ -29,16 +29,16 @@ export const useWithdrawForm = () => {
     reset,
     formState: { errors, isDirty, isValid },
   } = useForm<IWithdrawForm>({
-    resolver: yupResolver(withdrawSchema),
+    resolver: yupResolver(withdrawSchema) as any,
     mode: "onChange",
-    defaultValues: { accountNumber: "", amount: 0 },
+    defaultValues: { accountNumber: "", amount: "" },
   });
 
   useEffect(() => {
     if (isSuccess && withdrawData && user) {
       toast.success("Withdrawal successful!");
 
-      reset();
+      reset({ accountNumber: "", amount: "" });
       resetMutation();
       setWithdrawData(null);
     }
@@ -58,8 +58,9 @@ export const useWithdrawForm = () => {
   ]);
 
   const onSubmit = (data: IWithdrawForm) => {
-    setWithdrawData(data);
-    withdraw(data);
+    const payload = { ...data, amount: Number(data.amount) };
+    setWithdrawData(payload);
+    withdraw(payload);
   };
 
   return {

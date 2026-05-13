@@ -29,16 +29,24 @@ export const useDepositForm = () => {
     reset,
     formState: { errors, isDirty, isValid },
   } = useForm<IDepositForm>({
-    resolver: yupResolver(depositSchema),
+    resolver: yupResolver(depositSchema) as any,
     mode: "onChange",
-    defaultValues: { accountNumber: "", amount: 0, description: "" },
+    defaultValues: {
+      accountNumber: "",
+      amount: "",
+      description: "",
+    },
   });
 
   useEffect(() => {
     if (isSuccess && depositData && user) {
       toast.success("Deposit successful!");
 
-      reset();
+      reset({
+        accountNumber: "",
+        amount: "",
+        description: "",
+      });
       resetMutation();
       setDepositData(null);
     }
@@ -58,8 +66,9 @@ export const useDepositForm = () => {
   ]);
 
   const onSubmit = (data: IDepositForm) => {
-    setDepositData(data);
-    deposit(data);
+    const payload = { ...data, amount: Number(data.amount) };
+    setDepositData(payload);
+    deposit(payload);
   };
 
   return {

@@ -2,13 +2,13 @@ import * as yup from "yup";
 
 export interface IDepositForm {
   accountNumber: string;
-  amount: number;
+  amount: number | "";
   description?: string;
 }
 
 export interface IWithdrawForm {
   accountNumber: string;
-  amount: number;
+  amount: number | "";
 }
 
 export const depositSchema: yup.ObjectSchema<IDepositForm> = yup
