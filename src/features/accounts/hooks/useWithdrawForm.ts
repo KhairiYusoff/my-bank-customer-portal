@@ -3,7 +3,8 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useGetAccountsQuery, useWithdrawMutation } from "../store/accountsApi";
 import { useToast } from "@/utils/snackbarUtils";
-import { useAppSelector } from "@/app/hooks";
+import { useAppSelector, useAppDispatch } from "@/app/hooks";
+import { notificationsApi } from "@/features/notifications/store/notificationsApi";
 import {
   withdrawSchema,
   type IWithdrawForm,
@@ -21,6 +22,7 @@ export const useWithdrawForm = () => {
   ] = useWithdrawMutation();
   const toast = useToast();
   const user = useAppSelector((state) => state.auth.user);
+  const dispatch = useAppDispatch();
   const [withdrawData, setWithdrawData] = useState<IWithdrawForm | null>(null);
 
   const {
@@ -37,6 +39,8 @@ export const useWithdrawForm = () => {
   useEffect(() => {
     if (isSuccess && withdrawData && user) {
       toast.success("Withdrawal successful!");
+
+      dispatch(notificationsApi.util.invalidateTags(["Notification"]));
 
       reset({ accountNumber: "", amount: "" });
       resetMutation();

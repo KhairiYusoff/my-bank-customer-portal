@@ -22,6 +22,8 @@ import { useGetAccountsQuery } from "@/features/accounts/store/accountsApi";
 import { useTransferMutation } from "../store/transactionsApi";
 import { useToast } from "@/utils/snackbarUtils";
 import { useAppSelector } from "@/app/hooks";
+import { useAppDispatch } from "@/app/hooks";
+import { notificationsApi } from "@/features/notifications/store/notificationsApi";
 import type { TransferRequest } from "../types/transfer";
 
 const schema = yup.object({
@@ -44,6 +46,7 @@ const TransferPage: React.FC = () => {
   } = useGetAccountsQuery();
   const toast = useToast();
   const user = useAppSelector((state) => state.auth.user);
+  const dispatch = useAppDispatch();
 
   const [openConfirm, setOpenConfirm] = useState(false);
   const [transferData, setTransferData] = useState<FormValues | null>(null);
@@ -66,6 +69,9 @@ const TransferPage: React.FC = () => {
     if (isSuccess && transferData && user) {
       // Show immediate toast
       toast.success("Transfer successful!");
+
+      // Immediately refresh bell icon for the sender
+      dispatch(notificationsApi.util.invalidateTags(["Notification"]));
 
       reset();
       resetMutation();

@@ -3,7 +3,8 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useGetAccountsQuery, useDepositMutation } from "../store/accountsApi";
 import { useToast } from "@/utils/snackbarUtils";
-import { useAppSelector } from "@/app/hooks";
+import { useAppSelector, useAppDispatch } from "@/app/hooks";
+import { notificationsApi } from "@/features/notifications/store/notificationsApi";
 import {
   depositSchema,
   type IDepositForm,
@@ -21,6 +22,7 @@ export const useDepositForm = () => {
   ] = useDepositMutation();
   const toast = useToast();
   const user = useAppSelector((state) => state.auth.user);
+  const dispatch = useAppDispatch();
   const [depositData, setDepositData] = useState<IDepositForm | null>(null);
 
   const {
@@ -41,6 +43,8 @@ export const useDepositForm = () => {
   useEffect(() => {
     if (isSuccess && depositData && user) {
       toast.success("Deposit successful!");
+
+      dispatch(notificationsApi.util.invalidateTags(["Notification"]));
 
       reset({
         accountNumber: "",

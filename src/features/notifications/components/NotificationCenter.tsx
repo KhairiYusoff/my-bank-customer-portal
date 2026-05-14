@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Badge,
   IconButton,
@@ -14,20 +14,27 @@ import {
   Divider,
   Tooltip,
   Avatar,
-} from '@mui/material';
+} from "@mui/material";
 import {
   Notifications as NotificationsIcon,
   NotificationsNone as NotificationsNoneIcon,
   Done as DoneIcon,
   Delete as DeleteIcon,
   MarkEmailRead as MarkEmailReadIcon,
-} from '@mui/icons-material';
-import { formatDistanceToNow } from 'date-fns';
-import { useGetNotificationsQuery, useUpdateNotificationMutation, useDeleteNotificationMutation } from '../store/notificationsApi';
-import { useToast } from '@/utils/snackbarUtils';
-import { notificationSocket } from '../services/notificationSocket';
-import type { Notification } from '../types/notification';
-import { getNotificationIcon, getNotificationColor } from '../constants/notificationConfig';
+} from "@mui/icons-material";
+import { formatDistanceToNow } from "date-fns";
+import {
+  useGetNotificationsQuery,
+  useUpdateNotificationMutation,
+  useDeleteNotificationMutation,
+} from "../store/notificationsApi";
+import { useToast } from "@/utils/snackbarUtils";
+import { notificationSocket } from "../services/notificationSocket";
+import type { Notification } from "../types/notification";
+import {
+  getNotificationIcon,
+  getNotificationColor,
+} from "../constants/notificationConfig";
 
 interface NotificationCenterProps {
   userId?: string;
@@ -35,29 +42,28 @@ interface NotificationCenterProps {
 
 const NotificationCenter: React.FC<NotificationCenterProps> = ({ userId }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const { data: notifications = [], isLoading, error } = useGetNotificationsQuery();
+  const {
+    data: notifications = [],
+    isLoading,
+    error,
+  } = useGetNotificationsQuery(undefined, { pollingInterval: 30_000 });
   const [updateNotification] = useUpdateNotificationMutation();
   const [deleteNotification] = useDeleteNotificationMutation();
   const toast = useToast();
 
-  const unreadCount = notifications.filter(n => !n.read).length;
+  const unreadCount = notifications.filter((n) => !n.read).length;
 
   // Log errors for debugging
   useEffect(() => {
     if (error) {
-      console.error('NotificationCenter Error:', error);
+      console.error("NotificationCenter Error:", error);
     }
   }, [error]);
 
   useEffect(() => {
     // Connect to WebSocket when user is available
     if (userId) {
-      // Get token from localStorage or Redux state
-      const token = localStorage.getItem('access_token');
-      if (token) {
-        notificationSocket.connect(token);
-        notificationSocket.joinUserRoom(userId);
-      }
+      notificationSocket.connect(userId);
     }
 
     return () => {
@@ -78,38 +84,38 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({ userId }) => {
   const handleMarkAsRead = async (notificationId: string) => {
     try {
       await updateNotification({ id: notificationId, read: true }).unwrap();
-      toast.success('Marked as read');
+      toast.success("Marked as read");
     } catch (error) {
-      toast.error('Failed to mark as read');
+      toast.error("Failed to mark as read");
     }
   };
 
   const handleMarkAllAsRead = async () => {
-    const unreadNotifications = notifications.filter(n => !n.read);
-    
+    const unreadNotifications = notifications.filter((n) => !n.read);
+
     try {
       await Promise.all(
-        unreadNotifications.map(notification =>
-          updateNotification({ id: notification._id, read: true })
-        )
+        unreadNotifications.map((notification) =>
+          updateNotification({ id: notification._id, read: true }),
+        ),
       );
-      toast.success('All notifications marked as read');
+      toast.success("All notifications marked as read");
     } catch (error) {
-      toast.error('Failed to mark all as read');
+      toast.error("Failed to mark all as read");
     }
   };
 
   const handleDelete = async (notificationId: string) => {
     try {
       await deleteNotification(notificationId).unwrap();
-      toast.success('Notification deleted');
+      toast.success("Notification deleted");
     } catch (error) {
-      toast.error('Failed to delete notification');
+      toast.error("Failed to delete notification");
     }
   };
 
   const open = Boolean(anchorEl);
-  const id = open ? 'notification-popover' : undefined;
+  const id = open ? "notification-popover" : undefined;
 
   if (error) {
     return (
@@ -124,11 +130,7 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({ userId }) => {
   return (
     <>
       <Tooltip title="Notifications">
-        <IconButton
-          color="inherit"
-          onClick={handleClick}
-          aria-describedby={id}
-        >
+        <IconButton color="inherit" onClick={handleClick} aria-describedby={id}>
           {isLoading ? (
             <CircularProgress size={20} color="inherit" />
           ) : (
@@ -149,12 +151,12 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({ userId }) => {
         anchorEl={anchorEl}
         onClose={handleClose}
         anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
+          vertical: "bottom",
+          horizontal: "right",
         }}
         transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
+          vertical: "top",
+          horizontal: "right",
         }}
         PaperProps={{
           sx: {
@@ -163,38 +165,34 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({ userId }) => {
           },
         }}
       >
-        <Box sx={{ p: 2, borderBottom: 1, borderColor: 'divider' }}>
+        <Box sx={{ p: 2, borderBottom: 1, borderColor: "divider" }}>
           <Typography variant="h6">Notifications</Typography>
           {unreadCount > 0 && (
-            <Button
-              size="small"
-              onClick={handleMarkAllAsRead}
-              sx={{ mt: 1 }}
-            >
+            <Button size="small" onClick={handleMarkAllAsRead} sx={{ mt: 1 }}>
               Mark all as read
             </Button>
           )}
         </Box>
 
         {isLoading ? (
-          <Box sx={{ display: 'flex', justifyContent: 'center', p: 3 }}>
+          <Box sx={{ display: "flex", justifyContent: "center", p: 3 }}>
             <CircularProgress />
           </Box>
         ) : notifications.length === 0 ? (
-          <Box sx={{ p: 3, textAlign: 'center' }}>
-            <Typography color="text.secondary">
-              No notifications yet
-            </Typography>
+          <Box sx={{ p: 3, textAlign: "center" }}>
+            <Typography color="text.secondary">No notifications yet</Typography>
           </Box>
         ) : (
-          <List sx={{ maxHeight: 400, overflow: 'auto' }}>
+          <List sx={{ maxHeight: 400, overflow: "auto" }}>
             {notifications.map((notification) => (
               <ListItem
                 key={notification._id}
                 sx={{
-                  backgroundColor: notification.read ? 'transparent' : 'action.hover',
-                  '&:hover': {
-                    backgroundColor: 'action.selected',
+                  backgroundColor: notification.read
+                    ? "transparent"
+                    : "action.hover",
+                  "&:hover": {
+                    backgroundColor: "action.selected",
                   },
                 }}
               >
@@ -213,7 +211,7 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({ userId }) => {
                     <Typography
                       variant="body2"
                       sx={{
-                        fontWeight: notification.read ? 'normal' : 'bold',
+                        fontWeight: notification.read ? "normal" : "bold",
                       }}
                     >
                       {notification.title}
