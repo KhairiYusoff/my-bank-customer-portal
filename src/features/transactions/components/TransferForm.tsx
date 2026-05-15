@@ -28,7 +28,7 @@ import {
   AttachMoney as MoneyIcon,
   Send as SendIcon,
 } from "@mui/icons-material";
-import type { TransferRequest } from "../types/transfer";
+import type { ITransferForm } from "../validations/transferValidation";
 import type { Account } from "@/features/accounts/types/account";
 import {
   TransferFormCard,
@@ -44,20 +44,18 @@ import {
   WarningDialogInfoBox,
 } from "./styles";
 
-export type FormValues = TransferRequest;
-
 interface TransferFormProps {
   accounts: Account[];
   isLoading: boolean;
   isDirty: boolean;
   isValid: boolean;
   openConfirm: boolean;
-  transferData: FormValues | null;
-  control: Control<FormValues>;
-  register: UseFormRegister<FormValues>;
-  handleSubmit: UseFormHandleSubmit<FormValues>;
-  errors: FieldErrors<FormValues>;
-  onSubmit: (values: FormValues) => void;
+  transferData: ITransferForm | null;
+  control: Control<ITransferForm>;
+  register: UseFormRegister<ITransferForm>;
+  handleSubmit: UseFormHandleSubmit<ITransferForm>;
+  errors: FieldErrors<ITransferForm>;
+  onSubmit: (values: ITransferForm) => void;
   handleCloseConfirm: () => void;
   handleConfirmTransfer: () => void;
 }
@@ -78,11 +76,11 @@ const TransferForm: React.FC<TransferFormProps> = ({
   handleConfirmTransfer,
 }) => {
   const formatAccountOption = (account: Account) => {
-    return `${account.accountNumber} (${account.accountType.replace(/_/g, ' ')} - $${account.balance?.toFixed(2) || '0.00'})`;
+    return `${account.accountNumber} (${account.accountType.replace(/_/g, " ")} - $${account.balance?.toFixed(2) || "0.00"})`;
   };
 
   const getSelectedAccount = (accountNumber: string) => {
-    return accounts.find(acc => acc.accountNumber === accountNumber);
+    return accounts.find((acc) => acc.accountNumber === accountNumber);
   };
 
   return (
@@ -93,11 +91,14 @@ const TransferForm: React.FC<TransferFormProps> = ({
             <Grid container spacing={3}>
               {/* From Account */}
               <Grid item xs={12}>
-                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
                   <PrimaryIconAvatar sx={{ mr: 2 }}>
-                    <AccountBalanceIcon sx={{ color: 'primary.main' }} />
+                    <AccountBalanceIcon sx={{ color: "primary.main" }} />
                   </PrimaryIconAvatar>
-                  <Typography variant="h6" sx={{ color: 'primary.main', fontWeight: 600 }}>
+                  <Typography
+                    variant="h6"
+                    sx={{ color: "primary.main", fontWeight: 600 }}
+                  >
                     From Account
                   </Typography>
                 </Box>
@@ -109,20 +110,26 @@ const TransferForm: React.FC<TransferFormProps> = ({
                   error={!!errors.fromAccountNumber}
                   helperText={errors.fromAccountNumber?.message}
                   sx={{
-                    '& .MuiOutlinedInput-root': {
+                    "& .MuiOutlinedInput-root": {
                       borderRadius: 2,
-                    }
+                    },
                   }}
                 >
                   <MenuItem value="">
                     <em>Choose your account</em>
                   </MenuItem>
                   {accounts.map((account) => (
-                    <MenuItem key={account.accountNumber} value={account.accountNumber}>
+                    <MenuItem
+                      key={account.accountNumber}
+                      value={account.accountNumber}
+                    >
                       <Box>
-                        <Typography variant="subtitle2">{account.accountNumber}</Typography>
+                        <Typography variant="subtitle2">
+                          {account.accountNumber}
+                        </Typography>
                         <Typography variant="caption" color="text.secondary">
-                          {account.accountType.replace(/_/g, ' ')} • Balance: ${account.balance?.toFixed(2) || '0.00'}
+                          {account.accountType.replace(/_/g, " ")} • Balance: $
+                          {account.balance?.toFixed(2) || "0.00"}
                         </Typography>
                       </Box>
                     </MenuItem>
@@ -132,7 +139,7 @@ const TransferForm: React.FC<TransferFormProps> = ({
 
               {/* Transfer Icon */}
               <Grid item xs={12}>
-                <Box sx={{ display: 'flex', justifyContent: 'center', my: 2 }}>
+                <Box sx={{ display: "flex", justifyContent: "center", my: 2 }}>
                   <TransferIconAvatar>
                     <TransferIcon />
                   </TransferIconAvatar>
@@ -142,11 +149,14 @@ const TransferForm: React.FC<TransferFormProps> = ({
 
               {/* To Account */}
               <Grid item xs={12}>
-                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
                   <InfoIconAvatar sx={{ mr: 2 }}>
-                    <SendIcon sx={{ color: 'info.main' }} />
+                    <SendIcon sx={{ color: "info.main" }} />
                   </InfoIconAvatar>
-                  <Typography variant="h6" sx={{ color: 'info.main', fontWeight: 600 }}>
+                  <Typography
+                    variant="h6"
+                    sx={{ color: "info.main", fontWeight: 600 }}
+                  >
                     To Account
                   </Typography>
                 </Box>
@@ -156,22 +166,28 @@ const TransferForm: React.FC<TransferFormProps> = ({
                   placeholder="Enter recipient account number"
                   {...register("toAccountNumber")}
                   error={!!errors.toAccountNumber}
-                  helperText={errors.toAccountNumber?.message || "Enter the account number you want to transfer to"}
+                  helperText={
+                    errors.toAccountNumber?.message ||
+                    "Enter the account number you want to transfer to"
+                  }
                   sx={{
-                    '& .MuiOutlinedInput-root': {
+                    "& .MuiOutlinedInput-root": {
                       borderRadius: 2,
-                    }
+                    },
                   }}
                 />
               </Grid>
 
               {/* Amount */}
               <Grid item xs={12}>
-                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
                   <WarningIconAvatar sx={{ mr: 2 }}>
-                    <MoneyIcon sx={{ color: 'warning.main' }} />
+                    <MoneyIcon sx={{ color: "warning.main" }} />
                   </WarningIconAvatar>
-                  <Typography variant="h6" sx={{ color: 'warning.main', fontWeight: 600 }}>
+                  <Typography
+                    variant="h6"
+                    sx={{ color: "warning.main", fontWeight: 600 }}
+                  >
                     Transfer Amount
                   </Typography>
                 </Box>
@@ -180,18 +196,20 @@ const TransferForm: React.FC<TransferFormProps> = ({
                   type="number"
                   fullWidth
                   placeholder="0.00"
-                  inputProps={{ 
-                    min: 0.01, 
+                  inputProps={{
+                    min: 0.01,
                     step: 0.01,
-                    'aria-label': 'Transfer amount'
+                    "aria-label": "Transfer amount",
                   }}
                   {...register("amount")}
                   error={!!errors.amount}
-                  helperText={errors.amount?.message || "Enter the amount to transfer"}
+                  helperText={
+                    errors.amount?.message || "Enter the amount to transfer"
+                  }
                   sx={{
-                    '& .MuiOutlinedInput-root': {
+                    "& .MuiOutlinedInput-root": {
                       borderRadius: 2,
-                    }
+                    },
                   }}
                 />
               </Grid>
@@ -204,9 +222,15 @@ const TransferForm: React.FC<TransferFormProps> = ({
                   disabled={!isDirty || !isValid || isLoading}
                   fullWidth
                   size="large"
-                  startIcon={isLoading ? <CircularProgress size={20} /> : <TransferIcon />}
+                  startIcon={
+                    isLoading ? (
+                      <CircularProgress size={20} />
+                    ) : (
+                      <TransferIcon />
+                    )
+                  }
                 >
-                  {isLoading ? 'Processing...' : 'Transfer Funds'}
+                  {isLoading ? "Processing..." : "Transfer Funds"}
                 </TransferSubmitButton>
               </Grid>
             </Grid>
@@ -215,13 +239,13 @@ const TransferForm: React.FC<TransferFormProps> = ({
       </TransferFormCard>
 
       {/* Confirmation Dialog */}
-      <Dialog 
-        open={openConfirm} 
+      <Dialog
+        open={openConfirm}
         onClose={handleCloseConfirm}
         maxWidth="sm"
         fullWidth
         PaperProps={{
-          sx: { borderRadius: 3 }
+          sx: { borderRadius: 3 },
         }}
       >
         <GradientDialogTitle>
@@ -232,18 +256,22 @@ const TransferForm: React.FC<TransferFormProps> = ({
           <DialogContentText sx={{ mb: 3 }}>
             Please review the transfer details carefully before confirming.
           </DialogContentText>
-          
+
           <Stack spacing={3}>
             <PrimaryDialogInfoBox>
-              <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+              <Typography
+                variant="subtitle2"
+                color="text.secondary"
+                gutterBottom
+              >
                 FROM ACCOUNT
               </Typography>
-              <Typography variant="h6" sx={{ fontFamily: 'monospace' }}>
+              <Typography variant="h6" sx={{ fontFamily: "monospace" }}>
                 {transferData?.fromAccountNumber}
               </Typography>
-              {getSelectedAccount(transferData?.fromAccountNumber || '') && (
-                <Chip 
-                  label={`Balance: $${getSelectedAccount(transferData?.fromAccountNumber || '')?.balance?.toFixed(2)}`}
+              {getSelectedAccount(transferData?.fromAccountNumber || "") && (
+                <Chip
+                  label={`Balance: $${getSelectedAccount(transferData?.fromAccountNumber || "")?.balance?.toFixed(2)}`}
                   size="small"
                   color="primary"
                   variant="outlined"
@@ -253,29 +281,44 @@ const TransferForm: React.FC<TransferFormProps> = ({
             </PrimaryDialogInfoBox>
 
             <InfoDialogInfoBox>
-              <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+              <Typography
+                variant="subtitle2"
+                color="text.secondary"
+                gutterBottom
+              >
                 TO ACCOUNT
               </Typography>
-              <Typography variant="h6" sx={{ fontFamily: 'monospace' }}>
+              <Typography variant="h6" sx={{ fontFamily: "monospace" }}>
                 {transferData?.toAccountNumber}
               </Typography>
             </InfoDialogInfoBox>
 
             <WarningDialogInfoBox>
-              <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+              <Typography
+                variant="subtitle2"
+                color="text.secondary"
+                gutterBottom
+              >
                 TRANSFER AMOUNT
               </Typography>
-              <Typography variant="h4" sx={{ fontWeight: 'bold', color: 'warning.main' }}>
-                ${transferData?.amount?.toFixed(2)}
+              <Typography
+                variant="h4"
+                sx={{ fontWeight: "bold", color: "warning.main" }}
+              >
+                $
+                {typeof transferData?.amount === "number"
+                  ? transferData.amount.toFixed(2)
+                  : transferData?.amount}
               </Typography>
               <Typography variant="caption" color="text.secondary">
-                {getSelectedAccount(transferData?.fromAccountNumber || '')?.currency || 'USD'}
+                {getSelectedAccount(transferData?.fromAccountNumber || "")
+                  ?.currency || "USD"}
               </Typography>
             </WarningDialogInfoBox>
           </Stack>
         </DialogContent>
         <DialogActions sx={{ p: 3, pt: 0 }}>
-          <Button 
+          <Button
             onClick={handleCloseConfirm}
             variant="outlined"
             sx={{ borderRadius: 2 }}
@@ -283,12 +326,14 @@ const TransferForm: React.FC<TransferFormProps> = ({
             Cancel
           </Button>
           <TransferConfirmButton
-            onClick={handleConfirmTransfer} 
-            variant="contained" 
+            onClick={handleConfirmTransfer}
+            variant="contained"
             disabled={isLoading}
-            startIcon={isLoading ? <CircularProgress size={20} /> : <SendIcon />}
+            startIcon={
+              isLoading ? <CircularProgress size={20} /> : <SendIcon />
+            }
           >
-            {isLoading ? 'Processing...' : 'Confirm Transfer'}
+            {isLoading ? "Processing..." : "Confirm Transfer"}
           </TransferConfirmButton>
         </DialogActions>
       </Dialog>

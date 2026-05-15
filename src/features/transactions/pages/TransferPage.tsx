@@ -1,7 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
+import React from "react";
 import {
   Box,
   Container,
@@ -17,88 +14,29 @@ import {
 import DashboardLayout from "@/layouts/DashboardLayout";
 import { PageHeader, LoadingOverlay } from "@/components";
 import { PrimaryIconAvatar } from "../components/styles";
-import TransferForm, { FormValues } from "../components/TransferForm";
-import { useGetAccountsQuery } from "@/features/accounts/store/accountsApi";
-import { useTransferMutation } from "../store/transactionsApi";
-import { useToast } from "@/utils/snackbarUtils";
-import { useAppSelector } from "@/app/hooks";
-import { useAppDispatch } from "@/app/hooks";
-import { notificationsApi } from "@/features/notifications/store/notificationsApi";
-import type { TransferRequest } from "../types/transfer";
-
-const schema = yup.object({
-  fromAccountNumber: yup.string().required("From Account Number is required"),
-  toAccountNumber: yup.string().required("To Account Number is required"),
-  amount: yup
-    .number()
-    .typeError("Amount must be a number")
-    .positive("Amount must be positive")
-    .required("Amount is required"),
-});
+import TransferForm from "../components/TransferForm";
+import { useTransferForm } from "../hooks/useTransferForm";
 
 const TransferPage: React.FC = () => {
-  const [transfer, { isLoading, isSuccess, error, reset: resetMutation }] =
-    useTransferMutation();
-  const {
-    data: accountsData,
-    isFetching: isAccountsFetching,
-    error: accountsError,
-  } = useGetAccountsQuery();
-  const toast = useToast();
-  const user = useAppSelector((state) => state.auth.user);
-  const dispatch = useAppDispatch();
-
-  const [openConfirm, setOpenConfirm] = useState(false);
-  const [transferData, setTransferData] = useState<FormValues | null>(null);
-
-  const accounts = accountsData?.data || [];
-  const hasAccounts = Array.isArray(accounts) && accounts.length > 0;
-
   const {
     control,
     register,
     handleSubmit,
-    reset,
-    formState: { errors, isDirty, isValid },
-  } = useForm<FormValues>({
-    resolver: yupResolver(schema),
-    mode: "onChange",
-  });
+    errors,
+    isDirty,
+    isValid,
+    isLoading,
+    isFetchingAccounts,
+    accountsError,
+    accounts,
+    openConfirm,
+    transferData,
+    onSubmit,
+    handleCloseConfirm,
+    handleConfirmTransfer,
+  } = useTransferForm();
 
-  useEffect(() => {
-    if (isSuccess && transferData && user) {
-      // Show immediate toast
-      toast.success("Transfer successful!");
-
-      // Immediately refresh bell icon for the sender
-      dispatch(notificationsApi.util.invalidateTags(["Notification"]));
-
-      reset();
-      resetMutation();
-      setTransferData(null);
-    }
-    if (error) {
-      const apiError = error as any;
-      toast.error(apiError.data?.message || "Transfer failed.");
-    }
-  }, [isSuccess, error, reset, resetMutation, toast, transferData, user]);
-
-  const handleOpenConfirm = (values: FormValues) => {
-    setTransferData(values);
-    setOpenConfirm(true);
-  };
-
-  const handleCloseConfirm = () => {
-    setOpenConfirm(false);
-    setTransferData(null);
-  };
-
-  const handleConfirmTransfer = () => {
-    if (transferData) {
-      transfer(transferData);
-      handleCloseConfirm();
-    }
-  };
+  const hasAccounts = accounts.length > 0;
 
   const renderContent = () => {
     if (accountsError) {
@@ -156,7 +94,7 @@ const TransferPage: React.FC = () => {
         register={register}
         handleSubmit={handleSubmit}
         errors={errors}
-        onSubmit={handleOpenConfirm}
+        onSubmit={onSubmit}
         handleCloseConfirm={handleCloseConfirm}
         handleConfirmTransfer={handleConfirmTransfer}
       />
@@ -165,7 +103,7 @@ const TransferPage: React.FC = () => {
 
   return (
     <DashboardLayout>
-      <LoadingOverlay loading={isAccountsFetching} />
+      <LoadingOverlay loading={isFetchingAccounts} />
       <Container maxWidth="md">
         <Box sx={{ my: 4 }}>
           <PageHeader
