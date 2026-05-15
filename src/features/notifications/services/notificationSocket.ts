@@ -58,9 +58,6 @@ class NotificationSocketService {
 
       // Invalidate the notifications cache to trigger a refetch
       store.dispatch(notificationsApi.util.invalidateTags(["Notification"]));
-
-      // Show toast notification
-      this.showToast(notification);
     });
 
     // Listen for notification updates (read/unread status changes)
@@ -69,16 +66,6 @@ class NotificationSocketService {
 
       // Invalidate the notifications cache to trigger a refetch
       store.dispatch(notificationsApi.util.invalidateTags(["Notification"]));
-    });
-  }
-
-  private showToast(notification: any) {
-    // Import toast dynamically to avoid circular dependencies
-    import("@/utils/snackbarUtils").then(({ toast }) => {
-      const message = notification.title || "New notification";
-      const variant = notification.type === "system" ? "info" : "success";
-
-      toast[variant](message);
     });
   }
 
