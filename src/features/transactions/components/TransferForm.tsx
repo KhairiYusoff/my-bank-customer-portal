@@ -1,9 +1,9 @@
 import React from "react";
+import { Controller } from "react-hook-form";
 import type {
   Control,
   FieldErrors,
   UseFormHandleSubmit,
-  UseFormRegister,
 } from "react-hook-form";
 import {
   Box,
@@ -52,7 +52,6 @@ interface TransferFormProps {
   openConfirm: boolean;
   transferData: ITransferForm | null;
   control: Control<ITransferForm>;
-  register: UseFormRegister<ITransferForm>;
   handleSubmit: UseFormHandleSubmit<ITransferForm>;
   errors: FieldErrors<ITransferForm>;
   onSubmit: (values: ITransferForm) => void;
@@ -68,7 +67,6 @@ const TransferForm: React.FC<TransferFormProps> = ({
   openConfirm,
   transferData,
   control,
-  register,
   handleSubmit,
   errors,
   onSubmit,
@@ -102,39 +100,48 @@ const TransferForm: React.FC<TransferFormProps> = ({
                     From Account
                   </Typography>
                 </Box>
-                <TextField
-                  select
-                  label="Select Source Account"
-                  fullWidth
-                  {...register("fromAccountNumber")}
-                  error={!!errors.fromAccountNumber}
-                  helperText={errors.fromAccountNumber?.message}
-                  sx={{
-                    "& .MuiOutlinedInput-root": {
-                      borderRadius: 2,
-                    },
-                  }}
-                >
-                  <MenuItem value="">
-                    <em>Choose your account</em>
-                  </MenuItem>
-                  {accounts.map((account) => (
-                    <MenuItem
-                      key={account.accountNumber}
-                      value={account.accountNumber}
+                <Controller
+                  name="fromAccountNumber"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      select
+                      label="Select Source Account"
+                      fullWidth
+                      error={!!errors.fromAccountNumber}
+                      helperText={errors.fromAccountNumber?.message}
+                      sx={{
+                        "& .MuiOutlinedInput-root": {
+                          borderRadius: 2,
+                        },
+                      }}
                     >
-                      <Box>
-                        <Typography variant="subtitle2">
-                          {account.accountNumber}
-                        </Typography>
-                        <Typography variant="caption" color="text.secondary">
-                          {account.accountType.replace(/_/g, " ")} • Balance: $
-                          {account.balance?.toFixed(2) || "0.00"}
-                        </Typography>
-                      </Box>
-                    </MenuItem>
-                  ))}
-                </TextField>
+                      <MenuItem value="">
+                        <em>Choose your account</em>
+                      </MenuItem>
+                      {accounts.map((account) => (
+                        <MenuItem
+                          key={account.accountNumber}
+                          value={account.accountNumber}
+                        >
+                          <Box>
+                            <Typography variant="subtitle2">
+                              {account.accountNumber}
+                            </Typography>
+                            <Typography
+                              variant="caption"
+                              color="text.secondary"
+                            >
+                              {account.accountType.replace(/_/g, " ")} •
+                              Balance: ${account.balance?.toFixed(2) || "0.00"}
+                            </Typography>
+                          </Box>
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                  )}
+                />
               </Grid>
 
               {/* Transfer Icon */}
@@ -160,21 +167,27 @@ const TransferForm: React.FC<TransferFormProps> = ({
                     To Account
                   </Typography>
                 </Box>
-                <TextField
-                  label="Destination Account Number"
-                  fullWidth
-                  placeholder="Enter recipient account number"
-                  {...register("toAccountNumber")}
-                  error={!!errors.toAccountNumber}
-                  helperText={
-                    errors.toAccountNumber?.message ||
-                    "Enter the account number you want to transfer to"
-                  }
-                  sx={{
-                    "& .MuiOutlinedInput-root": {
-                      borderRadius: 2,
-                    },
-                  }}
+                <Controller
+                  name="toAccountNumber"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      label="Destination Account Number"
+                      fullWidth
+                      placeholder="Enter recipient account number"
+                      error={!!errors.toAccountNumber}
+                      helperText={
+                        errors.toAccountNumber?.message ||
+                        "Enter the account number you want to transfer to"
+                      }
+                      sx={{
+                        "& .MuiOutlinedInput-root": {
+                          borderRadius: 2,
+                        },
+                      }}
+                    />
+                  )}
                 />
               </Grid>
 
@@ -191,26 +204,32 @@ const TransferForm: React.FC<TransferFormProps> = ({
                     Transfer Amount
                   </Typography>
                 </Box>
-                <TextField
-                  label="Amount"
-                  type="number"
-                  fullWidth
-                  placeholder="0.00"
-                  inputProps={{
-                    min: 0.01,
-                    step: 0.01,
-                    "aria-label": "Transfer amount",
-                  }}
-                  {...register("amount")}
-                  error={!!errors.amount}
-                  helperText={
-                    errors.amount?.message || "Enter the amount to transfer"
-                  }
-                  sx={{
-                    "& .MuiOutlinedInput-root": {
-                      borderRadius: 2,
-                    },
-                  }}
+                <Controller
+                  name="amount"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      label="Amount"
+                      type="number"
+                      fullWidth
+                      placeholder="0.00"
+                      inputProps={{
+                        min: 0.01,
+                        step: 0.01,
+                        "aria-label": "Transfer amount",
+                      }}
+                      error={!!errors.amount}
+                      helperText={
+                        errors.amount?.message || "Enter the amount to transfer"
+                      }
+                      sx={{
+                        "& .MuiOutlinedInput-root": {
+                          borderRadius: 2,
+                        },
+                      }}
+                    />
+                  )}
                 />
               </Grid>
 

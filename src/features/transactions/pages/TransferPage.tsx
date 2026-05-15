@@ -20,7 +20,6 @@ import { useTransferForm } from "../hooks/useTransferForm";
 const TransferPage: React.FC = () => {
   const {
     control,
-    register,
     handleSubmit,
     errors,
     isDirty,
@@ -91,7 +90,6 @@ const TransferPage: React.FC = () => {
         openConfirm={openConfirm}
         transferData={transferData}
         control={control}
-        register={register}
         handleSubmit={handleSubmit}
         errors={errors}
         onSubmit={onSubmit}

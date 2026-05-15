@@ -34,7 +34,6 @@ export const useTransferForm = () => {
 
   const {
     control,
-    register,
     handleSubmit,
     reset,
     formState: { errors, isDirty, isValid },
@@ -78,7 +77,6 @@ export const useTransferForm = () => {
 
   return {
     control,
-    register,
     handleSubmit,
     errors,
     isDirty,
