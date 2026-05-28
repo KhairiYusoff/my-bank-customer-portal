@@ -46,7 +46,7 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({ userId }) => {
     data: notifications = [],
     isLoading,
     error,
-  } = useGetNotificationsQuery(undefined, { pollingInterval: 30_000 });
+  } = useGetNotificationsQuery(undefined);
   const [updateNotification] = useUpdateNotificationMutation();
   const [deleteNotification] = useDeleteNotificationMutation();
   const toast = useToast();
