@@ -21,8 +21,16 @@ export interface Notification {
   };
 }
 
+export interface NotificationMeta {
+  page: number;
+  limit: number;
+  total: number;
+  pages: number;
+}
+
 export interface NotificationResponse {
   data: Notification[];
+  meta: NotificationMeta;
 }
 
 export interface CreateNotificationRequest {
