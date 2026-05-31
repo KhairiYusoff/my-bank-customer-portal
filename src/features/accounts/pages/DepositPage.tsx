@@ -191,24 +191,24 @@ const DepositPage: React.FC = () => {
                         variant="h6"
                         sx={{ color: "text.secondary", fontWeight: 600 }}
                       >
-                        Description (Optional)
+                        Memo (Optional)
                       </Typography>
                     </Box>
                     <Controller
-                      name="description"
+                      name="memo"
                       control={control}
                       render={({ field }) => (
                         <TextField
                           {...field}
-                          label="Description"
+                          label="Memo"
                           fullWidth
-                          placeholder="Add a note for this deposit (optional)"
+                          placeholder="Add a note for this deposit"
                           multiline
                           rows={3}
-                          error={!!errors.description}
+                          error={!!errors.memo}
                           helperText={
-                            errors.description?.message ||
-                            "Optional description for your records"
+                            errors.memo?.message ||
+                            "Optional note for your records"
                           }
                           sx={{
                             "& .MuiOutlinedInput-root": {

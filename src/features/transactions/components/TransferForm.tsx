@@ -27,6 +27,7 @@ import {
   SwapHoriz as TransferIcon,
   AttachMoney as MoneyIcon,
   Send as SendIcon,
+  NoteAlt as MemoIcon,
 } from "@mui/icons-material";
 import type { ITransferForm } from "../validations/transferValidation";
 import type { Account } from "@/features/accounts/types/account";
@@ -42,6 +43,7 @@ import {
   PrimaryDialogInfoBox,
   InfoDialogInfoBox,
   WarningDialogInfoBox,
+  NeutralIconAvatar,
 } from "./styles";
 
 interface TransferFormProps {
@@ -233,6 +235,41 @@ const TransferForm: React.FC<TransferFormProps> = ({
                 />
               </Grid>
 
+              {/* Memo */}
+              <Grid item xs={12}>
+                <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+                  <NeutralIconAvatar sx={{ mr: 2 }}>
+                    <MemoIcon sx={{ color: "text.secondary" }} />
+                  </NeutralIconAvatar>
+                  <Typography
+                    variant="h6"
+                    sx={{ color: "text.secondary", fontWeight: 600 }}
+                  >
+                    Memo (Optional)
+                  </Typography>
+                </Box>
+                <Controller
+                  name="memo"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      label="Memo"
+                      fullWidth
+                      placeholder="Add a note for this transfer (e.g. rent May)"
+                      inputProps={{ maxLength: 255 }}
+                      error={!!errors.memo}
+                      helperText={errors.memo?.message}
+                      sx={{
+                        "& .MuiOutlinedInput-root": {
+                          borderRadius: 2,
+                        },
+                      }}
+                    />
+                  )}
+                />
+              </Grid>
+
               {/* Submit Button */}
               <Grid item xs={12}>
                 <TransferSubmitButton
@@ -334,6 +371,19 @@ const TransferForm: React.FC<TransferFormProps> = ({
                   ?.currency || "USD"}
               </Typography>
             </WarningDialogInfoBox>
+
+            {transferData?.memo && (
+              <PrimaryDialogInfoBox>
+                <Typography
+                  variant="subtitle2"
+                  color="text.secondary"
+                  gutterBottom
+                >
+                  MEMO
+                </Typography>
+                <Typography variant="body1">{transferData.memo}</Typography>
+              </PrimaryDialogInfoBox>
+            )}
           </Stack>
         </DialogContent>
         <DialogActions sx={{ p: 3, pt: 0 }}>

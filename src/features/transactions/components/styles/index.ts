@@ -79,3 +79,7 @@ export const WarningDialogInfoBox = styled(Box)(({ theme }) => ({
   border: `1px solid ${alpha(theme.palette.warning.main, 0.1)}`,
   textAlign: "center",
 }));
+
+export const NeutralIconAvatar = styled(Avatar)(({ theme }) => ({
+  backgroundColor: alpha(theme.palette.text.secondary, 0.1),
+}));

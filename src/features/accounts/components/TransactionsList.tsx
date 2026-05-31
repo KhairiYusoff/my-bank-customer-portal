@@ -21,17 +21,21 @@ import {
   TrendingDown as TrendingDownIcon,
   SwapHoriz as TransferIcon,
   AttachMoney as MoneyIcon,
-  Person as PersonIcon,
   CalendarToday as DateIcon,
+  Tag as ReferenceIcon,
 } from "@mui/icons-material";
-import { format } from "date-fns";
-import type { TransactionHistoryResponse } from "@/features/transactions/types/transfer";
+import { formatDateTime } from "@/utils/formatters";
+import type {
+  TransactionHistory,
+  TransactionHistoryResponse,
+} from "@/features/transactions/types/transfer";
 
 interface TransactionsListProps {
   transactionsData?: TransactionHistoryResponse;
   transactionsError: unknown;
   page: number;
   onPageChange: (event: React.ChangeEvent<unknown>, value: number) => void;
+  onSelect: (tx: TransactionHistory) => void;
 }
 
 const getTransactionIcon = (type: string) => {
@@ -48,14 +52,19 @@ const getTransactionIcon = (type: string) => {
   }
 };
 
-const getAmountColor = (amount: number) => {
-  return amount >= 0 ? "success.main" : "error.main";
+const getAmountSign = (tx: TransactionHistory): "positive" | "negative" => {
+  if (tx.type === "withdrawal") return "negative";
+  if (tx.type === "transfer" && tx.direction === "debit") return "negative";
+  return "positive";
 };
 
-const formatAmount = (amount: number) => {
-  return amount >= 0
-    ? `+$${Math.abs(amount).toFixed(2)}`
-    : `-$${Math.abs(amount).toFixed(2)}`;
+const getAmountColor = (tx: TransactionHistory) => {
+  return getAmountSign(tx) === "negative" ? "error.main" : "success.main";
+};
+
+const formatAmount = (tx: TransactionHistory) => {
+  const prefix = getAmountSign(tx) === "negative" ? "-" : "+";
+  return `${prefix}$${Math.abs(tx.amount).toFixed(2)}`;
 };
 
 const getTransactionTypeChip = (type: string) => {
@@ -87,6 +96,7 @@ const TransactionsList: React.FC<TransactionsListProps> = ({
   transactionsError,
   page,
   onPageChange,
+  onSelect,
 }) => {
   if (transactionsError) {
     const apiError = transactionsError as any;
@@ -134,7 +144,15 @@ const TransactionsList: React.FC<TransactionsListProps> = ({
         <List disablePadding>
           {transactionsData.data.map((transaction, index) => (
             <React.Fragment key={transaction._id}>
-              <ListItem sx={{ px: 3, py: 2 }}>
+              <ListItem
+                onClick={() => onSelect(transaction)}
+                sx={{
+                  px: 3,
+                  py: 2,
+                  cursor: "pointer",
+                  "&:hover": { bgcolor: "action.hover" },
+                }}
+              >
                 <ListItemAvatar>
                   <Avatar sx={{ backgroundColor: "transparent" }}>
                     {getTransactionIcon(transaction.type)}
@@ -158,6 +176,11 @@ const TransactionsList: React.FC<TransactionsListProps> = ({
                   }
                   secondary={
                     <Stack spacing={0.5}>
+                      {transaction.counterpartName && (
+                        <Typography variant="body2" color="text.secondary">
+                          {transaction.counterpartName}
+                        </Typography>
+                      )}
                       <Box
                         sx={{
                           display: "flex",
@@ -169,27 +192,29 @@ const TransactionsList: React.FC<TransactionsListProps> = ({
                           sx={{ fontSize: 16, color: "text.secondary" }}
                         />
                         <Typography variant="body2" color="text.secondary">
-                          {format(
-                            new Date(transaction.date),
-                            "MMM dd, yyyy • hh:mm a",
-                          )}
+                          {formatDateTime(transaction.date)}
                         </Typography>
                       </Box>
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: 0.5,
-                        }}
-                      >
-                        <PersonIcon
-                          sx={{ fontSize: 16, color: "text.secondary" }}
-                        />
-                        <Typography variant="body2" color="text.secondary">
-                          By {transaction.performedBy.name} (
-                          {transaction.performedBy.role})
-                        </Typography>
-                      </Box>
+                      {transaction.reference && (
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 0.5,
+                          }}
+                        >
+                          <ReferenceIcon
+                            sx={{ fontSize: 14, color: "text.disabled" }}
+                          />
+                          <Typography
+                            variant="caption"
+                            color="text.disabled"
+                            sx={{ fontFamily: "monospace" }}
+                          >
+                            {transaction.reference}
+                          </Typography>
+                        </Box>
+                      )}
                     </Stack>
                   }
                 />
@@ -197,11 +222,11 @@ const TransactionsList: React.FC<TransactionsListProps> = ({
                   <Typography
                     variant="h6"
                     sx={{
-                      color: getAmountColor(transaction.amount),
+                      color: getAmountColor(transaction),
                       fontWeight: "bold",
                     }}
                   >
-                    {formatAmount(transaction.amount)}
+                    {formatAmount(transaction)}
                   </Typography>
                   <Chip
                     label={transaction.status}

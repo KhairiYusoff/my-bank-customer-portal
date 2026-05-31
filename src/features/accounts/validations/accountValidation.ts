@@ -3,7 +3,7 @@ import * as yup from "yup";
 export interface IDepositForm {
   accountNumber: string;
   amount: number | "";
-  description?: string;
+  memo?: string;
 }
 
 export interface IWithdrawForm {
@@ -20,7 +20,7 @@ export const depositSchema: yup.ObjectSchema<IDepositForm> = yup
       .typeError("Amount must be a number")
       .positive("Amount must be positive")
       .required("Amount is required"),
-    description: yup.string(),
+    memo: yup.string().max(255),
   });
 
 export const withdrawSchema: yup.ObjectSchema<IWithdrawForm> = yup

@@ -15,6 +15,7 @@ const defaultValues: ITransferForm = {
   fromAccountNumber: "",
   toAccountNumber: "",
   amount: "" as unknown as number,
+  memo: "",
 };
 
 export const useTransferForm = () => {

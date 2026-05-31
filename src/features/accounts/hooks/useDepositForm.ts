@@ -36,7 +36,7 @@ export const useDepositForm = () => {
     defaultValues: {
       accountNumber: "",
       amount: "",
-      description: "",
+      memo: "",
     },
   });
 
@@ -49,7 +49,7 @@ export const useDepositForm = () => {
       reset({
         accountNumber: "",
         amount: "",
-        description: "",
+        memo: "",
       });
       resetMutation();
       setDepositData(null);

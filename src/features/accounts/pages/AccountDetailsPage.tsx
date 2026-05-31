@@ -5,13 +5,16 @@ import DashboardLayout from "@/layouts/DashboardLayout";
 import { useGetAccountBalanceQuery } from "../store/accountsApi";
 import { useGetAccountTransactionsQuery } from "@/features/transactions/store/transactionsApi";
 import { BalanceCard, TransactionsList } from "../components";
+import { ReceiptDrawer } from "@/features/transactions/components";
 import { GradientTitle } from "../components/styles";
 import { LoadingOverlay } from "@/components";
 import { usePageLoading } from "@/hooks";
+import type { TransactionHistory } from "@/features/transactions/types/transfer";
 
 const AccountDetailsPage: React.FC = () => {
   const { accountNumber } = useParams<{ accountNumber: string }>();
   const [page, setPage] = useState(1);
+  const [selectedTx, setSelectedTx] = useState<TransactionHistory | null>(null);
   const transactionsPerPage = 10;
 
   const {
@@ -64,6 +67,13 @@ const AccountDetailsPage: React.FC = () => {
             transactionsError={transactionsError}
             page={page}
             onPageChange={handlePageChange}
+            onSelect={setSelectedTx}
+          />
+
+          <ReceiptDrawer
+            transaction={selectedTx}
+            open={!!selectedTx}
+            onClose={() => setSelectedTx(null)}
           />
         </Box>
       </Container>

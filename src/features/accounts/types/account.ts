@@ -43,10 +43,10 @@ export interface WithdrawRequest {
 
 export interface Transaction {
   account: string;
-  type: 'withdrawal' | 'deposit' | 'transfer';
+  type: "withdrawal" | "deposit" | "transfer";
   amount: number;
   description: string;
-  status: 'completed' | 'pending' | 'failed';
+  status: "completed" | "pending" | "failed";
   performedBy: string;
   _id: string;
   date: string;
@@ -66,7 +66,7 @@ export interface WithdrawResponse {
 export interface DepositRequest {
   accountNumber: string;
   amount: number;
-  description?: string;
+  memo?: string;
 }
 
 export interface DepositResponse {

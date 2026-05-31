@@ -2,6 +2,7 @@ export interface TransferRequest {
   fromAccountNumber: string;
   toAccountNumber: string;
   amount: number;
+  memo?: string;
 }
 
 export interface TransferResponse {
@@ -24,15 +25,37 @@ export interface TransactionPerformer {
   role: string;
 }
 
+export interface TransactionDeviceInfo {
+  ip?: string;
+  userAgent?: string;
+}
+
+export interface TransactionProcessingTime {
+  submittedAt?: string;
+  completedAt?: string;
+}
+
 export interface TransactionHistory {
   _id: string;
   account: TransactionAccount;
-  type: 'transfer' | 'deposit' | 'withdrawal' | 'airdrop';
+  type: "transfer" | "deposit" | "withdrawal" | "airdrop";
+  direction?: "debit" | "credit";
   amount: number;
   description: string;
-  status: 'completed' | 'pending' | 'failed';
+  memo?: string | null;
+  status: "completed" | "pending" | "failed";
   performedBy: TransactionPerformer;
   date: string;
+  reference?: string | null;
+  fee?: number | null;
+  balanceBefore?: number | null;
+  balanceAfter?: number | null;
+  currency?: string;
+  channel?: string;
+  counterpartAccount?: string | null;
+  counterpartName?: string | null;
+  isNewRecipient?: boolean | null;
+  processingTime?: TransactionProcessingTime;
   __v: number;
 }
 

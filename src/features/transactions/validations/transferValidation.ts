@@ -4,6 +4,7 @@ export interface ITransferForm {
   fromAccountNumber: string;
   toAccountNumber: string;
   amount: number | "";
+  memo?: string;
 }
 
 export const transferSchema: yup.ObjectSchema<ITransferForm> = yup
@@ -16,4 +17,5 @@ export const transferSchema: yup.ObjectSchema<ITransferForm> = yup
       .typeError("Amount must be a number")
       .positive("Amount must be positive")
       .required("Amount is required"),
+    memo: yup.string().max(255).optional(),
   });
