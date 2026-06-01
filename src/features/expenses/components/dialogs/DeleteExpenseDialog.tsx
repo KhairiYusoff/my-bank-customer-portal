@@ -58,7 +58,8 @@ const DeleteExpenseDialog: React.FC<DeleteExpenseDialogProps> = ({
       <DialogContent>
         {error && (
           <Alert severity="error" sx={{ mb: 2 }}>
-            {error.data?.message || "Failed to delete expense. Please try again."}
+            {error.data?.message ||
+              "Failed to delete expense. Please try again."}
           </Alert>
         )}
 
@@ -66,15 +67,17 @@ const DeleteExpenseDialog: React.FC<DeleteExpenseDialogProps> = ({
           <Typography variant="body1" gutterBottom>
             Are you sure you want to delete this expense?
           </Typography>
-          
-          <Box sx={{ 
-            mt: 2, 
-            p: 2, 
-            bgcolor: 'background.paper',
-            border: 1,
-            borderColor: 'divider',
-            borderRadius: 1
-          }}>
+
+          <Box
+            sx={{
+              mt: 2,
+              p: 2,
+              bgcolor: "background.paper",
+              border: 1,
+              borderColor: "divider",
+              borderRadius: 1,
+            }}
+          >
             <Typography variant="subtitle2" color="text.secondary" gutterBottom>
               Expense Details:
             </Typography>
@@ -85,7 +88,8 @@ const DeleteExpenseDialog: React.FC<DeleteExpenseDialogProps> = ({
               <strong>Amount:</strong> {formatCurrency(expense.amount)}
             </Typography>
             <Typography variant="body2">
-              <strong>Date:</strong> {new Date(expense.date).toLocaleDateString()}
+              <strong>Date:</strong>{" "}
+              {new Date(expense.date).toLocaleDateString()}
             </Typography>
             <Typography variant="body2">
               <strong>Category:</strong> {expense.category}
@@ -98,27 +102,31 @@ const DeleteExpenseDialog: React.FC<DeleteExpenseDialogProps> = ({
           </Box>
 
           <Typography variant="body2" color="warning.main" sx={{ mt: 2 }}>
-            <strong>Note:</strong> This action cannot be undone. The expense will be marked as deleted and removed from your active expenses list.
+            <strong>Note:</strong> This action cannot be undone. The expense
+            will be marked as deleted and removed from your active expenses
+            list.
           </Typography>
         </Box>
       </DialogContent>
 
       <DialogActions sx={{ px: 3, pb: 3 }}>
-        <Button 
-          onClick={onClose} 
+        <Button
+          onClick={onClose}
           startIcon={<CancelIcon />}
           disabled={isLoading}
         >
           Cancel
         </Button>
-        <Button 
-          onClick={handleDelete} 
-          variant="contained" 
+        <Button
+          onClick={handleDelete}
+          variant="contained"
           color="error"
-          startIcon={isLoading ? <CircularProgress size={20} /> : <DeleteIcon />}
+          startIcon={
+            isLoading ? <CircularProgress size={20} /> : <DeleteIcon />
+          }
           disabled={isLoading}
         >
-          {isLoading ? 'Deleting...' : 'Delete Expense'}
+          {isLoading ? "Deleting..." : "Delete Expense"}
         </Button>
       </DialogActions>
     </Dialog>

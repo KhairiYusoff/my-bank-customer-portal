@@ -125,7 +125,8 @@ const WithdrawPage: React.FC = () => {
                                   color="text.secondary"
                                 >
                                   {account.accountType.replace(/_/g, " ")} •
-                                  Available: {formatCurrency(account.balance ?? 0)}
+                                  Available:{" "}
+                                  {formatCurrency(account.balance ?? 0)}
                                 </Typography>
                               </Box>
                             </MenuItem>

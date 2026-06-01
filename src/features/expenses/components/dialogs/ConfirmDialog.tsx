@@ -37,13 +37,13 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   selectedAccount,
 }) => {
   return (
-    <Dialog 
-      open={open} 
-      onClose={onClose} 
-      maxWidth="sm" 
+    <Dialog
+      open={open}
+      onClose={onClose}
+      maxWidth="sm"
       fullWidth
       PaperProps={{
-        sx: { borderRadius: 3 }
+        sx: { borderRadius: 3 },
       }}
     >
       <DialogTitle>Confirm Expense</DialogTitle>
@@ -57,7 +57,13 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
               Amount: <strong>{formatCurrency(expenseData.amount)}</strong>
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Category: <strong>{categories.find(c => c.value === expenseData.category)?.label}</strong>
+              Category:{" "}
+              <strong>
+                {
+                  categories.find((c) => c.value === expenseData.category)
+                    ?.label
+                }
+              </strong>
             </Typography>
             <Typography variant="body2" color="text.secondary">
               Description: <strong>{expenseData.description}</strong>

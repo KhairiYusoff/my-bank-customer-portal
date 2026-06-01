@@ -128,7 +128,8 @@ const DepositPage: React.FC = () => {
                                   color="text.secondary"
                                 >
                                   {account.accountType.replace(/_/g, " ")} •
-                                  Balance: {formatCurrency(account.balance ?? 0)}
+                                  Balance:{" "}
+                                  {formatCurrency(account.balance ?? 0)}
                                 </Typography>
                               </Box>
                             </MenuItem>

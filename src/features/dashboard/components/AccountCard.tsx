@@ -1,7 +1,17 @@
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { Box, CardActionArea, CardContent, Chip, Grid, Typography } from "@mui/material";
-import { AccountBalance as AccountBalanceIcon, Visibility as ViewIcon } from "@mui/icons-material";
+import {
+  Box,
+  CardActionArea,
+  CardContent,
+  Chip,
+  Grid,
+  Typography,
+} from "@mui/material";
+import {
+  AccountBalance as AccountBalanceIcon,
+  Visibility as ViewIcon,
+} from "@mui/icons-material";
 import {
   DashboardAccountCard,
   AccountTypeAvatar,
@@ -9,7 +19,10 @@ import {
   BalanceBox,
   AccountViewButton,
 } from "./styles";
-import { getAccountColorScheme, formatAccountType } from "../constants/accountColorMap";
+import {
+  getAccountColorScheme,
+  formatAccountType,
+} from "../constants/accountColorMap";
 import { formatCurrency } from "@/utils/formatters";
 
 interface AccountCardProps {
@@ -25,7 +38,12 @@ const AccountCard: React.FC<AccountCardProps> = ({ account }) => {
         <CardActionArea
           component={RouterLink}
           to={`/accounts/${account.accountNumber}`}
-          sx={{ height: "100%", display: "flex", flexDirection: "column", alignItems: "stretch" }}
+          sx={{
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "stretch",
+          }}
         >
           <CardContent sx={{ flexGrow: 1, p: 3 }}>
             {/* Account Type & Status */}
@@ -37,26 +55,45 @@ const AccountCard: React.FC<AccountCardProps> = ({ account }) => {
                 <Typography variant="h6" sx={{ fontWeight: "bold", mb: 0.5 }}>
                   {formatAccountType(account.accountType)}
                 </Typography>
-                <Chip label={account.status || "Active"} size="small" color="success" sx={{ fontSize: "0.75rem" }} />
+                <Chip
+                  label={account.status || "Active"}
+                  size="small"
+                  color="success"
+                  sx={{ fontSize: "0.75rem" }}
+                />
               </Box>
             </Box>
 
             {/* Account Number */}
             <AccountNumberBox>
-              <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                sx={{ mb: 0.5 }}
+              >
                 Account Number
               </Typography>
-              <Typography variant="body1" sx={{ fontFamily: "monospace", fontWeight: "bold" }}>
+              <Typography
+                variant="body1"
+                sx={{ fontFamily: "monospace", fontWeight: "bold" }}
+              >
                 {account.accountNumber}
               </Typography>
             </AccountNumberBox>
 
             {/* Balance */}
             <BalanceBox $colorScheme={colorScheme}>
-              <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                sx={{ mb: 0.5 }}
+              >
                 Current Balance
               </Typography>
-              <Typography variant="h5" sx={{ fontWeight: "bold", color: `${colorScheme}.main` }}>
+              <Typography
+                variant="h5"
+                sx={{ fontWeight: "bold", color: `${colorScheme}.main` }}
+              >
                 {formatCurrency(account.balance ?? 0)}
               </Typography>
             </BalanceBox>
