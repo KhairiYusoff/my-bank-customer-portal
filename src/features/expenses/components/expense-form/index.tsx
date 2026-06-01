@@ -42,6 +42,7 @@ import CategorySelect from "../fields/CategorySelect";
 import MerchantInfo from "../fields/MerchantInfo";
 import FormActions from "../fields/FormActions";
 import { ExpenseFormCard } from "../styles";
+import { formatCurrency } from "@/utils/formatters";
 
 export type FormValues = ExpenseFormData;
 
@@ -148,8 +149,8 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
                     >
                       {accounts.map((account) => (
                         <MenuItem key={account._id} value={account._id}>
-                          {account.accountNumber} - {account.accountType} (RM
-                          {account.balance.toLocaleString()})
+                          {account.accountNumber} - {account.accountType} (
+                          {formatCurrency(account.balance)})
                         </MenuItem>
                       ))}
                     </TextField>

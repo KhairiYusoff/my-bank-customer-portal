@@ -1,6 +1,5 @@
 import React from "react";
-import { TextField, Grid } from "@mui/material";
-import { AttachMoney as MoneyIcon } from "@mui/icons-material";
+import { TextField, Grid, Typography } from "@mui/material";
 import { Controller } from "react-hook-form";
 import type { Control, FieldError } from "react-hook-form";
 
@@ -30,7 +29,9 @@ const AmountField: React.FC<AmountFieldProps> = ({ control, error }) => {
             helperText={error?.message || "Enter a positive amount"}
             InputProps={{
               startAdornment: (
-                <MoneyIcon sx={{ mr: 1, color: "text.secondary" }} />
+                <Typography sx={{ mr: 1, color: "text.secondary" }}>
+                  RM
+                </Typography>
               ),
               inputProps: {
                 step: "0.01",
