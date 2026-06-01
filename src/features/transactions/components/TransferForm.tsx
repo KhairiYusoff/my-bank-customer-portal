@@ -310,7 +310,7 @@ const TransferForm: React.FC<TransferFormProps> = ({
           Confirm Transfer
         </GradientDialogTitle>
         <DialogContent sx={{ p: 4 }}>
-          <DialogContentText sx={{ mb: 3 }}>
+          <DialogContentText sx={{ my: 3 }}>
             Please review the transfer details carefully before confirming.
           </DialogContentText>
 
@@ -362,14 +362,9 @@ const TransferForm: React.FC<TransferFormProps> = ({
                 variant="h4"
                 sx={{ fontWeight: "bold", color: "warning.main" }}
               >
-                $
                 {typeof transferData?.amount === "number"
-                  ? transferData.amount.toFixed(2)
+                  ? formatCurrency(transferData.amount)
                   : transferData?.amount}
-              </Typography>
-              <Typography variant="caption" color="text.secondary">
-                {getSelectedAccount(transferData?.fromAccountNumber || "")
-                  ?.currency || "USD"}
               </Typography>
             </WarningDialogInfoBox>
 
