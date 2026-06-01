@@ -31,6 +31,7 @@ import type {
   ExpenseFilters,
 } from "../../types/expense";
 import type { Account } from "@/features/accounts/types/account";
+import { formatCurrency } from "@/utils/formatters";
 
 interface ListTabProps {
   categories: ExpenseCategory[];
@@ -194,7 +195,7 @@ const ListTab: React.FC<ListTabProps> = ({
                   </TableCell>
                   <TableCell>{expense.description}</TableCell>
                   <TableCell>{expense.category}</TableCell>
-                  <TableCell>RM{expense.amount.toLocaleString()}</TableCell>
+                  <TableCell>{formatCurrency(expense.amount)}</TableCell>
                   <TableCell>{expense.account.accountNumber}</TableCell>
                   <TableCell>
                     <Typography

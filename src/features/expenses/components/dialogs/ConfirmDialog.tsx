@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import { Check as CheckIcon } from "@mui/icons-material";
 import type { FormValues } from "../expense-form";
+import { formatCurrency } from "@/utils/formatters";
 
 interface ConfirmDialogProps {
   open: boolean;
@@ -53,7 +54,7 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
         {expenseData && (
           <Box mt={2}>
             <Typography variant="body2" color="text.secondary">
-              Amount: <strong>RM{expenseData.amount.toFixed(2)}</strong>
+              Amount: <strong>{formatCurrency(expenseData.amount)}</strong>
             </Typography>
             <Typography variant="body2" color="text.secondary">
               Category: <strong>{categories.find(c => c.value === expenseData.category)?.label}</strong>

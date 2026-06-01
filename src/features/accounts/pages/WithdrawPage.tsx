@@ -26,6 +26,7 @@ import {
   WithdrawSubmitButton,
   ErrorIconAvatar,
 } from "../components/styles";
+import { formatCurrency } from "@/utils/formatters";
 
 const WithdrawPage: React.FC = () => {
   const {
@@ -124,8 +125,7 @@ const WithdrawPage: React.FC = () => {
                                   color="text.secondary"
                                 >
                                   {account.accountType.replace(/_/g, " ")} •
-                                  Available: $
-                                  {account.balance?.toFixed(2) || "0.00"}
+                                  Available: {formatCurrency(account.balance ?? 0)}
                                 </Typography>
                               </Box>
                             </MenuItem>

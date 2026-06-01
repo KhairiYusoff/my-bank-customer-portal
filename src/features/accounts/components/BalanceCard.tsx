@@ -16,6 +16,7 @@ import {
   Refresh as RefreshIcon,
 } from "@mui/icons-material";
 import type { AccountBalanceResponse } from "../types/account";
+import { formatCurrency } from "@/utils/formatters";
 
 interface BalanceCardProps {
   accountNumber: string;
@@ -58,7 +59,7 @@ const BalanceCard: React.FC<BalanceCardProps> = ({
                 Account Balance
               </Typography>
               <Typography variant="h3" sx={{ fontWeight: "bold", mb: 1 }}>
-                ${balanceData.data.balance.toFixed(2)}
+                {formatCurrency(balanceData.data.balance)}
               </Typography>
               <Typography variant="body2" sx={{ opacity: 0.8 }}>
                 {accountNumber}

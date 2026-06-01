@@ -29,6 +29,7 @@ import {
   SuccessIconAvatar,
   NeutralIconAvatar,
 } from "../components/styles";
+import { formatCurrency } from "@/utils/formatters";
 
 const DepositPage: React.FC = () => {
   const {
@@ -127,8 +128,7 @@ const DepositPage: React.FC = () => {
                                   color="text.secondary"
                                 >
                                   {account.accountType.replace(/_/g, " ")} •
-                                  Balance: $
-                                  {account.balance?.toFixed(2) || "0.00"}
+                                  Balance: {formatCurrency(account.balance ?? 0)}
                                 </Typography>
                               </Box>
                             </MenuItem>

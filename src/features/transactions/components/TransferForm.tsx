@@ -45,6 +45,7 @@ import {
   WarningDialogInfoBox,
   NeutralIconAvatar,
 } from "./styles";
+import { formatCurrency } from "@/utils/formatters";
 
 interface TransferFormProps {
   accounts: Account[];
@@ -76,7 +77,7 @@ const TransferForm: React.FC<TransferFormProps> = ({
   handleConfirmTransfer,
 }) => {
   const formatAccountOption = (account: Account) => {
-    return `${account.accountNumber} (${account.accountType.replace(/_/g, " ")} - $${account.balance?.toFixed(2) || "0.00"})`;
+    return `${account.accountNumber} (${account.accountType.replace(/_/g, " ")} - ${formatCurrency(account.balance ?? 0)})`;
   };
 
   const getSelectedAccount = (accountNumber: string) => {
@@ -136,7 +137,7 @@ const TransferForm: React.FC<TransferFormProps> = ({
                               color="text.secondary"
                             >
                               {account.accountType.replace(/_/g, " ")} •
-                              Balance: ${account.balance?.toFixed(2) || "0.00"}
+                              Balance: {formatCurrency(account.balance ?? 0)}
                             </Typography>
                           </Box>
                         </MenuItem>
@@ -327,7 +328,7 @@ const TransferForm: React.FC<TransferFormProps> = ({
               </Typography>
               {getSelectedAccount(transferData?.fromAccountNumber || "") && (
                 <Chip
-                  label={`Balance: $${getSelectedAccount(transferData?.fromAccountNumber || "")?.balance?.toFixed(2)}`}
+                  label={`Balance: ${formatCurrency(getSelectedAccount(transferData?.fromAccountNumber || "")?.balance ?? 0)}`}
                   size="small"
                   color="primary"
                   variant="outlined"

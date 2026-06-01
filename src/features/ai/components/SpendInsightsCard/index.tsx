@@ -13,6 +13,7 @@ import {
 } from "@mui/icons-material";
 import { useGetInsightsQuery } from "../../store/aiApi";
 import type { InsightsPeriod } from "../../types/ai";
+import { formatCurrency } from "@/utils/formatters";
 import { CATEGORY_LABELS, PERIODS } from "../../constants/insights";
 import {
   CategoryBar,
@@ -148,7 +149,7 @@ const SpendInsightsCard: React.FC = () => {
                       variant="body2"
                       sx={{ minWidth: 64, textAlign: "right", fontWeight: 600 }}
                     >
-                      ${cat.total.toFixed(2)}
+                      {formatCurrency(cat.total)}
                     </Typography>
                   </CategoryRow>
                 ))}
@@ -164,7 +165,7 @@ const SpendInsightsCard: React.FC = () => {
                       fontWeight={700}
                       color="text.primary"
                     >
-                      ${insights.totalSpent.toFixed(2)}
+                      {formatCurrency(insights.totalSpent)}
                     </Typography>{" "}
                     · since {insights.since}
                   </Typography>

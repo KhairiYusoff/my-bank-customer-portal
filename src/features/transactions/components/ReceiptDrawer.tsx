@@ -13,7 +13,7 @@ import {
   Button,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { formatDateTime } from "@/utils/formatters";
+import { formatDateTime, formatCurrency } from "@/utils/formatters";
 import type { TransactionHistory } from "../types/transfer";
 
 interface ReceiptDrawerProps {
@@ -54,7 +54,7 @@ function formatReceiptAmount(tx: TransactionHistory): string {
     tx.type === "withdrawal" ||
     (tx.type === "transfer" && tx.direction === "debit");
   const prefix = isOutgoing ? "-" : "+";
-  return `${prefix}RM${tx.amount.toFixed(2)}`;
+  return `${prefix}${formatCurrency(tx.amount)}`;
 }
 
 function getCounterpartLabel(tx: TransactionHistory): string | null {
@@ -189,7 +189,7 @@ const ReceiptDrawer: React.FC<ReceiptDrawerProps> = ({
             {transaction.balanceAfter != null && (
               <ReceiptRow
                 label="Balance after"
-                value={`RM${transaction.balanceAfter.toFixed(2)}`}
+                value={formatCurrency(transaction.balanceAfter)}
               />
             )}
 
@@ -214,7 +214,7 @@ const ReceiptDrawer: React.FC<ReceiptDrawerProps> = ({
             {/* Fee */}
             <ReceiptRow
               label="Fee"
-              value={`RM${(transaction.fee ?? 0).toFixed(2)}`}
+              value={formatCurrency(transaction.fee ?? 0)}
             />
 
             {/* Memo */}

@@ -24,7 +24,7 @@ import {
   CalendarToday as DateIcon,
   Tag as ReferenceIcon,
 } from "@mui/icons-material";
-import { formatDateTime } from "@/utils/formatters";
+import { formatDateTime, formatCurrency } from "@/utils/formatters";
 import type {
   TransactionHistory,
   TransactionHistoryResponse,
@@ -64,7 +64,7 @@ const getAmountColor = (tx: TransactionHistory) => {
 
 const formatAmount = (tx: TransactionHistory) => {
   const prefix = getAmountSign(tx) === "negative" ? "-" : "+";
-  return `${prefix}$${Math.abs(tx.amount).toFixed(2)}`;
+  return `${prefix}${formatCurrency(Math.abs(tx.amount))}`;
 };
 
 const getTransactionTypeChip = (type: string) => {

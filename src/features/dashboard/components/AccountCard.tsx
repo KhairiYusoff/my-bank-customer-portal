@@ -10,6 +10,7 @@ import {
   AccountViewButton,
 } from "./styles";
 import { getAccountColorScheme, formatAccountType } from "../constants/accountColorMap";
+import { formatCurrency } from "@/utils/formatters";
 
 interface AccountCardProps {
   account: any;
@@ -56,7 +57,7 @@ const AccountCard: React.FC<AccountCardProps> = ({ account }) => {
                 Current Balance
               </Typography>
               <Typography variant="h5" sx={{ fontWeight: "bold", color: `${colorScheme}.main` }}>
-                ${account.balance?.toFixed(2) || "0.00"}
+                {formatCurrency(account.balance ?? 0)}
               </Typography>
             </BalanceBox>
 

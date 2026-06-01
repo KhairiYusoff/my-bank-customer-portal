@@ -10,6 +10,7 @@ import {
   CircularProgress,
   Alert,
 } from "@mui/material";
+import { formatCurrency } from "@/utils/formatters";
 import {
   Delete as DeleteIcon,
   Warning as WarningIcon,
@@ -81,7 +82,7 @@ const DeleteExpenseDialog: React.FC<DeleteExpenseDialogProps> = ({
               <strong>Description:</strong> {expense.description}
             </Typography>
             <Typography variant="body2">
-              <strong>Amount:</strong> RM{expense.amount.toFixed(2)}
+              <strong>Amount:</strong> {formatCurrency(expense.amount)}
             </Typography>
             <Typography variant="body2">
               <strong>Date:</strong> {new Date(expense.date).toLocaleDateString()}
