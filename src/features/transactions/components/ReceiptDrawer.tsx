@@ -15,6 +15,12 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import { formatDateTime, formatCurrency } from "@/utils/formatters";
 import type { TransactionHistory } from "../types/transfer";
+import {
+  getTransactionTypeLabel,
+  getTransactionTypeColor,
+  getAmountColor,
+  formatTransactionAmount,
+} from "../utils/transactionUtils";
 
 interface ReceiptDrawerProps {
   transaction: TransactionHistory | null;
@@ -25,37 +31,6 @@ interface ReceiptDrawerProps {
 }
 
 const DASH = "—";
-
-function getDirectionBadge(tx: TransactionHistory): string {
-  if (tx.type === "transfer") {
-    return tx.direction === "debit" ? "TRANSFER SENT" : "TRANSFER RECEIVED";
-  }
-  if (tx.type === "deposit" || tx.type === "airdrop") return "DEPOSIT";
-  return "WITHDRAWAL";
-}
-
-function getBadgeColor(
-  tx: TransactionHistory,
-): "primary" | "success" | "error" | "info" {
-  if (tx.type === "withdrawal") return "error";
-  if (tx.type === "transfer" && tx.direction === "debit") return "info";
-  return "success";
-}
-
-function getAmountColor(tx: TransactionHistory): string {
-  const isOutgoing =
-    tx.type === "withdrawal" ||
-    (tx.type === "transfer" && tx.direction === "debit");
-  return isOutgoing ? "error.main" : "success.main";
-}
-
-function formatReceiptAmount(tx: TransactionHistory): string {
-  const isOutgoing =
-    tx.type === "withdrawal" ||
-    (tx.type === "transfer" && tx.direction === "debit");
-  const prefix = isOutgoing ? "-" : "+";
-  return `${prefix}${formatCurrency(tx.amount)}`;
-}
 
 function getCounterpartLabel(tx: TransactionHistory): string | null {
   if (tx.type === "transfer") {
@@ -142,8 +117,14 @@ const ReceiptDrawer: React.FC<ReceiptDrawerProps> = ({
       ) : !transaction ? null : (
         <>
           <Chip
-            label={getDirectionBadge(transaction)}
-            color={getBadgeColor(transaction)}
+            label={getTransactionTypeLabel(
+              transaction.type,
+              transaction.direction,
+            )}
+            color={getTransactionTypeColor(
+              transaction.type,
+              transaction.direction,
+            )}
             sx={{ fontWeight: 700, letterSpacing: 0.5, mb: 2 }}
           />
 
@@ -153,7 +134,7 @@ const ReceiptDrawer: React.FC<ReceiptDrawerProps> = ({
             color={getAmountColor(transaction)}
             sx={{ mb: 3 }}
           >
-            {formatReceiptAmount(transaction)}
+            {formatTransactionAmount(transaction, formatCurrency)}
           </Typography>
 
           <Divider sx={{ mb: 3 }} />

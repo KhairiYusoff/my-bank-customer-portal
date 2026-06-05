@@ -29,6 +29,13 @@ import type {
   TransactionHistory,
   TransactionHistoryResponse,
 } from "@/features/transactions/types/transfer";
+import {
+  getTransactionTypeColor,
+  getTransactionTypeLabel,
+  isOutgoing,
+  getAmountColor,
+  formatTransactionAmount,
+} from "@/features/transactions/utils/transactionUtils";
 
 interface TransactionsListProps {
   transactionsData?: TransactionHistoryResponse;
@@ -50,45 +57,6 @@ const getTransactionIcon = (type: string) => {
     default:
       return <MoneyIcon sx={{ color: "text.secondary" }} />;
   }
-};
-
-const getAmountSign = (tx: TransactionHistory): "positive" | "negative" => {
-  if (tx.type === "withdrawal") return "negative";
-  if (tx.type === "transfer" && tx.direction === "debit") return "negative";
-  return "positive";
-};
-
-const getAmountColor = (tx: TransactionHistory) => {
-  return getAmountSign(tx) === "negative" ? "error.main" : "success.main";
-};
-
-const formatAmount = (tx: TransactionHistory) => {
-  const prefix = getAmountSign(tx) === "negative" ? "-" : "+";
-  return `${prefix}${formatCurrency(Math.abs(tx.amount))}`;
-};
-
-const getTransactionTypeChip = (type: string) => {
-  const configs: Record<
-    string,
-    {
-      label: string;
-      color: "primary" | "success" | "error" | "secondary" | "default";
-    }
-  > = {
-    transfer: { label: "Transfer", color: "primary" },
-    deposit: { label: "Deposit", color: "success" },
-    withdrawal: { label: "Withdrawal", color: "error" },
-    airdrop: { label: "Bonus", color: "secondary" },
-  };
-  const config = configs[type] || { label: type, color: "default" as const };
-  return (
-    <Chip
-      label={config.label}
-      color={config.color}
-      size="small"
-      sx={{ textTransform: "capitalize" }}
-    />
-  );
 };
 
 const TransactionsList: React.FC<TransactionsListProps> = ({
@@ -171,7 +139,18 @@ const TransactionsList: React.FC<TransactionsListProps> = ({
                       <Typography variant="subtitle1" sx={{ fontWeight: 500 }}>
                         {transaction.description}
                       </Typography>
-                      {getTransactionTypeChip(transaction.type)}
+                      <Chip
+                        label={getTransactionTypeLabel(
+                          transaction.type,
+                          transaction.direction,
+                        )}
+                        color={getTransactionTypeColor(
+                          transaction.type,
+                          transaction.direction,
+                        )}
+                        size="small"
+                        sx={{ textTransform: "capitalize" }}
+                      />
                     </Box>
                   }
                   secondary={
@@ -226,7 +205,9 @@ const TransactionsList: React.FC<TransactionsListProps> = ({
                       fontWeight: "bold",
                     }}
                   >
-                    {formatAmount(transaction)}
+                    {formatTransactionAmount(transaction, (n) =>
+                      formatCurrency(Math.abs(n)),
+                    )}
                   </Typography>
                   <Chip
                     label={transaction.status}
