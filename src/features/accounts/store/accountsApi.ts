@@ -8,6 +8,20 @@ import type {
   DepositResponse,
 } from "../types/account";
 
+export interface AccountTypeLimits {
+  dailyTransferLimit: number | null;
+  maxSingleTransfer: number | null;
+  overdraftEligible: boolean;
+  minWithdrawal: number | null;
+  transfersAllowed: boolean;
+}
+
+export interface AccountLimitsResponse {
+  success: boolean;
+  message: string;
+  data: Record<string, AccountTypeLimits>;
+}
+
 export const accountsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAccounts: builder.query<AccountsResponse, void>({
@@ -19,6 +33,10 @@ export const accountsApi = baseApi.injectEndpoints({
       providesTags: (result, error, accountNumber) => [
         { type: "AccountBalance", id: accountNumber },
       ],
+    }),
+    getAccountLimits: builder.query<AccountLimitsResponse, void>({
+      query: () => "/accounts/limits",
+      providesTags: ["Account"],
     }),
     withdraw: builder.mutation<WithdrawResponse, WithdrawRequest>({
       query: (withdrawData) => ({
@@ -48,6 +66,7 @@ export const accountsApi = baseApi.injectEndpoints({
 export const {
   useGetAccountsQuery,
   useGetAccountBalanceQuery,
+  useGetAccountLimitsQuery,
   useWithdrawMutation,
   useDepositMutation,
 } = accountsApi;

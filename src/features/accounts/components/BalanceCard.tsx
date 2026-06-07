@@ -16,13 +16,18 @@ import {
   Refresh as RefreshIcon,
 } from "@mui/icons-material";
 import type { AccountBalanceResponse } from "../types/account";
+import type { AccountTypeLimits } from "../store/accountsApi";
 import { formatCurrency } from "@/utils/formatters";
+import AccountTypeChip from "./AccountTypeChip";
 
 interface BalanceCardProps {
   accountNumber: string;
   balanceData?: AccountBalanceResponse;
   balanceError: unknown;
   onRefresh: () => void;
+  accountType?: string;
+  overdraftLimit?: number;
+  limits?: AccountTypeLimits | null;
 }
 
 const BalanceCard: React.FC<BalanceCardProps> = ({
@@ -30,6 +35,9 @@ const BalanceCard: React.FC<BalanceCardProps> = ({
   balanceData,
   balanceError,
   onRefresh,
+  accountType,
+  overdraftLimit,
+  limits,
 }) => {
   const navigate = useNavigate();
 
@@ -55,6 +63,16 @@ const BalanceCard: React.FC<BalanceCardProps> = ({
             }}
           >
             <Box>
+              {accountType && (
+                <Box sx={{ mb: 1 }}>
+                  <AccountTypeChip
+                    accountType={accountType}
+                    overdraftLimit={overdraftLimit}
+                    limits={limits ?? null}
+                    darkSurface
+                  />
+                </Box>
+              )}
               <Typography variant="h6" sx={{ opacity: 0.9, mb: 1 }}>
                 Account Balance
               </Typography>

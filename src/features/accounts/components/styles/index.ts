@@ -1,5 +1,6 @@
 import { styled, alpha } from "@mui/material/styles";
-import { Card, Button, Avatar, Typography } from "@mui/material";
+import { Card, Button, Avatar, Typography, Chip } from "@mui/material";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 export const GradientBalanceCard = styled(Card)(({ theme }) => ({
   marginBottom: theme.spacing(3),
@@ -83,4 +84,24 @@ export const WithdrawSubmitButton = styled(Button)(({ theme }) => ({
   "&:disabled": {
     background: "rgba(0, 0, 0, 0.12)",
   },
+}));
+
+export const AccountChip = styled(Chip, {
+  shouldForwardProp: (prop) => prop !== "$darkSurface",
+})<{ $darkSurface?: boolean }>(({ theme, $darkSurface }) => ({
+  textTransform: "capitalize",
+  ...($darkSurface && {
+    backgroundColor: alpha(theme.palette.common.white, 0.2),
+    color: theme.palette.common.white,
+    "& .MuiChip-label": { color: theme.palette.common.white },
+  }),
+}));
+
+export const AccountChipInfoIcon = styled(InfoOutlinedIcon, {
+  shouldForwardProp: (prop) => prop !== "$darkSurface",
+})<{ $darkSurface?: boolean }>(({ theme, $darkSurface }) => ({
+  cursor: "pointer",
+  color: $darkSurface
+    ? alpha(theme.palette.common.white, 0.8)
+    : theme.palette.text.secondary,
 }));

@@ -2,9 +2,13 @@ import React, { useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import { Box, Container } from "@mui/material";
 import DashboardLayout from "@/layouts/DashboardLayout";
-import { useGetAccountBalanceQuery, useGetAccountsQuery } from "../store/accountsApi";
+import {
+  useGetAccountBalanceQuery,
+  useGetAccountsQuery,
+  useGetAccountLimitsQuery,
+} from "../store/accountsApi";
 import { useGetAccountTransactionsQuery } from "@/features/transactions/store/transactionsApi";
-import { BalanceCard, TransactionsList, AccountRulesCard } from "../components";
+import { BalanceCard, TransactionsList } from "../components";
 import { ReceiptDrawer } from "@/features/transactions/components";
 import { GradientTitle } from "../components/styles";
 import { LoadingOverlay } from "@/components";
@@ -19,7 +23,8 @@ const AccountDetailsPage: React.FC = () => {
   const [selectedTx, setSelectedTx] = useState<TransactionHistory | null>(null);
   const transactionsPerPage = 10;
 
-  const routerStateAccount = (location.state as { account?: Account } | null)?.account;
+  const routerStateAccount = (location.state as { account?: Account } | null)
+    ?.account;
 
   const { data: accountsData } = useGetAccountsQuery(undefined, {
     skip: !!routerStateAccount,
@@ -27,6 +32,11 @@ const AccountDetailsPage: React.FC = () => {
   const account: Account | undefined =
     routerStateAccount ??
     accountsData?.data?.find((a) => a.accountNumber === accountNumber);
+
+  const { data: limitsData } = useGetAccountLimitsQuery();
+  const limits = account?.accountType
+    ? (limitsData?.data?.[account.accountType.toLowerCase()] ?? null)
+    : null;
 
   const {
     data: balanceData,
@@ -71,11 +81,9 @@ const AccountDetailsPage: React.FC = () => {
             balanceData={balanceData}
             balanceError={balanceError}
             onRefresh={handleRefresh}
-          />
-
-          <AccountRulesCard
-            accountType={account?.accountType ?? ""}
+            accountType={account?.accountType}
             overdraftLimit={account?.overdraftLimit}
+            limits={limits}
           />
 
           <TransactionsList
