@@ -1,21 +1,32 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import { Box, Container } from "@mui/material";
 import DashboardLayout from "@/layouts/DashboardLayout";
-import { useGetAccountBalanceQuery } from "../store/accountsApi";
+import { useGetAccountBalanceQuery, useGetAccountsQuery } from "../store/accountsApi";
 import { useGetAccountTransactionsQuery } from "@/features/transactions/store/transactionsApi";
-import { BalanceCard, TransactionsList } from "../components";
+import { BalanceCard, TransactionsList, AccountRulesCard } from "../components";
 import { ReceiptDrawer } from "@/features/transactions/components";
 import { GradientTitle } from "../components/styles";
 import { LoadingOverlay } from "@/components";
 import { usePageLoading } from "@/hooks";
 import type { TransactionHistory } from "@/features/transactions/types/transfer";
+import type { Account } from "../types/account";
 
 const AccountDetailsPage: React.FC = () => {
   const { accountNumber } = useParams<{ accountNumber: string }>();
+  const location = useLocation();
   const [page, setPage] = useState(1);
   const [selectedTx, setSelectedTx] = useState<TransactionHistory | null>(null);
   const transactionsPerPage = 10;
+
+  const routerStateAccount = (location.state as { account?: Account } | null)?.account;
+
+  const { data: accountsData } = useGetAccountsQuery(undefined, {
+    skip: !!routerStateAccount,
+  });
+  const account: Account | undefined =
+    routerStateAccount ??
+    accountsData?.data?.find((a) => a.accountNumber === accountNumber);
 
   const {
     data: balanceData,
@@ -60,6 +71,11 @@ const AccountDetailsPage: React.FC = () => {
             balanceData={balanceData}
             balanceError={balanceError}
             onRefresh={handleRefresh}
+          />
+
+          <AccountRulesCard
+            accountType={account?.accountType ?? ""}
+            overdraftLimit={account?.overdraftLimit}
           />
 
           <TransactionsList

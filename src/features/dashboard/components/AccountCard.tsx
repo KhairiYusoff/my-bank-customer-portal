@@ -38,6 +38,7 @@ const AccountCard: React.FC<AccountCardProps> = ({ account }) => {
         <CardActionArea
           component={RouterLink}
           to={`/accounts/${account.accountNumber}`}
+          state={{ account }}
           sx={{
             height: "100%",
             display: "flex",
