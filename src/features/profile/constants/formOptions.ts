@@ -73,11 +73,6 @@ export const relationshipOptions = [
 
 // ─── Preferences ─────────────────────────────────────────────────────────────
 
-export const themeOptions = [
-  { value: "light", label: "Light" },
-  { value: "dark", label: "Dark" },
-];
-
 export const languageOptions = [
   { value: "en", label: "English" },
   { value: "ms", label: "Malay" },

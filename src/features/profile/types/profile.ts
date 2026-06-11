@@ -6,7 +6,6 @@ export interface Address {
 }
 
 export interface Preferences {
-  theme: string;
   language: string;
   notifications: boolean;
 }

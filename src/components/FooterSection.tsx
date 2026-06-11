@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Container, Typography, Link, Divider } from "@mui/material";
+import { Box, Container, Typography, Link } from "@mui/material";
 
 const FooterSection: React.FC = () => {
   return (
@@ -9,10 +9,7 @@ const FooterSection: React.FC = () => {
         py: 3,
         px: 2,
         mt: "auto",
-        backgroundColor: (theme) =>
-          theme.palette.mode === "light"
-            ? theme.palette.grey[200]
-            : theme.palette.grey[800],
+        backgroundColor: (theme) => theme.palette.grey[200],
       }}
     >
       <Container maxWidth="lg">
