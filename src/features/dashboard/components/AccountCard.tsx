@@ -57,7 +57,7 @@ const AccountCard: React.FC<AccountCardProps> = ({ account }) => {
                   {formatAccountType(account.accountType)}
                 </Typography>
                 <Chip
-                  label={account.status || "Active"}
+                  label={(account.status || "active").replace(/_/g, " ")}
                   size="small"
                   color="success"
                   sx={{ fontSize: "0.75rem" }}
