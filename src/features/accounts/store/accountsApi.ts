@@ -6,6 +6,8 @@ import type {
   WithdrawResponse,
   DepositRequest,
   DepositResponse,
+  RequestAccountRequest,
+  RequestAccountResponse,
 } from "../types/account";
 
 export interface AccountTypeLimits {
@@ -60,6 +62,14 @@ export const accountsApi = baseApi.injectEndpoints({
         { type: "AccountBalance", id: accountNumber },
       ],
     }),
+    requestAccount: builder.mutation<RequestAccountResponse, RequestAccountRequest>({
+      query: (requestData) => ({
+        url: "/accounts/request",
+        method: "POST",
+        body: requestData,
+      }),
+      invalidatesTags: ["Account"],
+    }),
   }),
 });
 
@@ -69,4 +79,5 @@ export const {
   useGetAccountLimitsQuery,
   useWithdrawMutation,
   useDepositMutation,
+  useRequestAccountMutation,
 } = accountsApi;

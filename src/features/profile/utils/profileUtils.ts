@@ -84,7 +84,6 @@ export function buildViewDataMap(
       Relationship: user.nextOfKin?.relationship,
     },
     preferences: {
-      Theme: user.preferences?.theme,
       Language: user.preferences?.language,
       Notifications: user.preferences?.notifications ? "Enabled" : undefined,
     },

@@ -5,12 +5,21 @@ export interface Account {
   accountType: string;
   branch: string;
   balance: number;
-  interestRate: number;
+  interestRate?: number;
   currency: string;
   status: string;
   dateOpened: string;
+  dateClosed?: string;
   overdraftLimit?: number;
   minimumBalance?: number;
+  // Fixed Deposit fields
+  lockPeriod?: 1 | 3 | 6 | 12;
+  maturityDate?: string;
+  linkedAccount?: string;
+  principal?: number;
+  autoRenew?: boolean;
+  // Business field
+  companyRegistrationDoc?: string;
 }
 
 export interface AccountsResponse {
@@ -76,6 +85,23 @@ export interface DepositResponse {
     account: Account;
     transaction: Transaction;
   } | null;
+  errors: string[] | null;
+  meta: null;
+}
+
+export interface RequestAccountRequest {
+  accountType: "current" | "business" | "fixed_deposit";
+  branch: string;
+  amount: number;
+  lockPeriod?: 1 | 3 | 6 | 12;
+  linkedAccount?: string;
+  companyRegistrationDoc?: string;
+}
+
+export interface RequestAccountResponse {
+  success: boolean;
+  message: string;
+  data: Account | null;
   errors: string[] | null;
   meta: null;
 }

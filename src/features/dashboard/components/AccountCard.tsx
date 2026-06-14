@@ -57,10 +57,10 @@ const AccountCard: React.FC<AccountCardProps> = ({ account }) => {
                   {formatAccountType(account.accountType)}
                 </Typography>
                 <Chip
-                  label={(account.status || "active").replace(/_/g, " ")}
+                  label={(account.status || "active").replace(/_/g, " ").toUpperCase()}
                   size="small"
-                  color="success"
-                  sx={{ fontSize: "0.75rem" }}
+                  color={account.status === "pending_approval" ? "warning" : "success"}
+                  sx={{ fontSize: "0.75rem", fontWeight: "bold" }}
                 />
               </Box>
             </Box>

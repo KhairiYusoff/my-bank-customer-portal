@@ -22,6 +22,7 @@ import TransferPage from "./features/transactions/pages/TransferPage";
 import DepositPage from "./features/accounts/pages/DepositPage";
 import WithdrawPage from "./features/accounts/pages/WithdrawPage";
 import AccountDetailsPage from "./features/accounts/pages/AccountDetailsPage";
+import ApplyForNewProductPage from "./features/accounts/pages/ApplyForNewProductPage";
 import ContactUsPage from "./features/contacts/pages/ContactUsPage";
 import ProfilePage from "./features/profile/pages/ProfilePage";
 import ExpensesPage from "./features/expenses";
@@ -131,6 +132,14 @@ const AppContent: React.FC = () => {
             element={
               <ProtectedRoute>
                 <WithdrawPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/apply-new-product"
+            element={
+              <ProtectedRoute>
+                <ApplyForNewProductPage />
               </ProtectedRoute>
             }
           />
