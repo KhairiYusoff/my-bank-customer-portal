@@ -17,6 +17,19 @@ export const MALAYSIAN_STATES = [
   "Putrajaya",
 ];
 
+export const BRANCH_OPTIONS = [
+  { value: "501", label: "Main Branch (Kuala Lumpur)" },
+  { value: "502", label: "Petaling Jaya Branch" },
+  { value: "503", label: "Subang Jaya Branch" },
+  { value: "504", label: "Shah Alam Branch" },
+  { value: "301", label: "Johor Bahru Branch" },
+  { value: "302", label: "Johor Jaya Branch" },
+  { value: "701", label: "Penang Branch" },
+  { value: "702", label: "George Town Branch" },
+  { value: "101", label: "Kuantan Branch" },
+  { value: "102", label: "Temerloh Branch" },
+];
+
 export const EMPLOYMENT_TYPES = [
   { value: "salaried", label: "Salaried Employee" },
   { value: "self-employed", label: "Self-Employed" },

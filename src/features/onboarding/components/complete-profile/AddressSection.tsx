@@ -2,7 +2,7 @@ import React from "react";
 import { useFormContext } from "react-hook-form";
 import { TextField, Grid, Box, Typography, MenuItem } from "@mui/material";
 import { CompleteProfileFormData } from "@/features/onboarding/validations/schemas";
-import { MALAYSIAN_STATES } from "../../constants/formOptions";
+import { MALAYSIAN_STATES, BRANCH_OPTIONS } from "../../constants/formOptions";
 
 const AddressSection: React.FC = () => {
   const {
@@ -13,7 +13,7 @@ const AddressSection: React.FC = () => {
   return (
     <Box>
       <Typography variant="h6" gutterBottom>
-        Address Information
+        Address & Branch Information
       </Typography>
 
       <Grid container spacing={3}>
@@ -66,6 +66,33 @@ const AddressSection: React.FC = () => {
             helperText={(errors.address as any)?.postalCode?.message as string}
             placeholder="e.g., 47800"
           />
+        </Grid>
+
+        <Grid item xs={12}>
+          <Typography variant="subtitle1" gutterBottom sx={{ mt: 2, mb: 2 }}>
+            Branch Selection
+          </Typography>
+        </Grid>
+
+        <Grid item xs={12}>
+          <TextField
+            select
+            fullWidth
+            label="Preferred Home Branch"
+            {...register("branch")}
+            error={!!errors.branch}
+            helperText={
+              (errors.branch?.message as string) ||
+              "Select the branch where you want to maintain your account"
+            }
+          >
+            <MenuItem value="">Select a branch</MenuItem>
+            {BRANCH_OPTIONS.map((branch) => (
+              <MenuItem key={branch.value} value={branch.value}>
+                {branch.label}
+              </MenuItem>
+            ))}
+          </TextField>
         </Grid>
       </Grid>
     </Box>

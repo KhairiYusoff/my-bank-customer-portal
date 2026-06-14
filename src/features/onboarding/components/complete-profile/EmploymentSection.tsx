@@ -5,7 +5,6 @@ import { CompleteProfileFormData } from "@/features/onboarding/validations/schem
 import {
   EMPLOYMENT_TYPES,
   SALARY_RANGES,
-  ACCOUNT_TYPES,
   ACCOUNT_PURPOSES,
 } from "../../constants/formOptions";
 
@@ -84,24 +83,27 @@ const EmploymentSection: React.FC = () => {
           </Typography>
         </Grid>
 
-        <Grid item xs={12} md={6}>
-          <TextField
-            select
-            fullWidth
-            label="Preferred Account Type"
-            {...register("accountType")}
-            error={!!errors.accountType}
-            helperText={errors.accountType?.message as string}
+        <Grid item xs={12}>
+          <Box
+            sx={{
+              p: 2,
+              bgcolor: "primary.light",
+              borderRadius: 1,
+              color: "primary.contrastText",
+            }}
           >
-            {ACCOUNT_TYPES.map((type) => (
-              <MenuItem key={type.value} value={type.value}>
-                {type.label}
-              </MenuItem>
-            ))}
-          </TextField>
+            <Typography variant="body2" fontWeight="bold">
+              Default Product: Savings Account
+            </Typography>
+            <Typography variant="caption">
+              All new customers are provisioned with a Savings Account by
+              default. You can apply for other products (Current, Business,
+              Fixed Deposit) after your profile is verified.
+            </Typography>
+          </Box>
         </Grid>
 
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12}>
           <TextField
             select
             fullWidth

@@ -58,6 +58,7 @@ const CompleteProfilePage: React.FC = () => {
         state: "",
         postalCode: "",
       },
+      branch: "",
       job: "",
       employerName: "",
       employmentType: "salaried",
@@ -120,6 +121,7 @@ const CompleteProfilePage: React.FC = () => {
           "address.city",
           "address.state",
           "address.postalCode",
+          "branch",
         ];
       case 2:
         return [

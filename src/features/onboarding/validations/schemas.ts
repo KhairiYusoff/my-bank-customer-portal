@@ -43,6 +43,7 @@ export type CompleteProfileFormData = {
     state: string;
     postalCode: string;
   };
+  branch: string;
   job: string;
   employerName: string;
   employmentType:
@@ -58,7 +59,7 @@ export type CompleteProfileFormData = {
     | "5000-6999"
     | "7000-9999"
     | "10000+";
-  accountType: "savings" | "current" | "fixed deposit";
+  accountType: "savings";
   purposeOfAccount:
     | "savings"
     | "salary credit"
@@ -151,6 +152,7 @@ export const completeProfileSchema = yup
       state: yup.string().required("State is required"),
       postalCode: yup.string().required("Postal code is required"),
     }),
+    branch: yup.string().required("Preferred branch is required"),
     job: yup.string().required("Job title is required"),
     employerName: yup.string().required("Employer name is required"),
     employmentType: yup
@@ -169,8 +171,9 @@ export const completeProfileSchema = yup
       .required("Salary range is required"),
     accountType: yup
       .string()
-      .oneOf(["savings", "current", "fixed deposit"], "Invalid account type")
-      .required("Account type is required"),
+      .oneOf(["savings"], "Only Savings accounts can be opened during onboarding")
+      .required("Account type is required")
+      .default("savings"),
     purposeOfAccount: yup
       .string()
       .oneOf(
