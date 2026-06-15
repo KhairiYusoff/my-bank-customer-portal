@@ -14,10 +14,13 @@ import {
   Add as DepositIcon,
   Remove as WithdrawIcon,
   Refresh as RefreshIcon,
+  ExitToApp as SettleIcon,
 } from "@mui/icons-material";
 import type { AccountBalanceResponse } from "../types/account";
 import type { AccountTypeLimits } from "../store/accountsApi";
+import { useFdSettleMutation } from "../store/accountsApi";
 import { formatCurrency } from "@/utils/formatters";
+import { useToast } from "@/utils/snackbarUtils";
 import AccountTypeChip from "./AccountTypeChip";
 
 interface BalanceCardProps {
@@ -28,6 +31,7 @@ interface BalanceCardProps {
   accountType?: string;
   overdraftLimit?: number;
   limits?: AccountTypeLimits | null;
+  maturityDate?: string | Date;
 }
 
 const BalanceCard: React.FC<BalanceCardProps> = ({
@@ -38,8 +42,34 @@ const BalanceCard: React.FC<BalanceCardProps> = ({
   accountType,
   overdraftLimit,
   limits,
+  maturityDate,
 }) => {
   const navigate = useNavigate();
+  const { success, error: showError } = useToast();
+  const [fdSettle, { isLoading: isSettling }] = useFdSettleMutation();
+
+  const isMaturedFD = React.useMemo(() => {
+    if (accountType !== "fixed_deposit" || !maturityDate) return false;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const mDate = new Date(maturityDate);
+    mDate.setHours(0, 0, 0, 0);
+    
+    const diffTime = today.getTime() - mDate.getTime();
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    
+    return diffDays >= 0 && diffDays <= 7;
+  }, [accountType, maturityDate]);
+
+  const handleSettle = async () => {
+    try {
+      await fdSettle(accountNumber).unwrap();
+      success("Fixed Deposit principal has been settled successfully.");
+      navigate("/dashboard");
+    } catch (err: any) {
+      showError(err?.data?.message || "Failed to settle Fixed Deposit");
+    }
+  };
 
   if (balanceError) {
     const apiError = balanceError as any;
@@ -89,27 +119,50 @@ const BalanceCard: React.FC<BalanceCardProps> = ({
           </Box>
 
           <Stack direction="row" spacing={2} sx={{ mt: 3 }}>
-            <ActionButton
-              variant="contained"
-              startIcon={<TransferIcon />}
-              onClick={() => navigate("/transfer")}
-            >
-              Transfer
-            </ActionButton>
-            <ActionButton
-              variant="contained"
-              startIcon={<DepositIcon />}
-              onClick={() => navigate("/deposit")}
-            >
-              Deposit
-            </ActionButton>
-            <ActionButton
-              variant="contained"
-              startIcon={<WithdrawIcon />}
-              onClick={() => navigate("/withdraw")}
-            >
-              Withdraw
-            </ActionButton>
+            {accountType === "fixed_deposit" ? (
+              <>
+                {isMaturedFD && (
+                  <ActionButton
+                    variant="contained"
+                    startIcon={<SettleIcon />}
+                    onClick={handleSettle}
+                    disabled={isSettling}
+                    sx={{ bgcolor: "warning.main", "&:hover": { bgcolor: "warning.dark" } }}
+                  >
+                    {isSettling ? "Settling..." : "Withdraw Principal"}
+                  </ActionButton>
+                )}
+                <Typography variant="caption" sx={{ color: "white", opacity: 0.8, mt: 1 }}>
+                  {isMaturedFD 
+                    ? "Your FD has matured. You can withdraw the principal now." 
+                    : "Fixed Deposits are locked until maturity."}
+                </Typography>
+              </>
+            ) : (
+              <>
+                <ActionButton
+                  variant="contained"
+                  startIcon={<TransferIcon />}
+                  onClick={() => navigate("/transfer")}
+                >
+                  Transfer
+                </ActionButton>
+                <ActionButton
+                  variant="contained"
+                  startIcon={<DepositIcon />}
+                  onClick={() => navigate("/deposit")}
+                >
+                  Deposit
+                </ActionButton>
+                <ActionButton
+                  variant="contained"
+                  startIcon={<WithdrawIcon />}
+                  onClick={() => navigate("/withdraw")}
+                >
+                  Withdraw
+                </ActionButton>
+              </>
+            )}
           </Stack>
         </CardContent>
       </GradientBalanceCard>

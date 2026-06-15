@@ -70,6 +70,26 @@ export const accountsApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["Account"],
     }),
+    fdSettle: builder.mutation<any, string>({
+      query: (accountNumber) => ({
+        url: `/accounts/${accountNumber}/fd-settle`,
+        method: "POST",
+      }),
+      invalidatesTags: (result, error, accountNumber) => [
+        "Account",
+        { type: "AccountBalance", id: accountNumber },
+      ],
+    }),
+    updateFdInstructions: builder.mutation<any, { accountNumber: string; autoRenew: boolean; linkedAccount?: string }>({
+      query: ({ accountNumber, ...body }) => ({
+        url: `/accounts/${accountNumber}/fd-instructions`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: (result, error, { accountNumber }) => [
+        "Account",
+      ],
+    }),
   }),
 });
 
@@ -80,4 +100,6 @@ export const {
   useWithdrawMutation,
   useDepositMutation,
   useRequestAccountMutation,
+  useFdSettleMutation,
+  useUpdateFdInstructionsMutation,
 } = accountsApi;

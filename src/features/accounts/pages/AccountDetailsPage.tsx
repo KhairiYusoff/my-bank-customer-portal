@@ -8,7 +8,7 @@ import {
   useGetAccountLimitsQuery,
 } from "../store/accountsApi";
 import { useGetAccountTransactionsQuery } from "@/features/transactions/store/transactionsApi";
-import { BalanceCard, TransactionsList } from "../components";
+import { BalanceCard, TransactionsList, FdSettingsCard } from "../components";
 import { ReceiptDrawer } from "@/features/transactions/components";
 import { GradientTitle } from "../components/styles";
 import { LoadingOverlay } from "@/components";
@@ -84,7 +84,19 @@ const AccountDetailsPage: React.FC = () => {
             accountType={account?.accountType}
             overdraftLimit={account?.overdraftLimit}
             limits={limits}
+            maturityDate={account?.maturityDate}
           />
+
+          {account?.accountType === "fixed_deposit" && (
+            <FdSettingsCard
+              accountNumber={accountNumber!}
+              autoRenew={account?.autoRenew}
+              maturityDate={account?.maturityDate}
+              linkedAccount={account?.linkedAccount}
+              lockPeriod={account?.lockPeriod}
+              interestRate={account?.interestRate}
+            />
+          )}
 
           <TransactionsList
             transactionsData={transactionsData}
