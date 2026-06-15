@@ -90,6 +90,16 @@ export const accountsApi = baseApi.injectEndpoints({
         "Account",
       ],
     }),
+    fdWithdrawEarly: builder.mutation<any, string>({
+      query: (accountNumber) => ({
+        url: `/accounts/${accountNumber}/fd-withdraw-early`,
+        method: "POST",
+      }),
+      invalidatesTags: (result, error, accountNumber) => [
+        "Account",
+        { type: "AccountBalance", id: accountNumber },
+      ],
+    }),
   }),
 });
 
@@ -102,4 +112,5 @@ export const {
   useRequestAccountMutation,
   useFdSettleMutation,
   useUpdateFdInstructionsMutation,
+  useFdWithdrawEarlyMutation,
 } = accountsApi;

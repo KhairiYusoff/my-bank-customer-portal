@@ -11,19 +11,29 @@ import {
   CircularProgress,
   TextField,
   MenuItem,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from "@mui/material";
 import {
   Settings as SettingsIcon,
   Autorenew as RenewIcon,
   Link as LinkIcon,
   Event as DateIcon,
+  ReportProblem as WarningIcon,
+  NoEncryption as UnlockIcon,
 } from "@mui/icons-material";
 import {
   useUpdateFdInstructionsMutation,
   useGetAccountsQuery,
+  useFdWithdrawEarlyMutation,
 } from "../store/accountsApi";
 import { useToast } from "@/utils/snackbarUtils";
 import { format } from "date-fns";
+import { useNavigate } from "react-router-dom";
 
 interface FdSettingsCardProps {
   accountNumber: string;
@@ -42,9 +52,12 @@ const FdSettingsCard: React.FC<FdSettingsCardProps> = ({
   lockPeriod,
   interestRate,
 }) => {
+  const navigate = useNavigate();
   const { success, error: showError } = useToast();
   const [updateInstructions, { isLoading }] = useUpdateFdInstructionsMutation();
+  const [withdrawEarly, { isLoading: isWithdrawing }] = useFdWithdrawEarlyMutation();
   const { data: accountsData } = useGetAccountsQuery();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const currentLinkedAccountNumber =
     typeof linkedAccount === "object"
@@ -93,6 +106,17 @@ const FdSettingsCard: React.FC<FdSettingsCardProps> = ({
       success("Linked settlement account updated successfully.");
     } catch (err: any) {
       showError(err?.data?.message || "Failed to update linked account");
+    }
+  };
+
+  const handleEarlyWithdrawal = async () => {
+    try {
+      await withdrawEarly(accountNumber).unwrap();
+      success("Early withdrawal processed. Principal returned to linked account.");
+      setIsDialogOpen(false);
+      navigate("/dashboard");
+    } catch (err: any) {
+      showError(err?.data?.message || "Failed to process early withdrawal");
     }
   };
 
@@ -197,7 +221,61 @@ const FdSettingsCard: React.FC<FdSettingsCardProps> = ({
               </Typography>
             </Box>
           )}
+
+          <Divider sx={{ my: 1 }} />
+
+          <Box sx={{ pt: 1 }}>
+            <Typography variant="subtitle2" color="error" gutterBottom sx={{ display: "flex", alignItems: "center" }}>
+              <WarningIcon fontSize="small" sx={{ mr: 1 }} /> Emergency Actions
+            </Typography>
+            <Button
+              variant="outlined"
+              color="error"
+              fullWidth
+              startIcon={<UnlockIcon />}
+              onClick={() => setIsDialogOpen(true)}
+              sx={{ mt: 1 }}
+            >
+              Early Withdrawal (Break Lock)
+            </Button>
+            <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: "block" }}>
+              Breaking the lock will return your principal immediately but result in <strong>100% interest forfeiture</strong>.
+            </Typography>
+          </Box>
         </Stack>
+
+        <Dialog open={isDialogOpen} onClose={() => !isWithdrawing && setIsDialogOpen(false)}>
+          <DialogTitle sx={{ display: "flex", alignItems: "center", color: "error.main" }}>
+            <WarningIcon sx={{ mr: 1 }} /> Confirm Early Withdrawal?
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              You are about to break the lock on your Fixed Deposit. 
+              <br /><br />
+              <strong>Warning:</strong> By proceeding, you will forfeit **100% of the interest** earned to date. Only your original principal will be returned to your linked account.
+              <br /><br />
+              This action is <strong>irreversible</strong>.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions sx={{ p: 3, pt: 0 }}>
+            <Button 
+              onClick={() => setIsDialogOpen(false)} 
+              disabled={isWithdrawing}
+              variant="text"
+            >
+              Cancel
+            </Button>
+            <Button 
+              onClick={handleEarlyWithdrawal} 
+              disabled={isWithdrawing}
+              variant="contained" 
+              color="error"
+              startIcon={isWithdrawing ? <CircularProgress size={20} color="inherit" /> : null}
+            >
+              {isWithdrawing ? "Processing..." : "Proceed with Forfeiture"}
+            </Button>
+          </DialogActions>
+        </Dialog>
       </CardContent>
     </Card>
   );
