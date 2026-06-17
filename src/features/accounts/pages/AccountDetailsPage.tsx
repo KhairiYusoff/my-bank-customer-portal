@@ -82,6 +82,7 @@ const AccountDetailsPage: React.FC = () => {
             balanceError={balanceError}
             onRefresh={handleRefresh}
             accountType={account?.accountType}
+            status={account?.status}
             overdraftLimit={account?.overdraftLimit}
             limits={limits}
             maturityDate={account?.maturityDate}
