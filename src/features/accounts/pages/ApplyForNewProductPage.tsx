@@ -35,7 +35,10 @@ import {
   IRequestAccountForm,
   requestAccountSchema,
 } from "../validations/accountValidation";
-import { useGetAccountsQuery, useRequestAccountMutation } from "../store/accountsApi";
+import {
+  useGetAccountsQuery,
+  useRequestAccountMutation,
+} from "../store/accountsApi";
 import { useToast } from "@/utils/snackbarUtils";
 import { useNavigate } from "react-router-dom";
 
@@ -49,7 +52,8 @@ const ApplyForNewProductPage: React.FC = () => {
     error: accountsError,
   } = useGetAccountsQuery();
 
-  const [requestAccount, { isLoading: isRequesting }] = useRequestAccountMutation();
+  const [requestAccount, { isLoading: isRequesting }] =
+    useRequestAccountMutation();
 
   const {
     control,
@@ -77,7 +81,9 @@ const ApplyForNewProductPage: React.FC = () => {
       success("Account request submitted successfully! Waiting for approval.");
       navigate("/dashboard");
     } catch (error: any) {
-      showToastError(error?.data?.message || "Failed to submit account request");
+      showToastError(
+        error?.data?.message || "Failed to submit account request",
+      );
     }
   };
 
@@ -136,14 +142,10 @@ const ApplyForNewProductPage: React.FC = () => {
                             },
                           }}
                         >
-                          <MenuItem value="current">
-                            ○ Current Account
-                          </MenuItem>
-                          <MenuItem value="business">
-                            ○ Business Account
-                          </MenuItem>
+                          <MenuItem value="current">Current Account</MenuItem>
+                          <MenuItem value="business">Business Account</MenuItem>
                           <MenuItem value="fixed_deposit">
-                            ○ Fixed Deposit
+                            Fixed Deposit
                           </MenuItem>
                         </TextField>
                       )}
@@ -186,7 +188,9 @@ const ApplyForNewProductPage: React.FC = () => {
                           <MenuItem value="">
                             <em>Choose branch</em>
                           </MenuItem>
-                          <MenuItem value="500">Kuala Lumpur / Selangor</MenuItem>
+                          <MenuItem value="500">
+                            Kuala Lumpur / Selangor
+                          </MenuItem>
                           <MenuItem value="300">Johor</MenuItem>
                           <MenuItem value="700">Penang</MenuItem>
                           <MenuItem value="100">Pahang</MenuItem>
@@ -219,8 +223,12 @@ const ApplyForNewProductPage: React.FC = () => {
                           fullWidth
                           placeholder="0.00"
                           inputProps={{
-                            min: selectedAccountType === "current" ? 20 :
-                                 selectedAccountType === "business" ? 500 : 1000,
+                            min:
+                              selectedAccountType === "current"
+                                ? 20
+                                : selectedAccountType === "business"
+                                  ? 500
+                                  : 1000,
                             step: 0.01,
                             "aria-label": "Initial deposit amount",
                           }}
@@ -228,8 +236,11 @@ const ApplyForNewProductPage: React.FC = () => {
                           helperText={
                             errors.amount?.message ||
                             `Enter the initial deposit amount (min: RM${
-                              selectedAccountType === "current" ? 20 :
-                              selectedAccountType === "business" ? 500 : 1000
+                              selectedAccountType === "current"
+                                ? 20
+                                : selectedAccountType === "business"
+                                  ? 500
+                                  : 1000
                             })`
                           }
                           sx={{
@@ -246,7 +257,9 @@ const ApplyForNewProductPage: React.FC = () => {
                   {selectedAccountType === "fixed_deposit" && (
                     <>
                       <Grid item xs={12} md={6}>
-                        <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+                        <Box
+                          sx={{ display: "flex", alignItems: "center", mb: 2 }}
+                        >
                           <NeutralIconAvatar>
                             <LockIcon sx={{ color: "text.secondary" }} />
                           </NeutralIconAvatar>
@@ -290,9 +303,13 @@ const ApplyForNewProductPage: React.FC = () => {
                       </Grid>
 
                       <Grid item xs={12} md={6}>
-                        <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+                        <Box
+                          sx={{ display: "flex", alignItems: "center", mb: 2 }}
+                        >
                           <PrimaryIconAvatar>
-                            <AccountBalanceIcon sx={{ color: "primary.main" }} />
+                            <AccountBalanceIcon
+                              sx={{ color: "primary.main" }}
+                            />
                           </PrimaryIconAvatar>
                           <Typography
                             variant="h6"
@@ -324,14 +341,19 @@ const ApplyForNewProductPage: React.FC = () => {
                               <MenuItem value="">
                                 <em>Choose linked account</em>
                               </MenuItem>
-                              {accountsResponse?.data?.filter(account => account.accountType !== "fixed_deposit").map((account) => (
-                                <MenuItem
-                                  key={account.accountNumber}
-                                  value={account.accountNumber}
-                                >
-                                  {account.accountNumber}
-                                </MenuItem>
-                              ))}
+                              {accountsResponse?.data
+                                ?.filter(
+                                  (account) =>
+                                    account.accountType !== "fixed_deposit",
+                                )
+                                .map((account) => (
+                                  <MenuItem
+                                    key={account.accountNumber}
+                                    value={account.accountNumber}
+                                  >
+                                    {account.accountNumber}
+                                  </MenuItem>
+                                ))}
                             </TextField>
                           )}
                         />
@@ -342,7 +364,9 @@ const ApplyForNewProductPage: React.FC = () => {
                   {/* Business Specific Field */}
                   {selectedAccountType === "business" && (
                     <Grid item xs={12}>
-                      <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+                      <Box
+                        sx={{ display: "flex", alignItems: "center", mb: 2 }}
+                      >
                         <NeutralIconAvatar>
                           <BusinessIcon sx={{ color: "text.secondary" }} />
                         </NeutralIconAvatar>
@@ -393,7 +417,9 @@ const ApplyForNewProductPage: React.FC = () => {
                         )
                       }
                     >
-                      {isRequesting ? "Submitting Request..." : "Submit Application"}
+                      {isRequesting
+                        ? "Submitting Request..."
+                        : "Submit Application"}
                     </DepositSubmitButton>
                   </Grid>
                 </Grid>
