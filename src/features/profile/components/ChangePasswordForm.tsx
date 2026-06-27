@@ -55,7 +55,7 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
   const [showCurrent, setShowCurrent] = React.useState(false);
   const [showNew, setShowNew] = React.useState(false);
   const [passwordStrength, setPasswordStrength] = React.useState(0);
-  
+
   const {
     handleSubmit,
     control,
@@ -83,7 +83,7 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
     if (/[a-z]/.test(watchedNewPassword)) strength += 25;
     if (/[0-9]/.test(watchedNewPassword)) strength += 12.5;
     if (/[^A-Za-z0-9]/.test(watchedNewPassword)) strength += 12.5;
-    
+
     setPasswordStrength(Math.min(strength, 100));
   }, [watchedNewPassword]);
 
@@ -102,15 +102,16 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
     <Box component="form" onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={3}>
         {/* Security Notice */}
-        <Alert 
-          severity="info" 
-          sx={{ 
+        <Alert
+          severity="info"
+          sx={{
             borderRadius: 2,
-            '& .MuiAlert-icon': { fontSize: '1.25rem' }
+            "& .MuiAlert-icon": { fontSize: "1.25rem" },
           }}
         >
           <Typography variant="body2">
-            For your security, please enter your current password to confirm your identity.
+            For your security, please enter your current password to confirm
+            your identity.
           </Typography>
         </Alert>
 
@@ -120,11 +121,14 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
             <PasswordSectionAvatar $variant="current">
               <LockIcon sx={{ color: "error.main", fontSize: "1.25rem" }} />
             </PasswordSectionAvatar>
-            <Typography variant="subtitle1" sx={{ fontWeight: 600, color: "error.main" }}>
+            <Typography
+              variant="subtitle1"
+              sx={{ fontWeight: 600, color: "error.main" }}
+            >
               Current Password
             </Typography>
           </Box>
-          
+
           <Controller
             name="currentPassword"
             control={control}
@@ -162,7 +166,10 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
             <PasswordSectionAvatar $variant="new">
               <KeyIcon sx={{ color: "primary.main", fontSize: "1.25rem" }} />
             </PasswordSectionAvatar>
-            <Typography variant="subtitle1" sx={{ fontWeight: 600, color: "primary.main" }}>
+            <Typography
+              variant="subtitle1"
+              sx={{ fontWeight: 600, color: "primary.main" }}
+            >
               New Password
             </Typography>
           </Box>
@@ -200,7 +207,14 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
           {/* Password Strength Indicator */}
           {watchedNewPassword && (
             <Box sx={{ mt: 2 }}>
-              <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mb: 1 }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  mb: 1,
+                }}
+              >
                 <Typography variant="body2" color="text.secondary">
                   Password Strength
                 </Typography>
@@ -222,8 +236,13 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
         {/* Password Requirements */}
         <PasswordRequirementsBox>
           <Box sx={{ display: "flex", alignItems: "center", mb: 1.5 }}>
-            <SecurityIcon sx={{ color: "primary.main", mr: 1, fontSize: "1.25rem" }} />
-            <Typography variant="subtitle2" sx={{ fontWeight: 600, color: "primary.main" }}>
+            <SecurityIcon
+              sx={{ color: "primary.main", mr: 1, fontSize: "1.25rem" }}
+            />
+            <Typography
+              variant="subtitle2"
+              sx={{ fontWeight: 600, color: "primary.main" }}
+            >
               Password Requirements
             </Typography>
           </Box>

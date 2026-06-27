@@ -7,10 +7,7 @@ import {
   Box,
   Typography,
 } from "@mui/material";
-import {
-  Lock as LockIcon,
-  Close as CloseIcon,
-} from "@mui/icons-material";
+import { Lock as LockIcon, Close as CloseIcon } from "@mui/icons-material";
 import { useChangePasswordMutation } from "@/features/profile/store/profileApi";
 import { useSnackbar } from "notistack";
 import ChangePasswordForm from "../components/ChangePasswordForm";
@@ -24,11 +21,13 @@ import {
 interface ChangePasswordDialogProps {
   open: boolean;
   onClose: () => void;
+  isForced?: boolean;
 }
 
 const ChangePasswordDialog: React.FC<ChangePasswordDialogProps> = ({
   open,
   onClose,
+  isForced = false,
 }) => {
   const { enqueueSnackbar } = useSnackbar();
   const [changePassword, { isLoading }] = useChangePasswordMutation();
@@ -47,23 +46,40 @@ const ChangePasswordDialog: React.FC<ChangePasswordDialogProps> = ({
     }
   };
 
+  const handleClose = (_event: any, reason: string) => {
+    // Prevent closing via escape key or backdrop click if forced
+    if (
+      isForced &&
+      (reason === "escapeKeyDown" || reason === "backdropClick")
+    ) {
+      return;
+    }
+    onClose();
+  };
+
   return (
-    <Dialog 
-      open={open} 
-      onClose={onClose} 
-      maxWidth="sm" 
+    <Dialog
+      open={open}
+      onClose={handleClose}
+      maxWidth="sm"
       fullWidth
       PaperProps={{
-        sx: { 
+        sx: {
           borderRadius: 3,
-          overflow: 'visible'
-        }
+          overflow: "visible",
+        },
       }}
     >
       <DialogContent sx={{ p: 0 }}>
         {/* Gradient Header */}
         <DialogGradientHeader>
-          <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
             <Box sx={{ display: "flex", alignItems: "center" }}>
               <DialogHeaderAvatar>
                 <LockIcon fontSize="medium" />
@@ -77,7 +93,10 @@ const ChangePasswordDialog: React.FC<ChangePasswordDialogProps> = ({
                 </Typography>
               </Box>
             </Box>
-            <DialogCloseButton onClick={onClose} disabled={isLoading}>
+            <DialogCloseButton
+              onClick={onClose}
+              disabled={isLoading || isForced}
+            >
               <CloseIcon />
             </DialogCloseButton>
           </Box>
