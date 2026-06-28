@@ -133,6 +133,7 @@ export const useExpenseActions = (
   const expenses = expensesData?.data || [];
   const singleExpense = singleExpenseData?.data;
   const editExpense = editExpenseData?.data;
+  const expensesMeta = expensesData?.meta;
 
   return {
     // Data
@@ -142,6 +143,7 @@ export const useExpenseActions = (
     expenses,
     singleExpense,
     editExpense,
+    expensesMeta,
 
     // Loading states
     isLoading,

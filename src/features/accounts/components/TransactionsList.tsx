@@ -13,7 +13,6 @@ import {
   Stack,
   Chip,
   Alert,
-  Pagination,
 } from "@mui/material";
 import {
   AccountBalance as AccountBalanceIcon,
@@ -25,6 +24,7 @@ import {
   Tag as ReferenceIcon,
 } from "@mui/icons-material";
 import { formatDateTime, formatCurrency } from "@/utils/formatters";
+import { Pagination } from "@/components";
 import type {
   TransactionHistory,
   TransactionHistoryResponse,
@@ -226,16 +226,12 @@ const TransactionsList: React.FC<TransactionsListProps> = ({
           ))}
         </List>
 
-        {transactionsData.meta && transactionsData.meta.pages > 1 && (
-          <Box sx={{ p: 3, pt: 2 }}>
-            <Pagination
-              count={transactionsData.meta.pages}
-              page={page}
-              onChange={onPageChange}
-              color="primary"
-              sx={{ display: "flex", justifyContent: "center" }}
-            />
-          </Box>
+        {transactionsData.meta && (
+          <Pagination
+            count={transactionsData.meta.pages}
+            page={page}
+            onChange={onPageChange}
+          />
         )}
       </CardContent>
     </Card>

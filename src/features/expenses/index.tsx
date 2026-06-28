@@ -48,6 +48,8 @@ const ExpensesPage: React.FC = () => {
   );
   const [editExpenseId, setEditExpenseId] = useState<string | null>(null);
   const [deleteExpenseId, setDeleteExpenseId] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
+  const expensesPerPage = 20;
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
@@ -75,6 +77,13 @@ const ExpensesPage: React.FC = () => {
 
   const handleCloseDeleteExpense = () => {
     setDeleteExpenseId(null);
+  };
+
+  const handlePageChange = (
+    _event: React.ChangeEvent<unknown>,
+    value: number,
+  ) => {
+    setPage(value);
   };
 
   const {
@@ -107,6 +116,7 @@ const ExpensesPage: React.FC = () => {
     expenses,
     singleExpense,
     editExpense,
+    expensesMeta,
     isLoading,
     isSuccess,
     error,
@@ -124,7 +134,7 @@ const ExpensesPage: React.FC = () => {
     onDeleteExpense,
   } = useExpenseActions(
     expenseData,
-    filters,
+    { ...filters, page, limit: expensesPerPage },
     selectedExpenseId || undefined,
     editExpenseId || undefined,
   );
@@ -210,6 +220,7 @@ const ExpensesPage: React.FC = () => {
                 paymentMethods={paymentMethods}
                 accounts={accounts}
                 expenses={expenses}
+                expensesMeta={expensesMeta}
                 filters={filters}
                 setFilters={updateFilters}
                 onFilterDialogOpen={openFilterDialog}
@@ -218,6 +229,8 @@ const ExpensesPage: React.FC = () => {
                 onViewExpense={handleViewExpense}
                 onEditExpense={handleEditExpense}
                 onDeleteExpense={handleDeleteExpense}
+                page={page}
+                onPageChange={handlePageChange}
               />
             </TabPanel>
 

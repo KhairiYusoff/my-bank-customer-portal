@@ -32,12 +32,19 @@ import type {
 } from "../../types/expense";
 import type { Account } from "@/features/accounts/types/account";
 import { formatCurrency } from "@/utils/formatters";
+import { Pagination } from "@/components";
 
 interface ListTabProps {
   categories: ExpenseCategory[];
   paymentMethods: PaymentMethod[];
   accounts: Account[];
   expenses: Expense[];
+  expensesMeta?: {
+    page: number;
+    limit: number;
+    total: number;
+    pages: number;
+  };
   filters: ExpenseFilters;
   setFilters: (filters: ExpenseFilters) => void;
   onFilterDialogOpen: () => void;
@@ -46,6 +53,8 @@ interface ListTabProps {
   onViewExpense: (expenseId: string) => void;
   onEditExpense: (expenseId: string) => void;
   onDeleteExpense: (expenseId: string) => void;
+  page: number;
+  onPageChange: (event: React.ChangeEvent<unknown>, value: number) => void;
 }
 
 const ListTab: React.FC<ListTabProps> = ({
@@ -53,6 +62,7 @@ const ListTab: React.FC<ListTabProps> = ({
   paymentMethods,
   accounts,
   expenses,
+  expensesMeta,
   filters,
   setFilters,
   onFilterDialogOpen,
@@ -61,6 +71,8 @@ const ListTab: React.FC<ListTabProps> = ({
   onViewExpense,
   onEditExpense,
   onDeleteExpense,
+  page,
+  onPageChange,
 }) => {
   const isError = !!error;
 
@@ -247,6 +259,15 @@ const ListTab: React.FC<ListTabProps> = ({
           </TableBody>
         </Table>
       </TableContainer>
+
+      {/* Pagination */}
+      {expensesMeta && (
+        <Pagination
+          count={expensesMeta.pages}
+          page={page}
+          onChange={onPageChange}
+        />
+      )}
     </Box>
   );
 };
