@@ -23,7 +23,12 @@ import {
   Save as SaveIcon,
   Cancel as CancelIcon,
 } from "@mui/icons-material";
-import type { Expense, UpdateExpenseRequest } from "../../types/expense";
+import type {
+  Expense,
+  UpdateExpenseRequest,
+  ExpenseCategory,
+  PaymentMethod,
+} from "../../types/expense";
 
 interface EditExpenseDialogProps {
   open: boolean;
@@ -32,8 +37,8 @@ interface EditExpenseDialogProps {
   isLoading: boolean;
   error: any;
   onUpdateExpense: (id: string, data: UpdateExpenseRequest) => Promise<boolean>;
-  categories: any[];
-  paymentMethods: any[];
+  categories: ExpenseCategory[];
+  paymentMethods: PaymentMethod[];
 }
 
 const EditExpenseDialog: React.FC<EditExpenseDialogProps> = ({
@@ -62,9 +67,11 @@ const EditExpenseDialog: React.FC<EditExpenseDialogProps> = ({
         category: expense.category,
         subCategory: expense.subCategory || undefined,
         description: expense.description,
-        date: expense.date ? new Date(expense.date).toISOString().split('T')[0] : '',
+        date: expense.date
+          ? new Date(expense.date).toISOString().split("T")[0]
+          : "",
         paymentMethod: expense.paymentMethod,
-        notes: expense.notes || '',
+        notes: expense.notes || "",
         tags: expense.tags || [],
       });
       setTagsInput((expense.tags || []).join(", "));
@@ -77,7 +84,7 @@ const EditExpenseDialog: React.FC<EditExpenseDialogProps> = ({
   }, [expense]);
 
   const handleInputChange = (field: keyof UpdateExpenseRequest, value: any) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [field]: value,
     }));
@@ -85,20 +92,29 @@ const EditExpenseDialog: React.FC<EditExpenseDialogProps> = ({
 
   const handleTagsChange = (value: string) => {
     setTagsInput(value);
-    const tags = value.split(",").map(tag => tag.trim()).filter(tag => tag.length > 0);
+    const tags = value
+      .split(",")
+      .map((tag) => tag.trim())
+      .filter((tag) => tag.length > 0);
     handleInputChange("tags", tags);
   };
 
   const handleMerchantChange = (field: string, value: string) => {
-    setMerchantData(prev => ({
+    setMerchantData((prev) => ({
       ...prev,
       [field]: value,
     }));
-    
+
     const updatedMerchant = { ...merchantData, [field]: value };
-    const hasMerchantData = updatedMerchant.name || updatedMerchant.location || updatedMerchant.receiptNumber;
-    
-    handleInputChange("merchant", hasMerchantData ? updatedMerchant : undefined);
+    const hasMerchantData =
+      updatedMerchant.name ||
+      updatedMerchant.location ||
+      updatedMerchant.receiptNumber;
+
+    handleInputChange(
+      "merchant",
+      hasMerchantData ? updatedMerchant : undefined,
+    );
   };
 
   const handleSubmit = async () => {
@@ -106,7 +122,7 @@ const EditExpenseDialog: React.FC<EditExpenseDialogProps> = ({
 
     // Prepare update data (only include changed fields)
     const updateData: UpdateExpenseRequest = {};
-    
+
     // Compare with original expense and only include changed fields
     if (formData.amount !== expense.amount) {
       updateData.amount = formData.amount;
@@ -120,29 +136,36 @@ const EditExpenseDialog: React.FC<EditExpenseDialogProps> = ({
     if (formData.description !== expense.description) {
       updateData.description = formData.description;
     }
-    if (formData.date !== new Date(expense.date).toISOString().split('T')[0]) {
+    if (formData.date !== new Date(expense.date).toISOString().split("T")[0]) {
       updateData.date = formData.date;
     }
     if (formData.paymentMethod !== expense.paymentMethod) {
       updateData.paymentMethod = formData.paymentMethod;
     }
-    if (formData.notes !== (expense.notes || '')) {
+    if (formData.notes !== (expense.notes || "")) {
       updateData.notes = formData.notes;
     }
-    if (JSON.stringify(formData.tags || []) !== JSON.stringify(expense.tags || [])) {
+    if (
+      JSON.stringify(formData.tags || []) !== JSON.stringify(expense.tags || [])
+    ) {
       updateData.tags = formData.tags;
     }
-    
+
     // Check merchant changes
-    const currentMerchant = expense.merchant || { name: '', location: '', receiptNumber: '' };
+    const currentMerchant = expense.merchant || {
+      name: "",
+      location: "",
+      receiptNumber: "",
+    };
     const newMerchant = merchantData;
-    const merchantChanged = 
+    const merchantChanged =
       newMerchant.name !== currentMerchant.name ||
       newMerchant.location !== currentMerchant.location ||
       newMerchant.receiptNumber !== currentMerchant.receiptNumber;
-    
+
     if (merchantChanged) {
-      const hasNewMerchantData = newMerchant.name || newMerchant.location || newMerchant.receiptNumber;
+      const hasNewMerchantData =
+        newMerchant.name || newMerchant.location || newMerchant.receiptNumber;
       updateData.merchant = hasNewMerchantData ? newMerchant : undefined;
     }
 
@@ -153,9 +176,13 @@ const EditExpenseDialog: React.FC<EditExpenseDialogProps> = ({
   };
 
   const getSubCategories = () => {
-    const selectedCategory = categories.find(cat => cat.name === formData.category);
-    return selectedCategory?.subCategories || [];
+    const selectedCategory = categories.find(
+      (cat) => cat.value === formData.category,
+    );
+    return selectedCategory?.subcategories || [];
   };
+
+  const subcategoryOptions = getSubCategories();
 
   if (!expense) return null;
 
@@ -170,11 +197,22 @@ const EditExpenseDialog: React.FC<EditExpenseDialogProps> = ({
 
       <DialogContent dividers>
         {isLoading ? (
-          <Box display="flex" justifyContent="center" alignItems="center" minHeight="200px">
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            minHeight="200px"
+          >
             <CircularProgress />
           </Box>
         ) : error ? (
-          <Box display="flex" justifyContent="center" alignItems="center" minHeight="200px" color="error.main">
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            minHeight="200px"
+            color="error.main"
+          >
             <Typography variant="body1">Error loading expense data.</Typography>
           </Box>
         ) : (
@@ -185,8 +223,10 @@ const EditExpenseDialog: React.FC<EditExpenseDialogProps> = ({
                 <TextField
                   label="Amount"
                   type="number"
-                  value={formData.amount || ''}
-                  onChange={(e) => handleInputChange('amount', parseFloat(e.target.value) || 0)}
+                  value={formData.amount || ""}
+                  onChange={(e) =>
+                    handleInputChange("amount", parseFloat(e.target.value) || 0)
+                  }
                   fullWidth
                   InputProps={{
                     startAdornment: <Typography sx={{ mr: 1 }}>RM</Typography>,
@@ -199,8 +239,8 @@ const EditExpenseDialog: React.FC<EditExpenseDialogProps> = ({
                 <TextField
                   label="Date"
                   type="date"
-                  value={formData.date || ''}
-                  onChange={(e) => handleInputChange('date', e.target.value)}
+                  value={formData.date || ""}
+                  onChange={(e) => handleInputChange("date", e.target.value)}
                   fullWidth
                   InputLabelProps={{
                     shrink: true,
@@ -213,17 +253,17 @@ const EditExpenseDialog: React.FC<EditExpenseDialogProps> = ({
                 <FormControl fullWidth>
                   <InputLabel>Category</InputLabel>
                   <Select
-                    value={formData.category || ''}
+                    value={formData.category || ""}
                     label="Category"
                     onChange={(e) => {
-                      handleInputChange('category', e.target.value);
+                      handleInputChange("category", e.target.value);
                       // Reset subcategory when category changes
-                      handleInputChange('subCategory', '');
+                      handleInputChange("subCategory", "");
                     }}
                   >
                     {categories.map((category) => (
-                      <MenuItem key={category._id} value={category.name}>
-                        {category.name}
+                      <MenuItem key={category.value} value={category.value}>
+                        {category.label}
                       </MenuItem>
                     ))}
                   </Select>
@@ -235,14 +275,20 @@ const EditExpenseDialog: React.FC<EditExpenseDialogProps> = ({
                 <FormControl fullWidth>
                   <InputLabel>Subcategory</InputLabel>
                   <Select
-                    value={formData.subCategory || ''}
+                    value={formData.subCategory || ""}
                     label="Subcategory"
-                    onChange={(e) => handleInputChange('subCategory', e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("subCategory", e.target.value)
+                    }
                     disabled={!formData.category}
                   >
-                    {getSubCategories().map((subCategory: string) => (
-                      <MenuItem key={subCategory} value={subCategory}>
-                        {subCategory}
+                    <MenuItem value="">None</MenuItem>
+                    {getSubCategories().map((subcategory) => (
+                      <MenuItem
+                        key={subcategory.value}
+                        value={subcategory.value}
+                      >
+                        {subcategory.label}
                       </MenuItem>
                     ))}
                   </Select>
@@ -254,13 +300,15 @@ const EditExpenseDialog: React.FC<EditExpenseDialogProps> = ({
                 <FormControl fullWidth>
                   <InputLabel>Payment Method</InputLabel>
                   <Select
-                    value={formData.paymentMethod || ''}
+                    value={formData.paymentMethod || ""}
                     label="Payment Method"
-                    onChange={(e) => handleInputChange('paymentMethod', e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("paymentMethod", e.target.value)
+                    }
                   >
                     {paymentMethods.map((method) => (
-                      <MenuItem key={method._id} value={method.name}>
-                        {method.name?.replace('_', ' ').toUpperCase()}
+                      <MenuItem key={method.value} value={method.value}>
+                        {method.label}
                       </MenuItem>
                     ))}
                   </Select>
@@ -271,8 +319,10 @@ const EditExpenseDialog: React.FC<EditExpenseDialogProps> = ({
               <Grid item xs={12}>
                 <TextField
                   label="Description"
-                  value={formData.description || ''}
-                  onChange={(e) => handleInputChange('description', e.target.value)}
+                  value={formData.description || ""}
+                  onChange={(e) =>
+                    handleInputChange("description", e.target.value)
+                  }
                   fullWidth
                   multiline
                   rows={2}
@@ -303,8 +353,8 @@ const EditExpenseDialog: React.FC<EditExpenseDialogProps> = ({
               <Grid item xs={12}>
                 <TextField
                   label="Notes"
-                  value={formData.notes || ''}
-                  onChange={(e) => handleInputChange('notes', e.target.value)}
+                  value={formData.notes || ""}
+                  onChange={(e) => handleInputChange("notes", e.target.value)}
                   fullWidth
                   multiline
                   rows={3}
@@ -323,7 +373,9 @@ const EditExpenseDialog: React.FC<EditExpenseDialogProps> = ({
                     <TextField
                       label="Merchant Name"
                       value={merchantData.name}
-                      onChange={(e) => handleMerchantChange('name', e.target.value)}
+                      onChange={(e) =>
+                        handleMerchantChange("name", e.target.value)
+                      }
                       fullWidth
                     />
                   </Grid>
@@ -331,7 +383,9 @@ const EditExpenseDialog: React.FC<EditExpenseDialogProps> = ({
                     <TextField
                       label="Location"
                       value={merchantData.location}
-                      onChange={(e) => handleMerchantChange('location', e.target.value)}
+                      onChange={(e) =>
+                        handleMerchantChange("location", e.target.value)
+                      }
                       fullWidth
                     />
                   </Grid>
@@ -339,7 +393,9 @@ const EditExpenseDialog: React.FC<EditExpenseDialogProps> = ({
                     <TextField
                       label="Receipt Number"
                       value={merchantData.receiptNumber}
-                      onChange={(e) => handleMerchantChange('receiptNumber', e.target.value)}
+                      onChange={(e) =>
+                        handleMerchantChange("receiptNumber", e.target.value)
+                      }
                       fullWidth
                     />
                   </Grid>
@@ -351,16 +407,20 @@ const EditExpenseDialog: React.FC<EditExpenseDialogProps> = ({
       </DialogContent>
 
       <DialogActions>
-        <Button onClick={onClose} startIcon={<CancelIcon />} disabled={isLoading}>
+        <Button
+          onClick={onClose}
+          startIcon={<CancelIcon />}
+          disabled={isLoading}
+        >
           Cancel
         </Button>
-        <Button 
-          onClick={handleSubmit} 
-          variant="contained" 
+        <Button
+          onClick={handleSubmit}
+          variant="contained"
           startIcon={<SaveIcon />}
           disabled={isLoading}
         >
-          {isLoading ? 'Saving...' : 'Save Changes'}
+          {isLoading ? "Saving..." : "Save Changes"}
         </Button>
       </DialogActions>
     </Dialog>
