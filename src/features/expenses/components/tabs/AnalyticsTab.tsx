@@ -228,7 +228,7 @@ const AnalyticsTab: React.FC = () => {
                     fontWeight={700}
                     color="primary.main"
                   >
-                    {formatCurrency(dashboardStats?.currentMonth.total ?? 0)}
+                    {formatCurrency(monthlyData?.summary.totalAmount ?? 0)}
                   </Typography>
                   <Typography
                     variant="body2"
@@ -275,7 +275,7 @@ const AnalyticsTab: React.FC = () => {
                     fontWeight={700}
                     color="text.primary"
                   >
-                    {dashboardStats?.currentMonth.count ?? 0}
+                    {monthlyData?.summary.totalExpenses ?? 0}
                   </Typography>
                   <Typography
                     variant="body2"
