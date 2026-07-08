@@ -56,7 +56,7 @@ export const useWithdrawForm = () => {
     error,
     reset,
     resetMutation,
-    toast,
+    dispatch,
     withdrawData,
     user,
   ]);

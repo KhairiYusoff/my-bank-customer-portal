@@ -56,7 +56,7 @@ export const useTransferForm = () => {
       const apiError = error as any;
       toast.error(apiError.data?.message || "Transfer failed.");
     }
-  }, [isSuccess, error, reset, resetMutation, toast, user, dispatch]);
+  }, [isSuccess, error, reset, resetMutation, user, dispatch]);
 
   const onSubmit = (values: ITransferForm) => {
     setTransferData(values);

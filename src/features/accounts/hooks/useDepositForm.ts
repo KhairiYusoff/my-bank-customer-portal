@@ -64,7 +64,7 @@ export const useDepositForm = () => {
     error,
     reset,
     resetMutation,
-    toast,
+    dispatch,
     depositData,
     user,
   ]);
