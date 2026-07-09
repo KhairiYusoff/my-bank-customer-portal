@@ -14,7 +14,7 @@ export const transactionsApi = baseApi.injectEndpoints({
         method: 'POST',
         body,
       }),
-      invalidatesTags: ['Transaction'],
+      invalidatesTags: ['Transaction', 'Account'],
     }),
     getAccountTransactions: builder.query<TransactionHistoryResponse, TransactionHistoryParams>({
       query: ({ accountNumber, page = 1, limit = 10 }) => 
