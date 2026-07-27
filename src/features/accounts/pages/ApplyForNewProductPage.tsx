@@ -344,7 +344,8 @@ const ApplyForNewProductPage: React.FC = () => {
                               {accountsResponse?.data
                                 ?.filter(
                                   (account) =>
-                                    account.accountType !== "fixed_deposit",
+                                    account.accountType !== "fixed_deposit" &&
+                                    account.status === "active",
                                 )
                                 .map((account) => (
                                   <MenuItem
